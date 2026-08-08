@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PAWS Service Dog Training Manual</title>
+<style>
+:root{
+  --ink:#1b2028;
+  --ink-soft:#4a5361;
+  --line:#e3e0d8;
+  --bg:#faf8f4;
+  --card:#ffffff;
+  --accent:#7a5c2e;
+  --accent-soft:#f2ece0;
+  --green:#3f6b4a;
+  --amber:#8a6a1f;
+  --red:#8c3a34;
+  --shadow:0 1px 2px rgba(27,32,40,.05), 0 8px 24px rgba(27,32,40,.06);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+/* Header */
+header.top{
+  position:sticky;top:0;z-index:50;background:rgba(250,248,244,.92);
+  backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--line);
+}
+.topbar{display:flex;align-items:center;gap:20px;padding:14px 0}
+.brand{font-weight:700;font-size:17px;letter-spacing:-.01em;white-space:nowrap}
+.brand span{color:var(--accent);font-weight:600}
+.searchbox{flex:1;max-width:420px;position:relative}
+.searchbox input{
+  width:100%;padding:9px 14px;border:1px solid var(--line);border-radius:8px;
+  background:var(--card);font-size:14px;color:var(--ink);outline:none;
+}
+.searchbox input:focus{border-color:var(--accent)}
+.tabs{display:flex;gap:4px;margin-left:auto}
+.tab{
+  padding:8px 14px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;
+  border:1px solid transparent;color:var(--ink-soft);background:none;font-family:inherit;
+}
+.tab:hover{background:var(--accent-soft)}
+.tab.active{background:var(--ink);color:#fff}
+
+/* Hero */
+.hero{padding:44px 0 28px;border-bottom:1px solid var(--line)}
+.hero h1{font-size:38px;line-height:1.12;letter-spacing:-.025em;margin:0 0 10px}
+.hero p{margin:0;color:var(--ink-soft);font-size:17px;max-width:640px}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.pill{
+  font-size:12.5px;font-weight:600;padding:5px 11px;border-radius:999px;
+  background:var(--accent-soft);color:var(--accent);border:1px solid #e6dcc6;
+}
+
+/* Layout */
+.layout{display:grid;grid-template-columns:230px 1fr;gap:44px;padding:36px 0 90px;align-items:start}
+nav.side{position:sticky;top:78px}
+nav.side h4{
+  font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-soft);
+  margin:0 0 10px;font-weight:700;
+}
+nav.side a{
+  display:block;padding:6px 10px;border-radius:6px;color:var(--ink-soft);
+  text-decoration:none;font-size:14px;border-left:2px solid transparent;
+}
+nav.side a:hover{background:var(--card);color:var(--ink)}
+nav.side .grp{margin-bottom:22px}
+
+/* Cards */
+section.block{margin-bottom:44px;scroll-margin-top:84px}
+h2.sec{
+  font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);
+  font-weight:700;margin:0 0 16px;padding-bottom:8px;border-bottom:1px solid var(--line);
+}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:26px 28px;margin-bottom:18px;box-shadow:var(--shadow);scroll-margin-top:84px;
+}
+.card h3{margin:0 0 4px;font-size:21px;letter-spacing:-.015em}
+.card .sub{color:var(--ink-soft);font-size:14.5px;margin:0 0 18px}
+.card h4{
+  margin:22px 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--ink-soft);font-weight:700;
+}
+.card h4:first-of-type{margin-top:0}
+
+/* Steps */
+ol.steps{list-style:none;counter-reset:s;margin:0;padding:0}
+ol.steps li{
+  counter-increment:s;position:relative;padding:0 0 14px 40px;
+}
+ol.steps li::before{
+  content:counter(s);position:absolute;left:0;top:1px;width:25px;height:25px;
+  border-radius:50%;background:var(--ink);color:#fff;font-size:12.5px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+ol.steps li::after{
+  content:"";position:absolute;left:12px;top:29px;bottom:2px;width:1px;background:var(--line);
+}
+ol.steps li:last-child{padding-bottom:0}
+ol.steps li:last-child::after{display:none}
+ol.steps strong{font-weight:650}
+
+ul.plain{margin:0;padding-left:19px}
+ul.plain li{margin-bottom:6px}
+
+/* Callouts */
+.note{
+  border-left:3px solid var(--accent);background:var(--accent-soft);
+  padding:13px 16px;border-radius:0 8px 8px 0;margin:16px 0;font-size:14.5px;
+}
+.note.warn{border-color:var(--red);background:#fbf1f0}
+.note.good{border-color:var(--green);background:#f0f5f1}
+.note b{display:block;font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
+
+/* Cue chip */
+.cue{
+  display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:13.5px;font-weight:600;background:#2b3138;color:#f5f2ec;
+  padding:2px 8px;border-radius:5px;letter-spacing:.01em;
+}
+.cue.alt{background:var(--accent-soft);color:var(--accent);border:1px solid #e6dcc6}
+
+/* Table */
+table{width:100%;border-collapse:collapse;font-size:14.5px;margin:8px 0}
+th{
+  text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--ink-soft);padding:8px 12px 8px 0;border-bottom:1px solid var(--line);
+}
+td{padding:11px 12px 11px 0;border-bottom:1px solid #f0ede6;vertical-align:top}
+tr:last-child td{border-bottom:none}
+
+/* Session log */
+.session{position:relative;padding-left:30px;border-left:2px solid var(--line);margin-bottom:0}
+.session::before{
+  content:"";position:absolute;left:-7px;top:26px;width:12px;height:12px;
+  border-radius:50%;background:var(--accent);border:3px solid var(--bg);
+}
+.session .card{margin-left:0}
+.date{
+  font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:6px;
+}
+.tag{
+  display:inline-block;font-size:11.5px;font-weight:650;padding:3px 9px;border-radius:5px;
+  background:#f0ede6;color:var(--ink-soft);margin:0 5px 5px 0;
+}
+
+/* Progress ladder */
+.ladder{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
+.rung{
+  flex:1 1 150px;background:var(--accent-soft);border:1px solid #e6dcc6;border-radius:8px;
+  padding:11px 13px;font-size:13.5px;
+}
+.rung b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--accent);margin-bottom:3px}
+
+details.tmpl{
+  background:var(--card);border:1px dashed #c9c3b4;border-radius:12px;padding:18px 22px;
+}
+details.tmpl summary{cursor:pointer;font-weight:650;font-size:15px;list-style:none}
+details.tmpl summary::-webkit-details-marker{display:none}
+details.tmpl summary::before{content:"+ ";color:var(--accent);font-weight:700}
+details.tmpl[open] summary::before{content:"– "}
+pre{
+  background:#22272e;color:#dfe3e8;padding:16px;border-radius:8px;overflow-x:auto;
+  font-size:12.5px;line-height:1.55;margin:14px 0 0;
+}
+footer{
+  border-top:1px solid var(--line);padding:26px 0 44px;color:var(--ink-soft);font-size:13.5px;
+}
+.hidden{display:none !important}
+mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
+@media (max-width:860px){
+  .layout{grid-template-columns:1fr;gap:0}
+  nav.side{display:none}
+  .hero h1{font-size:29px}
+  .tabs{margin-left:0}
+  .topbar{flex-wrap:wrap}
+  .searchbox{max-width:none;order:3;flex-basis:100%}
+}
+@media print{
+  header.top,nav.side,.tabs,.searchbox{display:none}
+  .layout{grid-template-columns:1fr}
+  .card{break-inside:avoid;box-shadow:none}
+  .view{display:block !important}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap topbar">
+    <div class="brand">PAWS <span>· Service Dog Training</span></div>
+    <div class="searchbox"><input id="q" type="search" placeholder="Search commands, cues, notes..."></div>
+    <div class="tabs">
+      <button class="tab active" data-view="curriculum">Curriculum</button>
+      <button class="tab" data-view="log">Session Log</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap hero">
+  <h1>Service Dog Training Manual</h1>
+  <p>Step-by-step methods for training service dogs for veterans, built from recorded PAWS program sessions. Positive reinforcement only.</p>
+  <div class="meta">
+    <span class="pill">3 sessions logged</span>
+    <span class="pill">Dogs: William · Flap</span>
+    <span class="pill">Lead trainer: Catcher</span>
+    <span class="pill">Track: PTSD + mobility</span>
+    <span class="pill">Last updated: Aug 8, 2026</span>
+  </div>
+</div>
+
+<div class="wrap layout">
+
+  <nav class="side">
+    <div class="grp" id="nav-curriculum">
+      <h4>Foundations</h4>
+      <a href="#method">The Three-Layer Method</a>
+      <a href="#wheels">Training Wheels On, Then Off</a>
+      <a href="#marker">The "Yes" Marker</a>
+      <a href="#pause">The Two-Second Pause</a>
+      <a href="#corrections">Corrections Without Punishment</a>
+      <a href="#group">Handling in a Group</a>
+      <a href="#idle">The Idle State</a>
+      <a href="#thatsit">The "That's It" Cue</a>
+      <a href="#urgency">First-Ask Urgency</a>
+      <a href="#three-d">Duration, Distance, Distraction</a>
+      <h4>Commands</h4>
+      <a href="#greet">Go Say Hi</a>
+      <a href="#sit">Sit</a>
+      <a href="#here">Here</a>
+      <a href="#touch">Touch</a>
+      <a href="#button">Touch Button</a>
+      <a href="#cart">Cart Push</a>
+      <a href="#getit">Get It (Retrieve)</a>
+      <a href="#giveDrop">Give and Drop It</a>
+      <a href="#labeled">Labeled Retrieval</a>
+      <a href="#fading">Fading the Food</a>
+      <a href="#tug">Tug (planned)</a>
+      <a href="#ptsd">PTSD Response (planned)</a>
+      <h4>Handling</h4>
+      <a href="#personality">Personality Types</a>
+      <a href="#activation">Activated vs. Inhibited</a>
+      <a href="#substitute">Substitute Behaviors</a>
+      <a href="#reading">Reading the Dog</a>
+      <a href="#fear">Fear and Avoidance</a>
+      <a href="#patience">Patience and Demand Barking</a>
+      <a href="#choice">Selfish vs. Unselfish Path</a>
+      <h4>Reference</h4>
+      <a href="#gear">Equipment and Treats</a>
+      <a href="#cues">Full Cue List</a>
+      <a href="#teamtraining">Team Training Phase</a>
+      <a href="#vision">How Dogs See</a>
+      <a href="#rules">Non-Negotiable Rules</a>
+    </div>
+    <div class="grp hidden" id="nav-log">
+      <h4>Sessions</h4>
+      <a href="#s003">Session 3 · Aug 7</a>
+      <a href="#s002">Session 2 · Jul 31</a>
+      <a href="#s001">Session 1 · Foundations</a>
+      <a href="#dogs">The Dogs</a>
+      <a href="#addnew">Add a new session</a>
+    </div>
+  </nav>
+
+  <main>
+
+  <!-- ══════════════ CURRICULUM ══════════════ -->
+  <div class="view" id="view-curriculum">
+
+    <section class="block">
+      <h2 class="sec">Foundations</h2>
+
+      <div class="card" id="method">
+        <h3>The Three-Layer Method</h3>
+        <p class="sub">Every new behavior gets built in the same three layers. Never skip a layer.</p>
+        <ol class="steps">
+          <li><strong>Lure.</strong> Use a treat in your hand to guide the dog into the behavior. The moment the behavior is complete, say <span class="cue">Yes</span> and give the treat. Repeat until reliable.</li>
+          <li><strong>Hand motion only.</strong> Same hand motion, no treat in your hand. When the dog performs it, say <span class="cue">Yes</span>, then reach into the pouch and reward. Repeat until reliable.</li>
+          <li><strong>Verbal command.</strong> Give only the word. When the dog performs it, say <span class="cue">Yes</span> and reward. Practice until the response is automatic.</li>
+        </ol>
+        <div class="note good"><b>How to advance</b>Move up a layer only when the current layer is reliable. When the dog struggles, step back down a layer. Stepping backward is a tool, not a failure.</div>
+      </div>
+
+      <div class="card" id="wheels">
+        <h3>Training Wheels On, Then Off</h3>
+        <p class="sub">How the handler's role changes as the dog advances.</p>
+        <p>Early sessions are training wheels on. The handler carries the instruction: exact timing of the treat, the verbal command, the hand signal, every question answered for the dog.</p>
+        <p>Later sessions take the wheels off. The dog does roughly 80% of the effort and the handler supplies encouragement only. You are telling the dog lean left, lean right. The dog has to balance itself.</p>
+        <div class="note good"><b>Why it matters</b>Learning has to become self-exploratory. A dog that only performs when its paw is held is not showing you it can do the task. Put it in situations where it proves capability on its own, then support without answering.</div>
+        <h4>What changes in practice</h4>
+        <ul class="plain">
+          <li>Commands go from repeated and guided to said once.</li>
+          <li><span class="cue">That's it</span> replaces re-cueing as your main tool.</li>
+          <li>You stop steering the dog's path and start fueling the choice you want.</li>
+          <li>Difficulty rises through duration, distance, and distraction rather than through new instruction.</li>
+        </ul>
+      </div>
+
+      <div class="card" id="marker">
+        <h3>The "Yes" Marker</h3>
+        <p class="sub">One word that stamps a moment in time and tells the dog exactly what earned the reward.</p>
+        <h4>How to use it</h4>
+        <ol class="steps">
+          <li>Watch for the exact behavior you want.</li>
+          <li>Say <span class="cue">Yes</span> at the instant it happens, not a second later.</li>
+          <li>Deliver the treat immediately after.</li>
+        </ol>
+        <div class="note warn"><b>Never break this</b>"Yes" is a promise. Every "Yes" gets followed by a reward, every time. Break it once and the marker loses meaning.</div>
+        <div class="note"><b>Timing traps</b>If you mark while the dog is staring at your treat pouch, you taught the dog that staring at the pouch pays. Mark eye contact with you, mark solid contact on the touch target, mark the completed behavior. Not the moment before it.</div>
+        <div class="note warn"><b>Marking too early on a retrieve</b>"Yes" means food is coming. A dog only has room for one thing in its mouth, so it will spit the item out to make room. Mark the handover, not the pickup. If you mark early, re-engage with <span class="cue">That's it</span> and keep the dog on task rather than restarting.</div>
+      </div>
+
+      <div class="card" id="pause">
+        <h3>The Two-Second Pause</h3>
+        <p class="sub">Impulse control built into the reward itself.</p>
+        <p>For a driven, food-motivated dog, the moment you say <span class="cue">Yes</span> is when tension spikes. It will nudge the pouch, whine, huff, or shove forward to speed you up. Slowing the delivery teaches the dog that the treat is guaranteed and rushing you changes nothing.</p>
+        <h4>The four-second interval</h4>
+        <ol class="steps">
+          <li>Say the dog's name. Wait for the response.</li>
+          <li>Say <span class="cue">Yes</span>.</li>
+          <li>Freeze. Do not move or reach for two full seconds.</li>
+          <li>Reach into the pouch and take the treat. The dog will activate the moment it sees your hand move.</li>
+          <li>Pause again before bringing the treat forward.</li>
+          <li>Deliver. If you move too fast, the dog's nose is in the pouch before you finish.</li>
+        </ol>
+        <div class="note good"><b>What this teaches</b>Short, repeatable patience. The dog learns to process the delay instead of trying to control the moment. It is a small detail with large downstream value.</div>
+        <div class="note warn"><b>Snowball risk</b>Left unaddressed, nudging the treat pouch generalizes. The same impatience shows up as obsession with other dogs, tennis balls, smells, and sounds. Correct it at the smallest scale.</div>
+      </div>
+
+      <div class="card" id="corrections">
+        <h3>Corrections Without Punishment</h3>
+        <p class="sub">Two tools. Neither carries a negative consequence.</p>
+        <h4>Tool 1 · Stillness</h4>
+        <ol class="steps">
+          <li>The dog is searching for a reaction. Any reaction is the payoff.</li>
+          <li>Become a statue. No eye contact, no voice, no movement.</li>
+          <li>The dog keeps trying, gets nothing, and concludes the effort is not worth its time.</li>
+          <li>Over repeated sessions the dog stops offering the behavior with you at all.</li>
+        </ol>
+        <div class="note warn"><b>Environment limits</b>Ignoring works in a training room where noise can be expressed safely. In a townhouse with shared walls, a reactive dog barking, lunging, and destroying is not something the environment can absorb. Adapt the technique to where the dog actually lives.</div>
+        <h4>Tool 2 · The verbal marker</h4>
+        <ol class="steps">
+          <li>Use <span class="cue">Nope</span>, <span class="cue">Don't</span>, or <span class="cue">Leave it</span> in an assertive, serious voice.</li>
+          <li>Say it once, with full confidence in what you want.</li>
+          <li>The moment the dog makes the correct choice, mark it with <span class="cue">Yes</span> and reward.</li>
+        </ol>
+        <div class="note good"><b>Why it is not punishment</b>You asked for something and the dog gave it to you, so you rewarded the choice. There is no negative cloud hanging over it. It is an instruction, not a consequence.</div>
+      </div>
+
+      <div class="card" id="group">
+        <h3>Handling in a Group</h3>
+        <p class="sub">Multiple inputs read as pressure.</p>
+        <p>When two or more people give hand signals or verbal commands at the same time, the dog gets confused and excitement-driven mistakes go up. For a high-energy dog this compounds an already elevated state. For a safety-seeking dog it reads as pressure coming from all directions and lowers confidence.</p>
+        <h4>Group protocol</h4>
+        <ul class="plain">
+          <li>Avoid stacking inputs. Two people signaling at once is pressure from all directions.</li>
+          <li>Use the same phrasing and the same sequence every turn: name, sit, command, <span class="cue">That's it</span>, <span class="cue">Yes</span>.</li>
+          <li>Between turns, settle the dog rather than leaving it in an activated state.</li>
+        </ul>
+        <div class="note"><b>Expect a warm-up</b>The first one or two handlers in a rotation get the rough edges. The dog adapts as the rotation continues. That is normal, not a reflection of those handlers.</div>
+      </div>
+
+      <div class="card" id="idle">
+        <h3>The Idle State</h3>
+        <p class="sub">Ready but not working.</p>
+        <p>The idle state is the dog settled, comfortable, not pursuing its own interests, and still prepared to go. A dog toy across the room is available and the dog leaves it alone. This is a trained state, not a personality trait.</p>
+        <p>A young driven dog often cannot hold it. Every pause feels like the end of the world, so it barks, whines, or paces because it cannot stand being unoccupied for twenty seconds. With time the dog learns the work always comes back and the pause stops carrying weight.</p>
+        <div class="note good"><b>Where to practice it</b>Between turns in a rotation. Ask for a settle, hold it, then resume. The pause is the rep.</div>
+      </div>
+
+      <div class="card" id="thatsit">
+        <h3>The "That's It" Cue</h3>
+        <p class="sub">The only phrase you are allowed to repeat.</p>
+        <p>Commands get said once. <span class="cue">That's it</span> is encouragement, not a command, so you can say it as many times as you want. Use it to fuel the dog toward a goal after the command has been given.</p>
+        <h4>How to use it</h4>
+        <ol class="steps">
+          <li>Give the command one time. Example: <span class="cue">Get it</span></li>
+          <li>Switch entirely to <span class="cue">That's it</span> from that point forward.</li>
+          <li>Play hot and cold with your tone. Energy up when the dog moves toward the goal. Energy down when the dog drifts away.</li>
+          <li>Mark with <span class="cue">Yes</span> the moment the goal is reached, then reward.</li>
+        </ol>
+        <div class="note"><b>Tone does the work</b>A flat, monotone "that's it" gives the dog nothing. It will feel strange to raise your pitch and energy in a quiet room. Do it anyway. The tone is the fuel.</div>
+      </div>
+
+      <div class="card" id="urgency">
+        <h3>First-Ask Urgency</h3>
+        <p class="sub">Say it once. Expect a response.</p>
+        <p>Repeating a command teaches the dog that delay is acceptable. Catcher's analogy: a deadline at 12:30 that gets accepted at 12:35, then 1:00, then 1:30. Once there is no structure, the deadline is whatever you decide. A dog that knows you will keep asking learns it can wait until the twenty-fifth ask. For a service dog this compounds into real-world failure: a veteran asks for help and the dog decides it has time.</p>
+        <h4>The rule</h4>
+        <ul class="plain">
+          <li>Command once. Then wait.</li>
+          <li>If the dog does not respond, do not repeat. Encourage with <span class="cue">That's it</span>, or reset and re-present.</li>
+          <li>Reward only the standard you actually want.</li>
+        </ul>
+        <div class="note warn"><b>Why this matters</b>Without first-ask urgency the dog learns to negotiate: who gives up first, you asking or the dog pursuing what it wants? That is a battle you do not want to start.</div>
+      </div>
+
+      <div class="card" id="three-d">
+        <h3>Duration, Distance, Distraction</h3>
+        <p class="sub">The three levers that make any skill harder. Raise one at a time.</p>
+        <div class="ladder">
+          <div class="rung"><b>Duration</b>How long the dog holds the behavior or the item.</div>
+          <div class="rung"><b>Distance</b>How far the dog works from you. Raising distance automatically raises duration.</div>
+          <div class="rung"><b>Distraction</b>What else is competing for attention: people, dogs, smells, objects.</div>
+        </div>
+        <h4>Progression rule</h4>
+        <ol class="steps">
+          <li>Build the skill in a quiet, controlled space with all three levers at minimum.</li>
+          <li>Raise one lever. Keep the other two low.</li>
+          <li>If the dog fails, drop back one step and take smaller increments forward.</li>
+          <li>When you move to a harder environment, start with the verbal command. If needed, fall back to the hand signal, then to the lure. Then work back up.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2 class="sec">Commands</h2>
+
+      <div class="card" id="greet">
+        <h3>Go Say Hi · Polite Greeting</h3>
+        <p class="sub">Cue: <span class="cue">Go say hi</span> · No treats involved</p>
+        <p>A service dog meets strangers constantly. Licking, leaning, and stretching the neck into someone are all things the dog has to check before doing. Polite greeting means the dog asks first and reads whether the person is inviting it.</p>
+        <h4>Steps</h4>
+        <ol class="steps">
+          <li>Handler releases the dog with <span class="cue">Go say hi</span>.</li>
+          <li>The person greets, talks to, and pets the dog. No treats. This interaction is not a transaction.</li>
+          <li>If the dog starts licking or leaning and the person does not want it, they lift their hands up and away. The dog deactivates and backs off.</li>
+          <li>Rotate to the next person.</li>
+        </ol>
+        <div class="note"><b>Watch for</b>A big-bodied dog will lean its weight into people or stretch its neck across them. A dog eager to meet everyone will also rush from person to person. Both need slowing down.</div>
+      </div>
+
+      <div class="card" id="sit">
+        <h3>Sit</h3>
+        <p class="sub">Cue: <span class="cue">Sit</span> · Introduced Session 1</p>
+        <h4>Steps</h4>
+        <ol class="steps">
+          <li><strong>Lure.</strong> Use a treat to guide the dog into the sit. The moment the rear settles, say <span class="cue">Yes</span> and reward.</li>
+          <li><strong>Hand only.</strong> Same motion, empty hand. Mark and reward from the pouch.</li>
+          <li><strong>Verbal.</strong> Say <span class="cue">Sit</span> once. Mark and reward.</li>
+        </ol>
+        <div class="note"><b>Standard</b>Reward only a sit performed to the standard you want. Partial effort does not earn the treat.</div>
+      </div>
+
+      <div class="card" id="here">
+        <h3>Here</h3>
+        <p class="sub">Cue: <span class="cue">Here</span> · The dog comes directly to the handler</p>
+        <h4>Steps</h4>
+        <ol class="steps">
+          <li>Say the dog's name. Wait for direct eye contact with you, not with the treat pouch.</li>
+          <li>Mark the eye contact with <span class="cue">Yes</span> and reward.</li>
+          <li>Say <span class="cue">Here</span> once and point to the space in front of you.</li>
+          <li>Encourage the whole way in with <span class="cue">That's it</span>.</li>
+          <li>Mark arrival with <span class="cue">Yes</span> and reward.</li>
+        </ol>
+      </div>
+
+      <div class="card" id="touch">
+        <h3>Touch</h3>
+        <p class="sub">Cue: <span class="cue">Touch</span> · The dog pushes your hand with its nose</p>
+        <h4>Steps</h4>
+        <ol class="steps">
+          <li>Present your hand within easy reach of the dog's nose.</li>
+          <li>Say <span class="cue">Touch</span> once.</li>
+          <li>Wait for solid contact. A sniff or a near-miss does not count.</li>
+          <li>Mark the real push with <span class="cue">Yes</span> and reward.</li>
+          <li>If the dog misses, do not repeat the command. Re-present the hand and wait.</li>
+        </ol>
+        <div class="note good"><b>Why force matters</b>Touch is the base for every push task: handicap door buttons, closing refrigerator and cabinet doors. Build real pressure from the start.</div>
+      </div>
+
+      <div class="card" id="button">
+        <h3>Touch Button</h3>
+        <p class="sub">Cue: <span class="cue">Touch</span> or <span class="cue">Go touch</span> · Uses an Easy Button-style clicker</p>
+        <p>The button teaches the dog to push hard enough to actually activate an object. It also makes the push measurable: either it clicks or it does not.</p>
+        <h4>Stage 1 · Handler holds the button</h4>
+        <ol class="steps">
+          <li>Hold the button in front of the dog.</li>
+          <li>Say <span class="cue">Touch</span> once.</li>
+          <li>When the button clicks, say <span class="cue">Yes</span> and reward.</li>
+          <li>Pass the button to the next handler and repeat.</li>
+        </ol>
+        <h4>Stage 2 · Button at a distance</h4>
+        <ol class="steps">
+          <li>Have someone hold the button across the room.</li>
+          <li>Say the dog's name. Mark eye contact with <span class="cue">Yes</span> and reward. You want the dog connected to you before you send it.</li>
+          <li>Point and say <span class="cue">Go touch</span> one time.</li>
+          <li>From here use only <span class="cue">That's it</span>. Watch the dog's eyes. Energy up when it locks on the button, energy down when it drifts.</li>
+          <li>When the button clicks, say <span class="cue">Yes</span> and reward.</li>
+        </ol>
+        <div class="note"><b>Read the eyes</b>The dog's eyes tell you where it is going before its feet do. Your encouragement should track the eyes, not the body.</div>
+      </div>
+
+      <div class="card" id="cart">
+        <h3>Cart Push · Mobility Assist</h3>
+        <p class="sub">Cue: <span class="cue">Go touch</span> aimed at a cart · Introduced Session 3</p>
+        <p>Mobility dogs learn to give a wheelchair a nudge of momentum over a curb or an uneven surface. Not full pushing, just the extra push where it is needed. A shopping cart is a good teaching tool because it rolls and shifts, so the dog has to learn to push something unstable.</p>
+        <h4>Setup</h4>
+        <ul class="plain">
+          <li>Mark a target zone on the cart with tape so the dog has a specific spot to aim at.</li>
+          <li>Standard is two significant pushes before the marker.</li>
+        </ul>
+        <h4>Steps</h4>
+        <ol class="steps">
+          <li>Call the dog in. <span class="cue">Here</span>, then <span class="cue">Sit</span>.</li>
+          <li>Point and say <span class="cue">Go touch</span> one time.</li>
+          <li>After the first push, encourage with <span class="cue">That's it</span> to re-engage the dog for the second.</li>
+          <li>Once you have real movement on the second push, say <span class="cue">Yes</span> and reward.</li>
+        </ol>
+        <div class="note warn"><b>Handle chewing</b>A frustrated dog will grab the cart handle. This is self-soothing, not disobedience. The jump from a button in your palm to an unstable rolling object is large, and the confusion floods in. Redirect with <span class="cue">That's it</span> and the dog will regroup and return to the task. Stay silent and the handle gets chewed, because the dog has no grounded support to come back to.</div>
+        <div class="note"><b>Task-definition risk</b>A dog that is comfortable with the cart as a fun object will blend chewing and pushing. Keep the tasks isolated until the dog can hold two separate definitions for the same object.</div>
+      </div>
+
+      <div class="card" id="getit">
+        <h3>Get It · Retrieval</h3>
+        <p class="sub">Cue: <span class="cue">Get it</span> · Core mobility task · Introduced Session 2</p>
+        <p>Retrieval conserves the veteran's energy. Mobility limits mean every trip across a room costs from a limited daily tank. The dog fetching a phone, remote, or card saves that energy for what matters.</p>
+        <h4>Why start with a bone-shaped toy</h4>
+        <p>A dog already understands its mouth as a tool for eating, chewing, and carrying. A bone-shaped object is instantly recognizable and motivating, so you start with interest already on your side. Then you teach a different way of treating it: hold, do not chew, hand it back.</p>
+
+        <h4>Stage 1 · One-second hold</h4>
+        <ol class="steps">
+          <li>Ask for a <span class="cue">Sit</span> directly in front of you. Mark and reward.</li>
+          <li>Hold the item by both knobby ends so the only available grip is the center.</li>
+          <li>Angle the item slightly upward. Gravity carries it to the back of the mouth for a better hold. Presented flat or downward, the dog grabs with front teeth and the hold is weak.</li>
+          <li>Say <span class="cue">Get it</span> once and release for about one second.</li>
+          <li>Say <span class="cue">Yes</span>. The dog opens its mouth for the treat and the item drops back to you.</li>
+          <li>Keep your hands under the dog's chin to catch the drop. Hands held out front give the dog nowhere to deliver.</li>
+        </ol>
+        <div class="note good"><b>Why one second</b>The longer the dog holds the item, the more likely it decides to chew. Start with the shortest possible duration so the only interaction it learns is the one you want.</div>
+
+        <h4>Stage 2 · Add duration</h4>
+        <ol class="steps">
+          <li>Extend the hold to three seconds, then five.</li>
+          <li>Mark and reward only clean holds with no chewing.</li>
+        </ol>
+
+        <h4>Stage 3 · Add distance</h4>
+        <ol class="steps">
+          <li>Call the dog to you with <span class="cue">Here</span>. Mark eye contact.</li>
+          <li>Place or drop the item across the room.</li>
+          <li>Point and say <span class="cue">Get it</span> one time.</li>
+          <li>Encourage the entire return trip with <span class="cue">That's it</span>, varying tone and energy.</li>
+          <li>Hold a hand out to receive the item.</li>
+          <li>Mark the handover with <span class="cue">Yes</span> and reward.</li>
+        </ol>
+        <div class="note"><b>Presence helps</b>If the dog is not committing to the return, stand up. A taller, more visible handler is easier to orient to across a room.</div>
+        <div class="note warn"><b>The drop problem</b>If the item hits the floor mid-return the difficulty spikes. On the ground it looks like a chew toy again. Ramp your encouragement immediately and use the dog's momentum to redirect it toward you.</div>
+
+        <h4>Stage 4 · Add distraction</h4>
+        <ol class="steps">
+          <li>Run the same retrieve with people, smells, or objects in the path.</li>
+          <li>Do not lower the standard. Raise your encouragement instead.</li>
+          <li>If the dog stalls at a specific spot, check for a real aversion before assuming distraction. See <a href="#fear">Fear and Avoidance</a>.</li>
+        </ol>
+
+        <h4>Stage 5 · Generalize to new objects</h4>
+        <ol class="steps">
+          <li>Once distance and duration are solid, swap in a new object: remote, phone, card.</li>
+          <li>Run the same <span class="cue">Get it</span> sequence with no other changes.</li>
+          <li>Expect fast transfer. The dog has learned the task, not the toy.</li>
+        </ol>
+        <div class="note"><b>Handling awkward grips</b>A dog fueled by heavy encouragement will sometimes grab an item at a bad angle and then struggle to deliver it. That resolves with experience. Do not correct it.</div>
+      </div>
+
+      <div class="card" id="giveDrop">
+        <h3>Give and Drop It</h3>
+        <p class="sub">Cues: <span class="cue">Give</span> and <span class="cue">Drop it</span> · The two ways a retrieve ends</p>
+        <p>Retrieval has three phrases. <span class="cue">Get it</span> sends the dog. <span class="cue">Give</span> hands the item to a person. <span class="cue">Drop it</span> releases the item into a place, such as a chair or a shopping cart.</p>
+        <h4>Give</h4>
+        <ol class="steps">
+          <li>Call the dog in, ask for a <span class="cue">Sit</span>.</li>
+          <li>Point and say <span class="cue">Get it</span> once.</li>
+          <li>Encourage the whole trip with <span class="cue">That's it</span>.</li>
+          <li>Say <span class="cue">Give</span> with a hand out to receive.</li>
+          <li>Mark the handover with <span class="cue">Yes</span> and reward.</li>
+        </ol>
+        <div class="note warn"><b>The dog must complete the handover</b>Do not pick a dropped item up for the dog. Let it re-grip and hand it over. That is the whole point of the rep.</div>
+        <h4>Drop It</h4>
+        <ol class="steps">
+          <li>Send the dog toward the drop target with the item in its mouth.</li>
+          <li>Point at the exact spot.</li>
+          <li>Time the cue to the dog's nose. Say <span class="cue">Drop it</span> as the nose reaches the front edge of the target, so the head is over the spot when the item releases.</li>
+          <li>If the dog holds on after the cue, say <span class="cue">Yes</span> immediately. "Yes" means food is coming, and the dog will let go to make room.</li>
+          <li>Reward.</li>
+        </ol>
+        <div class="note"><b>Timing is the hard part</b>Cue too early and the item lands short. Cue on an edge and it bounces off. A shopping cart is a small, finicky target and will produce real frustration. Make setup adjustments for the dog rather than raising the standard.</div>
+        <div class="note warn"><b>Paws on the target</b>If the dog starts climbing the chair with its front paws, shorten the approach and mark before it reaches the target. Do not wait for it to sort itself out.</div>
+      </div>
+
+      <div class="card" id="labeled">
+        <h3>Labeled Retrieval</h3>
+        <p class="sub">Cues: <span class="cue">Get the phone</span>, <span class="cue">Get the remote</span>, <span class="cue">Get the card</span>, <span class="cue">Get my medicine</span></p>
+        <p>Once <span class="cue">Get it</span> is solid, each object gets its own label. The goal is five items sitting together on a coffee table and the dog bringing back the one you named, every time.</p>
+        <h4>Steps</h4>
+        <ol class="steps">
+          <li>Place a single item in one predictable spot. A chair at roughly the dog's head height keeps the approach angle simple.</li>
+          <li>Call the dog in. <span class="cue">Here</span>, then <span class="cue">Sit</span>.</li>
+          <li>Point and say the labeled command once. <span class="cue">Get the phone</span>.</li>
+          <li>Encourage with <span class="cue">That's it</span> through the pickup and the return.</li>
+          <li>Say <span class="cue">Give</span>. Mark the handover with <span class="cue">Yes</span> and reward.</li>
+          <li>Run the item until it is clean, then swap to the next one.</li>
+        </ol>
+        <h4>Why each item is a different problem</h4>
+        <table>
+          <tr><th>Property</th><th>What it changes</th><th>Example</th></tr>
+          <tr><td>Shape</td><td>Where the dog starts its teeth. A center grab point is easy. A flat object lying on a surface is not.</td><td>Bone toy vs. phone</td></tr>
+          <tr><td>Texture</td><td>Grip. Chewed soft plastic grips well. Smooth glass with slobber on it is an ice rink with no tooth hook.</td><td>Phone screen, key card</td></tr>
+          <tr><td>Weight and balance</td><td>Grabbing an end throws the balance off. The middle is balanced. The dog has to make calculated adjustments mid-carry.</td><td>Phone, remote</td></tr>
+          <tr><td>Familiarity</td><td>Soft plastic reads as chew toy. Every dog wants to chew a TV remote, which makes it one of the trickier objects to teach.</td><td>TV remote</td></tr>
+        </table>
+        <div class="note good"><b>Support harder items more</b>Raise your encouragement on difficult objects so the item never becomes something that overwhelms or deters the dog. Then give the dog time to process. Let it approach, figure out what it is dealing with, and only then add support. If the item falls, let the dog register what happened before you re-ignite.</div>
+        <div class="note warn"><b>The exception: chew-prone items</b>A TV remote is soft plastic and every dog wants to treat it as a chew toy. Given time, the dog rewrites what the object means. On items like this, speed the retrieval up and cut any spare time spent fussing with the item. Processing time helps on a hard-to-grip object. It hurts on a temptingly chewable one.</div>
+
+        <h4>Unpredictable positions</h4>
+        <p>Items in real life are not staged on a chair at head height. A veteran who cannot bend after a knee replacement drops a phone on the floor. An item slides under a table. The dog has to solve a grip it has never used before, without hesitating.</p>
+        <ul class="plain">
+          <li>Once a labeled item is clean from a predictable spot, move it. Floor, under furniture, odd angles.</li>
+          <li>Watch for the dog re-gripping in a completely new way. That flexibility is the actual goal, not the tidy rep.</li>
+          <li>Encourage through the fumbling. Do not reset the rep because the first grip failed.</li>
+        </ul>
+      </div>
+
+      <div class="card" id="fading">
+        <h3>Fading the Food</h3>
+        <p class="sub">Treats are scaffolding, not the reason the dog works.</p>
+        <p>The dog does not need a treat for every rep forever. Once the relationship and the trust are established, the food gets drawn back gradually. The dog keeps performing because the partnership is the motivation.</p>
+        <div class="note"><b>Sequencing</b>Build the behavior on food first. Fade it only after the bond and the reliability are there. Pulling the reward early undercuts both.</div>
+      </div>
+
+      <div class="card" id="tug">
+        <h3>Tug · Planned Next Skill</h3>
+        <p class="sub">Cue: <span class="cue">Go tug</span> · Not yet introduced</p>
+        <p>A knotted rope made to hang on a doorknob or handle. The dog pulls it to open a door or a refrigerator.</p>
+        <div class="note"><b>Why it matters</b>Tug is the missing link in a chained task. The dog already knows <span class="cue">Touch</span> to close a door and <span class="cue">Get it</span> to retrieve. Add tug and it can open the fridge, take out a water bottle, close the fridge, and deliver it. The handler never touches the fridge, just runs a short sequence of commands.</div>
+      </div>
+
+      <div class="card" id="ptsd">
+        <h3>PTSD Response · Planned Next Skill</h3>
+        <p class="sub">Not yet introduced in sessions</p>
+        <p>The baseline behavior is nudging. The handler's leg starts shaking under stress or anxiety, and the dog nudges it to interrupt and ground them.</p>
+        <h4>The personalization problem</h4>
+        <ul class="plain">
+          <li>Not everyone signals the same way. It may be a shaking leg, fixing the hair, rubbing an elbow, or holding the hands.</li>
+          <li>The dog has to learn the specific body-language shift that belongs to its handler.</li>
+          <li>A dog already determined to get your attention picks this up faster. A newer dog needs the behavior built from the start.</li>
+        </ul>
+        <div class="note"><b>Why the intake forms matter</b>Participants sharing how the dog affects their own emotional moments is the data that shapes this. A dog that reads flat across the board tells you nothing about whether it taps into human emotion.</div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2 class="sec">Handling and Behavior</h2>
+
+      <div class="card" id="personality">
+        <h3>Personality Types</h3>
+        <p class="sub">Same curriculum. Opposite handling.</p>
+        <p>Dogs get sorted into personality categories, and the category decides which direction you push. Two dogs can run the identical exercise and need the exact opposite thing from you.</p>
+        <table>
+          <tr><th></th><th>Driver</th><th>Safety-seeking</th></tr>
+          <tr><td><b>Example</b></td><td>Flap, 1.5 years</td><td>William, just over 1 year</td></tr>
+          <tr><td><b>Core trait</b></td><td>Driven to work. Wants to stay busy. Confident and forward-minded.</td><td>Seeks safety and comfort. Avoids what feels uncomfortable.</td></tr>
+          <tr><td><b>Struggles with</b></td><td>Patience and impulse control.</td><td>Confidence under unfamiliarity and fear.</td></tr>
+          <tr><td><b>Your job</b></td><td>Slow the dog down. Build patience. Add pauses.</td><td>Build the dog up. Encourage heavily. Throw a party for small effort.</td></tr>
+          <tr><td><b>Energy you spend</b></td><td>Managing and containing what is already there.</td><td>Generating and sharing energy the dog does not have yet.</td></tr>
+          <tr><td><b>What success looks like</b></td><td>Fast and messy. You get to the finish line, then clean it up.</td><td>Slow and careful. The question is whether you reach the finish line at all.</td></tr>
+        </table>
+        <div class="note good"><b>Both are valid</b>Neither is a bad quality. A driver dog shows high work ethic. A safety-seeking dog shows caution and trust. Read which one is in front of you and adjust your approach before the session starts.</div>
+        <div class="note"><b>Age changes expectations</b>An older dog further through the program has been exposed to more and gets less room to make mistakes. A younger dog gets a wider margin. Match the standard to how long the dog has been learning.</div>
+      </div>
+
+      <div class="card" id="activation">
+        <h3>Activated vs. Inhibited</h3>
+        <p class="sub">Two ways the same emotion comes out.</p>
+        <p>Every emotion a dog feels gets expressed one of two ways. This is separate from personality type, though the two often line up.</p>
+        <div class="ladder">
+          <div class="rung"><b>Activated</b>Outward and expressive. Whining, huffing, barking, nudging, pacing, lunging. The dog throws everything on the table.</div>
+          <div class="rung"><b>Inhibited</b>Closed off and internalized. Quiet, avoidant, holding it close to the chest until it builds up and bursts.</div>
+        </div>
+        <h4>The tradeoff</h4>
+        <ul class="plain">
+          <li>Activated is easy to read and taxing to manage. You know exactly how the dog feels, and it is a lot to hold.</li>
+          <li>Inhibited is easy to miss. Nothing surfaces until it overwhelms the dog internally, so the weight lands heavier and more unexpectedly.</li>
+          <li>Neither is better. Know which one you are working with and what it will hide from you.</li>
+        </ul>
+        <div class="note"><b>Regulation is trainable</b>An activated dog can learn to whine or huff without escalating it into a demand. The goal is not silencing the expression, it is keeping it proportional.</div>
+      </div>
+
+      <div class="card" id="substitute">
+        <h3>Substitute Behaviors</h3>
+        <p class="sub">What a dog does when the task gets too hard.</p>
+        <p>Raise the difficulty and confusion floods in. A driven dog wants that unwanted feeling gone immediately, so it grabs the nearest thing to offload it onto. Chewing a cart handle mid-task is not disobedience. It is regulation aimed at the wrong object.</p>
+        <h4>The sequence to watch for</h4>
+        <ol class="steps">
+          <li>The dog is focused and excited heading into the task.</li>
+          <li>The task is harder than expected. The dog has to slow its own excitement.</li>
+          <li>Body position goes wrong. Nose is not lined up, angle is off.</li>
+          <li>Confusion piles onto frustration. The dog is lost.</li>
+          <li>It grabs the nearest object and starts chewing.</li>
+        </ol>
+        <h4>What to do</h4>
+        <ul class="plain">
+          <li>Encourage with <span class="cue">That's it</span>. The dog hears that you still need it and regroups.</li>
+          <li>Stay silent and the chewing continues, because there is no grounded support to return to.</li>
+          <li>Long term, give the dog an appropriate outlet to offload onto, then send it back to the task.</li>
+        </ul>
+      </div>
+
+      <div class="card" id="reading">
+        <h3>Reading the Dog</h3>
+        <p class="sub">The dog cannot say "I'm frustrated." It can only show you.</p>
+        <table>
+          <tr><th>Signal</th><th>What it usually means</th><th>What to do</th></tr>
+          <tr><td>Drooling, antsiness on entry</td><td>Anticipation building toward anxiety</td><td>Ask for a settled down-stay. Reset as needed.</td></tr>
+          <tr><td>Popping up from a down-stay</td><td>Impatience, trying to lead the session</td><td>Reset every single time. No reaction beyond the reset.</td></tr>
+          <tr><td>Sniffing, lying down, disengaging mid-task</td><td>Distraction used to avoid something aversive</td><td>Look for what the dog is avoiding, not what it is chasing.</td></tr>
+          <tr><td>Turning away before the marker</td><td>Pursuing its own interest over the handler</td><td>Do not correct. Encourage the cooperative choice instead.</td></tr>
+          <tr><td>Barking, lunging, high motion</td><td>Activated stress</td><td>Redirect the energy onto a chew or toy.</td></tr>
+          <tr><td>Going quiet, avoidant, hugging the group</td><td>Inhibited stress</td><td>Reduce pressure. Log it. Plan desensitization later.</td></tr>
+          <tr><td>Whining, huffing, nudging the treat pouch</td><td>Activated impatience. Testing whether you will speed up for it.</td><td>Two-second pause. Stillness. Do not react.</td></tr>
+          <tr><td>Chewing an object mid-task</td><td>Self-soothing. The task got harder than expected.</td><td>Redirect with <span class="cue">That's it</span>. Do not go silent.</td></tr>
+          <tr><td>Noticing a dropped treat but staying on task</td><td>Environmental awareness without derailment</td><td>Nothing. This is the trait you want.</td></tr>
+          <tr><td>Spitting an item out on hearing "Yes"</td><td>Marker timing error. The dog is making room for food.</td><td>Re-engage and mark the handover instead.</td></tr>
+        </table>
+        <div class="note good"><b>Awareness is not a fault</b>A dog that notices a toy, a smell, or a dropped treat and keeps working is showing you something valuable. It is affected by its environment and still holds its priority. That is not a robot, that is a service dog.</div>
+        <div class="note"><b>Both are stress</b>Activated and inhibited are two valid expressions of the same thing. Inhibited dogs are easier to miss and easier to accidentally push too far.</div>
+      </div>
+
+      <div class="card" id="fear">
+        <h3>Fear and Avoidance</h3>
+        <p class="sub">Never force a dog through an unresolved fear.</p>
+        <h4>How to spot it</h4>
+        <ol class="steps">
+          <li>Watch for a dog that works fine in general but stalls on one specific task or one specific spot.</li>
+          <li>Note whether the dog can route around the trigger. Avoidance that only appears when the task forces direct contact is the tell.</li>
+          <li>Check for scent causes. Stress and anxiety pheromones from a prior dog's indoor accident can linger in carpet and read as aversive.</li>
+        </ol>
+        <h4>How to handle it</h4>
+        <ol class="steps">
+          <li>Stop the task. Move the setup away from the trigger.</li>
+          <li>Run the same task in a clean spot so the dog gets a success.</li>
+          <li>Log the reaction in the dog's behavioral notes.</li>
+          <li>Plan gradual desensitization for a future session. Not today.</li>
+        </ol>
+        <div class="note warn"><b>The line</b>Positive reinforcement means compliance under stress is not the goal. If heavy emotion is blocking the dog, the answer is patience and a different day, not pressure.</div>
+        <div class="note good"><b>For handlers</b>A failed rep is not a reflection of your relationship with the dog. Distance, smells, and other people are exterior challenges. Treat a setback as diagnostic information for the next attempt.</div>
+      </div>
+
+      <div class="card" id="patience">
+        <h3>Patience and Demand Barking</h3>
+        <p class="sub">The clock stops until the dog drops the idea.</p>
+        <p>Dogs learn fast that a voice gets attention. Demand barking works the first time you react to it, and then it works forever. Same with popping up from a stay.</p>
+        <h4>The reset cycle</h4>
+        <ol class="steps">
+          <li>Ask for the position. <span class="cue">Down</span> or <span class="cue">Stay</span>.</li>
+          <li>The moment the dog breaks it, reset to the start. No reaction, no correction, no words.</li>
+          <li>Repeat. The dog learns that forcing the issue only spins it back to where it started.</li>
+          <li>When the dog settles, continue the session.</li>
+        </ol>
+        <h4>For barking</h4>
+        <ul class="plain">
+          <li>Do not look at the dog. Do not speak. Any reaction is the win the dog wanted.</li>
+          <li>If you need an alternative, hand over a chew or toy so the energy has somewhere to go.</li>
+        </ul>
+        <div class="note"><b>Nothing negative happens</b>The reset is not punishment. The clock just stops. Nothing bad, nothing good, until the dog changes its mind.</div>
+      </div>
+
+      <div class="card" id="choice">
+        <h3>Selfish vs. Unselfish Path</h3>
+        <p class="sub">Let the dog choose. Then make your path the more attractive one.</p>
+        <p>At every fork the dog can serve itself or cooperate. A dog that repeatedly chooses itself in small moments will choose itself in big ones. The grocery store version: the veteran needs help reaching a shelf, and the dog goes for the meat counter instead.</p>
+        <h4>The approach</h4>
+        <ol class="steps">
+          <li>Do not block the selfish path. Let the dog stand at the fork.</li>
+          <li>Give the command once.</li>
+          <li>Pour encouragement into the cooperative path with <span class="cue">That's it</span>.</li>
+          <li>Let the dog make the choice. Mark and reward heavily when it chooses cooperation.</li>
+          <li>Do not get frustrated when it chooses itself. Note it and set up the next rep better.</li>
+        </ol>
+        <div class="note good"><b>Goal</b>The dog decides that helping you is worth more than the thing it wants. That decision has to be the dog's, not yours.</div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2 class="sec">Reference</h2>
+
+      <div class="card" id="gear">
+        <h3>Equipment and Treats</h3>
+        <h4>Harness</h4>
+        <ul class="plain">
+          <li>Blue-9 harness</li>
+          <li>Front attachment ring. Discourages pulling by turning the dog rather than giving it forward leverage.</li>
+        </ul>
+        <h4>Training tools</h4>
+        <ul class="plain">
+          <li>Treat pouch, worn on the handler</li>
+          <li>Easy Button-style clicker for push tasks</li>
+          <li>Bone-shaped toy for early retrieval</li>
+          <li>Shopping cart with a taped target zone, for mobility push work</li>
+          <li>Knotted tug rope made to hang on a doorknob or handle</li>
+        </ul>
+        <h4>Retrieval objects</h4>
+        <ul class="plain">
+          <li>Old broken cell phone</li>
+          <li>TV remote</li>
+          <li>Hotel key card</li>
+          <li>Medicine bottle</li>
+        </ul>
+        <p>Real items, chosen so each one presents a different shape, texture, and weight problem.</p>
+        <h4>Treats</h4>
+        <ul class="plain">
+          <li>Cheerios</li>
+          <li>"Holly Bear" treats, roughly oyster-cracker sized</li>
+        </ul>
+        <p>Both are low calorie and highly motivating, which matters across a full session with many reps.</p>
+      </div>
+
+      <div class="card" id="cues">
+        <h3>Full Cue List</h3>
+        <table>
+          <tr><th>Cue</th><th>Behavior</th><th>Status</th></tr>
+          <tr><td><span class="cue">Yes</span></td><td>Marker. Stamps the correct behavior. Always followed by a reward.</td><td>Core</td></tr>
+          <tr><td><span class="cue">That's it</span></td><td>Encouragement. The only phrase that repeats.</td><td>Core</td></tr>
+          <tr><td><span class="cue">Name</span></td><td>Attention. Look at the handler, not the treat pouch.</td><td>Trained</td></tr>
+          <tr><td><span class="cue">Sit</span></td><td>Settled sit in front of the handler.</td><td>Trained</td></tr>
+          <tr><td><span class="cue">Down</span></td><td>Lie down. Used with stay for patience work.</td><td>Trained</td></tr>
+          <tr><td><span class="cue">Stay</span></td><td>Hold position. The reset cycle applies.</td><td>Trained</td></tr>
+          <tr><td><span class="cue">Here</span></td><td>Come directly to the handler.</td><td>Trained</td></tr>
+          <tr><td><span class="cue">Touch</span></td><td>Nose push on hand or button.</td><td>Trained</td></tr>
+          <tr><td><span class="cue">Go touch</span></td><td>Touch at a distance. Also used to send the dog to push a cart.</td><td>Trained</td></tr>
+          <tr><td><span class="cue">Get it</span></td><td>Retrieve an item.</td><td>Trained</td></tr>
+          <tr><td><span class="cue">Get the [item]</span></td><td>Labeled retrieval. Phone, remote, card, medicine.</td><td>In progress</td></tr>
+          <tr><td><span class="cue">Give</span></td><td>Hand the item to a person.</td><td>Trained</td></tr>
+          <tr><td><span class="cue">Drop it</span></td><td>Release the item into a place.</td><td>In progress</td></tr>
+          <tr><td><span class="cue">Go say hi</span></td><td>Polite greeting. No treats.</td><td>Trained</td></tr>
+          <tr><td><span class="cue">Stand</span></td><td>Stand from a sit or down.</td><td>Trained</td></tr>
+          <tr><td><span class="cue">Go to bed</span></td><td>Return to place and settle. Used between turns.</td><td>Trained</td></tr>
+          <tr><td><span class="cue">Leave it</span></td><td>Disengage from an item.</td><td>Trained</td></tr>
+          <tr><td><span class="cue">Nope</span> / <span class="cue">Don't</span></td><td>Assertive redirect. Always paired with rewarding the correct choice.</td><td>Trained</td></tr>
+          <tr><td><span class="cue">Go tug</span></td><td>Pull open a door or fridge.</td><td>Planned</td></tr>
+        </table>
+        <div class="note"><b>Scale</b>The full program covers roughly 80 commands. This list is what has come up in sessions so far.</div>
+      </div>
+
+      <div class="card" id="teamtraining">
+        <h3>The Team Training Phase</h3>
+        <p class="sub">Three to four weeks, after the dog is matched to a handler.</p>
+        <div class="ladder">
+          <div class="rung"><b>Week 1 · Bond</b>The umbilical process. Handler and dog attached at the hip.</div>
+          <div class="rung"><b>Weeks 2–3 · Commands</b>All 80 commands, plus expectations and troubleshooting.</div>
+          <div class="rung"><b>Week 4 · Uniqueness</b>Skills personalized to the handler's actual life.</div>
+        </div>
+        <h4>The umbilical process</h4>
+        <p>Emotion travels both directions down the leash. Every stress, joy, and frustration the handler feels reaches the dog. By the end of week one the dog knows its handler better than anyone, because it has learned which slight change in body language leads where.</p>
+        <h4>What week four covers</h4>
+        <ul class="plain">
+          <li>Retrieval items specific to that person. Some electric vehicles use a credit-card key instead of a fob, so that becomes a labeled item.</li>
+          <li>PTSD response tuned to that person's stress signals.</li>
+          <li>Anything else unique to how that handler lives.</li>
+        </ul>
+        <div class="note"><b>Commands are taught to the whole household</b>When a dog is placed in a family environment, everyone learns the commands during team training, along with the expected result, the expected process, and how to troubleshoot when it does not go perfectly.</div>
+      </div>
+
+      <div class="card" id="vision">
+        <h3>How Dogs See</h3>
+        <p class="sub">Useful context for choosing training objects.</p>
+        <ul class="plain">
+          <li>Primarily grayscale. A full spectrum from black through gray to white.</li>
+          <li>A limited range of blues and greens on top of that.</li>
+          <li>No red or orange.</li>
+        </ul>
+        <p>This is why a tennis ball is so engaging. The dog can actually see its vibrance. Worth keeping in mind when picking targets and objects a dog needs to locate at a distance.</p>
+      </div>
+
+      <div class="card" id="rules">
+        <h3>Non-Negotiable Rules</h3>
+        <ol class="steps">
+          <li><strong>Every "Yes" gets a reward.</strong> No exceptions.</li>
+          <li><strong>Commands are said once.</strong> Only <span class="cue">That's it</span> repeats.</li>
+          <li><strong>Reward only the standard.</strong> Partial effort does not earn the treat.</li>
+          <li><strong>Do not repeat a command when the dog gets it wrong.</strong> Wait. Re-present. Mark only the correct behavior.</li>
+          <li><strong>Never force a dog through fear.</strong> Back off and desensitize another day.</li>
+          <li><strong>Step backward when the dog struggles.</strong> Drop a layer or a difficulty lever.</li>
+          <li><strong>Setbacks are data, not failures.</strong> There is no exam and no grade.</li>
+        </ol>
+      </div>
+    </section>
+  </div>
+
+  <!-- ══════════════ SESSION LOG ══════════════ -->
+  <div class="view hidden" id="view-log">
+
+    <section class="block">
+      <h2 class="sec">Session Log</h2>
+
+      <div class="session" id="s003">
+        <div class="card">
+          <div class="date">Session 3 · August 7, 2026 · 1h 25m</div>
+          <h3>Introducing Flap</h3>
+          <p class="sub">Dog: Flap, 1.5 years, driver personality · William off for the day</p>
+          <div>
+            <span class="tag">Personality contrast</span>
+            <span class="tag">Impulse control</span>
+            <span class="tag">Polite greeting</span>
+            <span class="tag">Cart push</span>
+            <span class="tag">Labeled retrieval</span>
+            <span class="tag">Give / drop it</span>
+          </div>
+
+          <h4>The point of the session</h4>
+          <p>Take everything learned with William and apply it to a dog with the opposite problem. William is fear-avoidant and needs building up. Flap is driven and needs slowing down. Same curriculum, inverted handling.</p>
+
+          <h4>What was covered</h4>
+          <ul class="plain">
+            <li>Personality framework. Driver type, and the activated vs. inhibited split for emotional expression.</li>
+            <li>Polite greeting with <span class="cue">Go say hi</span>. No treats. Curbing licking and leaning.</li>
+            <li>Name recognition with a mandatory two-second pause before treat delivery, building to a roughly four-second interval.</li>
+            <li>Touch button, stationary and then sent at a distance.</li>
+            <li>Shopping cart push introduced. Two significant pushes on a taped target before the marker.</li>
+            <li>Full retrieval sequence with <span class="cue">Get it</span>, <span class="cue">Give</span>, and <span class="cue">Drop it</span> across a training tool, a cell phone, a TV remote, and a hotel key card.</li>
+            <li>Labeled retrieval introduced so multiple objects can eventually be distinguished by name.</li>
+            <li>Discussion of the team training phase, dog color vision, correction philosophy, fading the food reward, and the next skills coming.</li>
+          </ul>
+
+          <h4>Progress</h4>
+          <table>
+            <tr><th>Skill</th><th>Method</th><th>Result</th></tr>
+            <tr><td>Polite greeting</td><td>"Go say hi," no treats, hands up and away if unwanted</td><td>Worked the room. Quick to move person to person, needs slowing.</td></tr>
+            <tr><td>Two-second pause</td><td>Name, "yes," freeze 2s, reach, pause, deliver</td><td>Responds well once set up for success. Shifts back and sits.</td></tr>
+            <tr><td>Touch button</td><td>Handheld, then sent at distance</td><td>Solid. Higher energy than William on the same exercise.</td></tr>
+            <tr><td>Cart push</td><td>"Go touch" at taped zone, two pushes before "yes"</td><td>Successful. Chewed the handle mid-task when overstimulated, recovered on encouragement.</td></tr>
+            <tr><td>Retrieval, training tool</td><td>Get it → that's it → give</td><td>Strong. This is a task he already knows and enjoys.</td></tr>
+            <tr><td>Retrieval, phone</td><td>"Get the phone" from a chair at head height</td><td>Successful. Slippery texture and off-center balance forced adjustments.</td></tr>
+            <tr><td>Retrieval, remote</td><td>"Get the remote"</td><td>Successful with re-gripping and some chewing. Soft plastic reads as chew toy.</td></tr>
+            <tr><td>Retrieval, key card</td><td>"Get the card"</td><td>Completed and handed over. He likes the card enough that it needs watching.</td></tr>
+            <tr><td>Drop it into cart</td><td>Point at target, "drop it"</td><td>Finicky. Small target produced frustration and required setup adjustments.</td></tr>
+          </table>
+
+          <h4>Behavior notes: Flap</h4>
+          <ul class="plain">
+            <li>Driver personality. Motivated, confident, high work ethic, forward-minded. Struggles with patience and impulse control.</li>
+            <li>Expresses stress and excitement through activation: whining, huffing, nudging. Easy to read, taxing to manage.</li>
+            <li>Chews the cart handle when a task gets hard. Self-soothing, resolved by verbal encouragement rather than correction.</li>
+            <li>Highly environmentally aware. Notices dropped treats, toys, and distractions without letting them derail task focus.</li>
+            <li>Endless work ethic. He does not drop an item halfway and leave the rest to you.</li>
+            <li>Resistance is strongest at the setup, on the <span class="cue">Here</span> and <span class="cue">Sit</span>, not during the task itself.</li>
+            <li>Adapts fast. The first one or two handlers in a rotation get rough edges, then he cleans it up.</li>
+          </ul>
+
+          <h4>Risks surfaced</h4>
+          <ul class="plain">
+            <li>Overstimulation. Multiple people giving simultaneous signals confuses the dog and drives excitement-based mistakes. Applies to William too.</li>
+            <li>Generalization. Unaddressed pouch-nudging can bleed into obsession with dogs, tennis balls, smells, and sounds.</li>
+            <li>Task-definition interference. Flap's comfort with the cart as a fun object risks blending chewing with pushing.</li>
+            <li>Environment-dependent corrections. Ignoring works in a training room. It may not work in a townhouse with shared walls, referenced against a more reactive 10-month-old female in the program.</li>
+          </ul>
+
+          <h4>Coming next</h4>
+          <ul class="plain">
+            <li>Keep refining the two-second pause across sessions.</li>
+            <li>Introduce <span class="cue">Go tug</span> for door and fridge opening.</li>
+            <li>Combine cart pushing with retrieval and drop-off once Flap can hold two separate definitions for the cart.</li>
+            <li>Begin PTSD-response training, including identifying handler-specific stress cues.</li>
+            <li>A 10 to 12-week-old puppy may join in a couple of weeks. Socialization and play only, no task work.</li>
+            <li>Participants: keep command phrasing and timing consistent (name → sit → command → "that's it" → yes) to reduce confusion during multi-person handling.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="session" id="s002">
+        <div class="card">
+          <div class="date">Session 2 · July 31, 2026 · 1h 17m</div>
+          <h3>Retrieval and Focus Work</h3>
+          <p class="sub">Dog: William · Focus on reading emotional cues and advancing task training</p>
+          <div>
+            <span class="tag">Eye contact / marker</span>
+            <span class="tag">Touch button</span>
+            <span class="tag">Retrieval</span>
+            <span class="tag">Duration + distance + distraction</span>
+            <span class="tag">Fear response</span>
+          </div>
+
+          <h4>What was covered</h4>
+          <ul class="plain">
+            <li>Eye-contact warm-up with the <span class="cue">Yes</span> marker. Handlers took turns saying William's name and rewarding direct eye contact, not treat-pouch fixation.</li>
+            <li>Touch button at close range, then across the room with distance and distraction added.</li>
+            <li>Retrieval introduced with a bone-shaped toy. Progressed from a one-second hold to full room-distance delivery.</li>
+            <li>Generalized retrieval to a TV remote. Transferred immediately.</li>
+            <li>Introduced <span class="cue">That's it</span> as the only repeatable phrase and the first-ask urgency principle.</li>
+            <li>Administered the intake and experience-sharing form. The form ties into PTSD and regulation research. Participants sharing how the dog affects their own emotional moments gives Catcher data on whether he taps into human emotion, which directly improves his odds of qualifying as a PTSD service dog.</li>
+          </ul>
+
+          <h4>Progress</h4>
+          <table>
+            <tr><th>Skill</th><th>Method</th><th>Result</th></tr>
+            <tr><td>Eye contact / marker</td><td>Say name, reward direct eye contact only</td><td>Consistent engagement. Some treat-pouch fixation noted.</td></tr>
+            <tr><td>Touch button</td><td>Say "touch" once, then "that's it"</td><td>Repeated successful presses. Distance and distraction added.</td></tr>
+            <tr><td>Retrieval (bone toy)</td><td>Hand item, short hold, release on "yes"</td><td>Extended from 1-second hold to full room-distance delivery.</td></tr>
+            <tr><td>Retrieval with distraction</td><td>Same task near the feared carpet spot</td><td>Initially avoided. Succeeded after the setup was moved.</td></tr>
+            <tr><td>Alternate object (remote)</td><td>Repeat "get it" with new item</td><td>Generalized successfully.</td></tr>
+          </table>
+
+          <h4>Behavior note: carpet avoidance</h4>
+          <ul class="plain">
+            <li>William repeatedly avoided one patch of carpet during retrieval drills. He used distraction (sniffing, lying down, disengaging) rather than overt fear signals.</li>
+            <li>Likely cause: stress and anxiety pheromone residue from a prior dog's indoor accident.</li>
+            <li>He could work around the spot during general tasks but blocked completely when a task required crossing it.</li>
+            <li>Logged as a personality note. William expresses stress through inhibition, not activation. Future work should encourage more expressive communication.</li>
+          </ul>
+
+          <h4>Risks surfaced</h4>
+          <ul class="plain">
+            <li>Demand barking could become learned if anyone reacts to it.</li>
+            <li>Selfish-choice snowball. Small preference for his own interest can generalize into service failure.</li>
+            <li>Repeated commands would weaken first-ask urgency.</li>
+            <li>Emotional inhibition may mask discomfort in real-world settings.</li>
+          </ul>
+
+          <h4>Action items</h4>
+          <ul class="plain">
+            <li>All participants: complete the QR-code intake and experience-sharing form. Paper version available on request.</li>
+            <li>Catcher: log the carpet fear response for future desensitization planning.</li>
+            <li>Catcher: introduce a new dog next session so participants can translate technique to a different temperament.</li>
+            <li>Participants: keep practicing first-ask urgency and the "that's it" encouragement technique.</li>
+            <li>Participant furthest from the button: treat the distance and distraction difficulty as a learning opportunity, not a personal shortcoming.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="session" id="s001">
+        <div class="card">
+          <div class="date">Session 1 · Foundations</div>
+          <h3>Positive Reinforcement Fundamentals</h3>
+          <p class="sub">Dog: William · Veteran PTSD and mobility service dog</p>
+          <div>
+            <span class="tag">Three-layer method</span>
+            <span class="tag">Yes marker</span>
+            <span class="tag">Sit</span>
+            <span class="tag">Here</span>
+            <span class="tag">Touch</span>
+            <span class="tag">Consistency</span>
+          </div>
+
+          <h4>What was covered</h4>
+          <ul class="plain">
+            <li>The three-layer training structure: lure, hand motion only, verbal command.</li>
+            <li>The <span class="cue">Yes</span> marker and the rule that it is always followed by a reward.</li>
+            <li>Training across environments: start with no distractions, then step up gradually, falling back a layer when needed.</li>
+            <li>Commands introduced: <span class="cue">Sit</span>, <span class="cue">Here</span>, <span class="cue">Touch</span>.</li>
+            <li>Expanding <span class="cue">Touch</span> using an Easy Button-style clicker toward push-based tasks: handicap door buttons, refrigerator doors, cabinet doors.</li>
+            <li>Consistency rules: reward only to standard, do not repeat a command on a wrong response, wait, re-present, mark only the correct behavior.</li>
+          </ul>
+
+          <h4>Equipment</h4>
+          <ul class="plain">
+            <li>Blue-9 harness with front attachment ring.</li>
+            <li>Treats: Cheerios and "Holly Bear" treats.</li>
+          </ul>
+
+          <h4>Key takeaways</h4>
+          <ul class="plain">
+            <li>Build behaviors in progressive layers.</li>
+            <li>Never break the association between "Yes" and a reward.</li>
+            <li>Train without distraction first, then increase difficulty.</li>
+            <li>Step backward whenever the dog struggles.</li>
+            <li>Consistency produces reliable behavior.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="session" id="dogs">
+        <div class="card">
+          <h3>The Dogs</h3>
+          <p class="sub">Six dogs currently in the program. These are the ones seen in sessions.</p>
+          <table>
+            <tr><th>Dog</th><th>Age</th><th>Personality</th><th>Stress style</th><th>Handling note</th></tr>
+            <tr><td><b>Flap</b></td><td>1.5 yrs, oldest in the group</td><td>Driver. Motivated, confident, high work ethic.</td><td>Activated</td><td>Slow him down. Build patience. Expect messy success.</td></tr>
+            <tr><td><b>William</b></td><td>Just over 1 yr, Lab</td><td>Safety-seeking. Cuddly, cautious, trust-based.</td><td>Inhibited</td><td>Build him up. Heavy encouragement. Watch for hidden fear.</td></tr>
+            <tr><td>Unnamed female</td><td>10 months</td><td>Short-fused. Frustration escalates fast.</td><td>Activated</td><td>Lives in a shared-wall townhouse. Ignoring may not be viable there.</td></tr>
+            <tr><td>Incoming puppy</td><td>10–12 weeks, expected</td><td>Not yet assessed</td><td>—</td><td>Socialization and play only. No task work.</td></tr>
+          </table>
+          <p>Youngest dog in the program is around eight months.</p>
+        </div>
+      </div>
+
+      <div class="session" id="addnew">
+        <div class="card">
+          <h3>Adding next week's session</h3>
+          <p class="sub">Two ways to do this</p>
+          <h4>Option A · Have Claude do it</h4>
+          <p>Drop the new session notes or recording summary into your PAWS folder, then say: "Add Session 4 to the training manual." The new session gets added to the log and any new commands or techniques get folded into the curriculum.</p>
+          <h4>Option B · Edit the HTML yourself</h4>
+          <p>Copy the block below and paste it directly above the newest session block in the source. Newest session goes on top.</p>
+          <details class="tmpl">
+            <summary>Session template</summary>
+<pre>&lt;div class="session" id="s004"&gt;
+  &lt;div class="card"&gt;
+    &lt;div class="date"&gt;Session 4 · DATE · LENGTH&lt;/div&gt;
+    &lt;h3&gt;SESSION TITLE&lt;/h3&gt;
+    &lt;p class="sub"&gt;Dog: NAME · FOCUS&lt;/p&gt;
+    &lt;div&gt;
+      &lt;span class="tag"&gt;TAG&lt;/span&gt;
+      &lt;span class="tag"&gt;TAG&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;h4&gt;What was covered&lt;/h4&gt;
+    &lt;ul class="plain"&gt;
+      &lt;li&gt;ITEM&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;h4&gt;Progress&lt;/h4&gt;
+    &lt;table&gt;
+      &lt;tr&gt;&lt;th&gt;Skill&lt;/th&gt;&lt;th&gt;Method&lt;/th&gt;&lt;th&gt;Result&lt;/th&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;SKILL&lt;/td&gt;&lt;td&gt;METHOD&lt;/td&gt;&lt;td&gt;RESULT&lt;/td&gt;&lt;/tr&gt;
+    &lt;/table&gt;
+
+    &lt;h4&gt;Behavior notes&lt;/h4&gt;
+    &lt;ul class="plain"&gt;&lt;li&gt;ITEM&lt;/li&gt;&lt;/ul&gt;
+
+    &lt;h4&gt;Action items&lt;/h4&gt;
+    &lt;ul class="plain"&gt;&lt;li&gt;ITEM&lt;/li&gt;&lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+          </details>
+          <div class="note"><b>Also update</b>Add a nav link in the sidebar under <code>id="nav-log"</code>, and bump the session count in the header pills.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  </main>
+</div>
+
+<div class="wrap"><footer>
+  PAWS Service Dog Training Manual · Built from recorded session notes · All methods are positive reinforcement only
+</footer></div>
+
+<script>
+// View switching
+document.querySelectorAll('.tab').forEach(function(t){
+  t.addEventListener('click', function(){
+    var v = t.dataset.view;
+    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active')});
+    t.classList.add('active');
+    document.getElementById('view-curriculum').classList.toggle('hidden', v!=='curriculum');
+    document.getElementById('view-log').classList.toggle('hidden', v!=='log');
+    document.getElementById('nav-curriculum').classList.toggle('hidden', v!=='curriculum');
+    document.getElementById('nav-log').classList.toggle('hidden', v!=='log');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+// Search across both views
+var q = document.getElementById('q');
+var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+cards.forEach(function(c){ c.dataset.orig = c.innerHTML; });
+
+function clearMarks(){
+  cards.forEach(function(c){
+    if(c.innerHTML !== c.dataset.orig) c.innerHTML = c.dataset.orig;
+    c.classList.remove('hidden');
+    var s = c.closest('.session'); if(s) s.classList.remove('hidden');
+  });
+}
+
+q.addEventListener('input', function(){
+  var term = q.value.trim();
+  clearMarks();
+  if(term.length < 2) return;
+  var re = new RegExp('(' + term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')','gi');
+  cards.forEach(function(c){
+    var hit = re.test(c.textContent);
+    re.lastIndex = 0;
+    if(!hit){
+      c.classList.add('hidden');
+      var s = c.closest('.session'); if(s) s.classList.add('hidden');
+      return;
+    }
+    // highlight text nodes only
+    var walker = document.createTreeWalker(c, NodeFilter.SHOW_TEXT, null);
+    var nodes = [], n;
+    while(n = walker.nextNode()){ if(n.nodeValue.trim()) nodes.push(n); }
+    nodes.forEach(function(node){
+      if(node.parentNode.nodeName === 'PRE') return;
+      if(!re.test(node.nodeValue)){ re.lastIndex = 0; return; }
+      re.lastIndex = 0;
+      var span = document.createElement('span');
+      span.innerHTML = node.nodeValue.replace(re,'<mark>$1</mark>');
+      node.parentNode.replaceChild(span, node);
+    });
+  });
+});
+</script>
+</body>
+</html>
