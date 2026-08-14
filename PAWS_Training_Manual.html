@@ -3,7 +3,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" type="image/png" href="favicon.png">
 <title>PAWS Service Dog Training Manual</title>
 <style>
 :root{
@@ -52,14 +51,8 @@ header.top{
 
 /* Hero */
 .hero{padding:44px 0 28px;border-bottom:1px solid var(--line)}
-.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:40px;align-items:center}
-.hero-copy{min-width:0}
 .hero h1{font-size:38px;line-height:1.12;letter-spacing:-.025em;margin:0 0 10px}
 .hero p{margin:0;color:var(--ink-soft);font-size:17px;max-width:640px}
-.hero-logo{
-  display:block;width:210px;height:210px;border-radius:50%;object-fit:cover;
-  object-position:center;
-}
 .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
 .pill{
   font-size:12.5px;font-weight:600;padding:5px 11px;border-radius:999px;
@@ -181,24 +174,16 @@ pre{
 }
 footer{
   border-top:1px solid var(--line);padding:26px 0 44px;color:var(--ink-soft);font-size:13.5px;
-  text-align:center;
 }
-.footer-memorial{margin-top:10px;font-weight:600}
 .hidden{display:none !important}
 mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
 @media (max-width:860px){
   .layout{grid-template-columns:1fr;gap:0}
   nav.side{display:none}
   .hero h1{font-size:29px}
-  .hero-inner{gap:24px}
-  .hero-logo{width:150px;height:150px}
   .tabs{margin-left:0}
   .topbar{flex-wrap:wrap}
   .searchbox{max-width:none;order:3;flex-basis:100%}
-}
-@media (max-width:620px){
-  .hero-inner{grid-template-columns:1fr}
-  .hero-logo{width:128px;height:128px;justify-self:end}
 }
 @media print{
   header.top,nav.side,.tabs,.searchbox{display:none}
@@ -222,19 +207,14 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
 </header>
 
 <div class="wrap hero">
-  <div class="hero-inner">
-    <div class="hero-copy">
-      <h1>Service Dog Training Manual</h1>
-      <p>Step-by-step methods for training service dogs for veterans, built from recorded PAWS program sessions. Positive reinforcement only.</p>
-      <div class="meta">
-        <span class="pill">3 sessions logged</span>
-        <span class="pill">Dogs: William · Flap</span>
-        <span class="pill">Lead trainer: Catcher</span>
-        <span class="pill">Track: PTSD + mobility</span>
-        <span class="pill">Last updated: Aug 8, 2026</span>
-      </div>
-    </div>
-    <img class="hero-logo" src="gitlabrador.webp" alt="PAWS dog logo">
+  <h1>Service Dog Training Manual</h1>
+  <p>Step-by-step methods for training service dogs for veterans, built from recorded PAWS program sessions. Positive reinforcement only.</p>
+  <div class="meta">
+    <span class="pill">4 sessions logged</span>
+    <span class="pill">Dogs: William · Flap</span>
+    <span class="pill">Lead trainer: Ketcher</span>
+    <span class="pill">Track: PTSD + mobility</span>
+    <span class="pill">Last updated: Aug 14, 2026</span>
   </div>
 </div>
 
@@ -264,7 +244,11 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
       <a href="#giveDrop">Give and Drop It</a>
       <a href="#labeled">Labeled Retrieval</a>
       <a href="#fading">Fading the Food</a>
-      <a href="#tug">Tug (planned)</a>
+      <a href="#rewardtiming">Reward Timing Mid-Task</a>
+      <a href="#dress">Dress (Self-Vesting)</a>
+      <a href="#tug">Tug (Opening Doors)</a>
+      <a href="#chained">Chained Tasks</a>
+      <a href="#search">Go Search (Scent Game)</a>
       <a href="#ptsd">PTSD Response (planned)</a>
       <h4>Handling</h4>
       <a href="#personality">Personality Types</a>
@@ -276,13 +260,16 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
       <a href="#choice">Selfish vs. Unselfish Path</a>
       <h4>Reference</h4>
       <a href="#gear">Equipment and Treats</a>
+      <a href="#equipment2">Gear Shapes Behavior</a>
       <a href="#cues">Full Cue List</a>
+      <a href="#program">How the Program Works</a>
       <a href="#teamtraining">Team Training Phase</a>
       <a href="#vision">How Dogs See</a>
       <a href="#rules">Non-Negotiable Rules</a>
     </div>
     <div class="grp hidden" id="nav-log">
       <h4>Sessions</h4>
+      <a href="#s004">Session 4 · Aug 14</a>
       <a href="#s003">Session 3 · Aug 7</a>
       <a href="#s002">Session 2 · Jul 31</a>
       <a href="#s001">Session 1 · Foundations</a>
@@ -414,7 +401,7 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
       <div class="card" id="urgency">
         <h3>First-Ask Urgency</h3>
         <p class="sub">Say it once. Expect a response.</p>
-        <p>Repeating a command teaches the dog that delay is acceptable. Catcher's analogy: a deadline at 12:30 that gets accepted at 12:35, then 1:00, then 1:30. Once there is no structure, the deadline is whatever you decide. A dog that knows you will keep asking learns it can wait until the twenty-fifth ask. For a service dog this compounds into real-world failure: a veteran asks for help and the dog decides it has time.</p>
+        <p>Repeating a command teaches the dog that delay is acceptable. Ketcher's analogy: a deadline at 12:30 that gets accepted at 12:35, then 1:00, then 1:30. Once there is no structure, the deadline is whatever you decide. A dog that knows you will keep asking learns it can wait until the twenty-fifth ask. For a service dog this compounds into real-world failure: a veteran asks for help and the dog decides it has time.</p>
         <h4>The rule</h4>
         <ul class="plain">
           <li>Command once. Then wait.</li>
@@ -653,15 +640,109 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
       <div class="card" id="fading">
         <h3>Fading the Food</h3>
         <p class="sub">Treats are scaffolding, not the reason the dog works.</p>
-        <p>The dog does not need a treat for every rep forever. Once the relationship and the trust are established, the food gets drawn back gradually. The dog keeps performing because the partnership is the motivation.</p>
+        <p>The dog does not need a treat for every rep forever. Once the relationship and the trust are established, the food gets drawn back gradually. The dog keeps performing because the partnership is the motivation. By graduation, the expectation is task completion without treats, or a single treat for a large task.</p>
+        <h4>Fade unevenly</h4>
+        <ul class="plain">
+          <li>Basic obedience — sit, down, stand, touch — happens hundreds of times a day and is fully seasoned. Fade it first.</li>
+          <li>Novel or complicated tasks still need the extra motivation. Keep the reward while the behavior is new.</li>
+          <li>Judge by body language. If the dog would have stayed on task and finished without the food, it is ready.</li>
+        </ul>
         <div class="note"><b>Sequencing</b>Build the behavior on food first. Fade it only after the bond and the reliability are there. Pulling the reward early undercuts both.</div>
       </div>
 
+      <div class="card" id="rewardtiming">
+        <h3>Reward Timing Mid-Task</h3>
+        <p class="sub">A treat offered early can wreck the rest of the task.</p>
+        <p>Reaching for a treat partway through a multi-step task tells a food-motivated dog that the job is done. It only has room for one thing in its mouth, so it drops the item and fixates on the food. From there it cannot focus on anything else.</p>
+        <h4>What to do instead</h4>
+        <ol class="steps">
+          <li>Hold the reward until the full task is complete. Not the first step, the whole thing.</li>
+          <li>If you reach early and catch yourself, do not just reset. Hold the dog accountable and have it follow through on what you originally asked.</li>
+          <li>Show your other hand, empty, if the dog thinks you are hiding something. It knows.</li>
+          <li>Expect this to take longer and feel awkward. Follow-through is the lesson.</li>
+        </ol>
+        <div class="note warn"><b>The shortcut mindset</b>An impatient dog will offer a partial effort — pick the item up, put it down, look at you — trying to clock out and collect the paycheck without caring about the details. Do not accept the shortcut.</div>
+        <div class="note good"><b>Resetting is also valid</b>Giving the treat and resetting the rep would have worked too. Pushing the dog through is the harder choice and teaches more. Either is defensible; drifting between them mid-rep is not.</div>
+      </div>
+
+      <div class="card" id="dress">
+        <h3>Dress · Self-Vesting</h3>
+        <p class="sub">Cue: <span class="cue">Dress</span> · Introduced Session 4</p>
+        <p>The vest is the dog's uniform. Part of being a service dog is knowing when it is working and when it is not, so the dog has to understand what the clothing means and be comfortable wearing it.</p>
+        <p>The second reason is access. A veteran in a wheelchair should not have to bend, reach, and twist to dress a dog, and a harness with dangling straps is hard to orient even with full mobility. So the dog presents itself instead.</p>
+        <h4>Steps</h4>
+        <ol class="steps">
+          <li>Hold the vest open with both hands so the head hole is clearly available. The dog enters from the rear side.</li>
+          <li>Hang a treat through the far side of the opening so the dog has something to aim at.</li>
+          <li>Ask the dog to <span class="cue">Wait</span>.</li>
+          <li>Say <span class="cue">Dress</span> once.</li>
+          <li>Let the dog push its head all the way through. Do not hover or close in on the dog — it should approach you.</li>
+          <li>Once the opening lands on the shoulders and neck, let go and drop it onto the back.</li>
+          <li>Mark with <span class="cue">Yes</span> and reward.</li>
+        </ol>
+        <div class="note"><b>Watch the ears</b>The straps graze the ears on the way through. Many dogs have ear sensitivity and will object. Notice whether the dog registers it and adjust the angle rather than pushing through.</div>
+        <div class="note good"><b>Why the approach matters</b>Plenty of dogs back away when a collar, harness, or leash comes at them. Teaching the dog to walk into the gear instead of having gear pushed onto it removes that whole problem.</div>
+      </div>
+
       <div class="card" id="tug">
-        <h3>Tug · Planned Next Skill</h3>
-        <p class="sub">Cue: <span class="cue">Go tug</span> · Not yet introduced</p>
-        <p>A knotted rope made to hang on a doorknob or handle. The dog pulls it to open a door or a refrigerator.</p>
-        <div class="note"><b>Why it matters</b>Tug is the missing link in a chained task. The dog already knows <span class="cue">Touch</span> to close a door and <span class="cue">Get it</span> to retrieve. Add tug and it can open the fridge, take out a water bottle, close the fridge, and deliver it. The handler never touches the fridge, just runs a short sequence of commands.</div>
+        <h3>Tug · Opening Doors</h3>
+        <p class="sub">Cue: <span class="cue">Tug</span> or <span class="cue">Go tug</span> · Introduced Session 4</p>
+        <p>A rope attachment hung on a door, cabinet, or fridge handle. The dog pulls it open to reach whatever is inside.</p>
+        <h4>Steps</h4>
+        <ol class="steps">
+          <li>On a practice door, angle the door itself. Tipped forward it swings open on gravity alone. Held back a little creates tension and forces a real pull out of the dog.</li>
+          <li>Say <span class="cue">Tug</span> once.</li>
+          <li>Encourage with <span class="cue">That's it</span>.</li>
+          <li>When the door swings open, say <span class="cue">Yes</span> and reward.</li>
+        </ol>
+        <div class="note warn"><b>Expect excitement and frustration</b>The rope is functionally a tug toy, so the dog reads this as being invited to play. That boiling excitement collides with a task that is harder than it looks, and the result is frustration. This is fine. It is the point.</div>
+        <div class="note good"><b>Why frustration is useful here</b>A real door will not always open on the first pull. A dog that gives up decides the door is locked and walks away. A frustrated, motivated dog tries a better grip, a different angle, more strength in the pull. Frustration is what produces "try something else," and that is what real-world independence requires.</div>
+        <div class="note"><b>Naming collision</b><span class="cue">Tug</span> and <span class="cue">Touch</span> sound similar and the dog is drawn to both. Expect confusion between opening and closing during chained tasks.</div>
+      </div>
+
+      <div class="card" id="chained">
+        <h3>Chained Tasks</h3>
+        <p class="sub">Cue: <span class="cue">Get the bottle</span> · One command, many behaviors</p>
+        <p>The end goal is one instruction that the dog understands to mean a whole sequence. The veteran gives a single cue and gets a water bottle without touching the fridge.</p>
+        <h4>The fridge sequence</h4>
+        <ol class="steps">
+          <li><span class="cue">Go tug</span> — the dog pulls the rope and swings the fridge open.</li>
+          <li><span class="cue">Get the bottle</span> — the dog retrieves the bottle from the shelf. Blue tape marks the target so it does not come back with the ranch dressing.</li>
+          <li><span class="cue">Bring it here</span> and <span class="cue">Give</span> — the dog delivers.</li>
+          <li><span class="cue">Go touch</span> — the dog pushes the fridge door closed.</li>
+          <li>One <span class="cue">Yes</span> and one treat, for the whole sequence.</li>
+        </ol>
+        <h4>Collapsing it into one cue</h4>
+        <p>Once each step is solid, stop breaking it down. Say only <span class="cue">Get the bottle</span> and let the dog connect the dots: it has to tug the door open, retrieve, deliver, and return to close, all under that one umbrella.</p>
+        <div class="note"><b>Do not simplify too fast</b>Leave the tug rope dangling during the closing step. It teases the dog and it should. Removing the temptation makes the rep easy and teaches nothing. Half measures let the dog learn that the distraction still exists and can be pushed through.</div>
+        <div class="note warn"><b>The fridge is hard</b>Friction, suction, and weight. Some fridges have strong suction and need a hand. Some have no handle to hang a rope on at all, in which case the fridge itself has to change. Account for the appliance before promising the task.</div>
+        <div class="note good"><b>Where it goes next</b>Extend across rooms. The dog leaves the room it is in, tugs the fridge open, retrieves, runs the bottle back, then returns to close the door. That works once the dog knows both spaces well.</div>
+      </div>
+
+      <div class="card" id="search">
+        <h3>Go Search · The Scent Game</h3>
+        <p class="sub">Cue: <span class="cue">Go search</span> · A confidence exercise, not scent detection</p>
+        <p>A small cup of treats gets hidden in a room the dog has not seen it hidden in. The dog searches. Nobody helps. This is not training a detection or search-and-rescue dog — it builds problem solving, frustration tolerance, and self-reliance, because the dog has to solve it alone.</p>
+        <h4>Setup</h4>
+        <ol class="steps">
+          <li>Walk the dog out of sight around a corner. Ask for a <span class="cue">Sit</span> and a <span class="cue">Stay</span>.</li>
+          <li>Hide the treat cup. Vary the difficulty: behind furniture, on the floor, elevated on a shelf or TV stand.</li>
+          <li>Bring the dog in, point into the room, and say <span class="cue">Go search</span> once.</li>
+          <li>Observe. Follow the dog. Do not steer it.</li>
+          <li>When the dog finds the cup, mark and let it have the treats.</li>
+        </ol>
+        <h4>How scent works</h4>
+        <p>Scent spreads from the source in a cone. Densest and strongest right at the cup, wider but weaker the further out you go. The dog crosses the wide edge, loses it, doubles back to where it last hit, catches it again, and zigzags in. Air currents matter too: a draft can push the scent against a wall and send the dog to the wrong place. Height matters, since scent heavier than air falls and scent lighter than air stays up.</p>
+        <h4>What to watch for</h4>
+        <ul class="plain">
+          <li><b>Pattern searching</b> — the zigzag in toward the source. Not random movement.</li>
+          <li><b>Memory as a tool</b> — the dog returns to the spot where it found the cup last round. A dog realizing its own memory is useful is a real cognitive step.</li>
+          <li><b>Visual tracking</b> — catching a glimpse and turning back to check. Not taught, self-developed.</li>
+          <li><b>Secondary scent</b> — the dog may learn that the treat scent always comes packaged with the hider's scent trail, and start following the person instead of just the treats. Rare. Vary who hides the cup to test for it.</li>
+          <li><b>Confidence under difficulty</b> — does the dog stay motivated when it takes a long time, or does it look to you for the answer?</li>
+        </ul>
+        <div class="note good"><b>Different dogs, different lesson</b>For a driven dog the lesson is frustration tolerance and self-reliance. For a low-confidence dog the same game teaches confidence, because the moment it feels lost it will look up and ask for help. Same exercise, different objective.</div>
+        <div class="note"><b>Real-world use</b>This maps directly onto everyday need. Something is lost and the handler cannot say where it is, only what it smells like. <span class="cue">Go get the phone</span> becomes findable rather than fetchable.</div>
       </div>
 
       <div class="card" id="ptsd">
@@ -696,6 +777,9 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
         </table>
         <div class="note good"><b>Both are valid</b>Neither is a bad quality. A driver dog shows high work ethic. A safety-seeking dog shows caution and trust. Read which one is in front of you and adjust your approach before the session starts.</div>
         <div class="note"><b>Age changes expectations</b>An older dog further through the program has been exposed to more and gets less room to make mistakes. A younger dog gets a wider margin. Match the standard to how long the dog has been learning.</div>
+        <h4>The analytical mind</h4>
+        <p>A third trait cuts across the driver/safety-seeking split. An analytical dog weighs the pros and cons before committing and calculates its odds of success. Ketcher observes this more often in female dogs, who tend to succeed by being detail-oriented and thoughtful, while some males lead with ultra confidence — whatever happens, happens, it won't bother me. Performance between males and females is comparable overall.</p>
+        <div class="note"><b>Analytical plus low confidence</b>William is analytical, but he overweights the cons. The same careful evaluation that makes a dog thoughtful becomes hesitation when the negatives feel heavier than they are. Read both traits, not just one.</div>
       </div>
 
       <div class="card" id="activation">
@@ -866,9 +950,52 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
           <tr><td><span class="cue">Go to bed</span></td><td>Return to place and settle. Used between turns.</td><td>Trained</td></tr>
           <tr><td><span class="cue">Leave it</span></td><td>Disengage from an item.</td><td>Trained</td></tr>
           <tr><td><span class="cue">Nope</span> / <span class="cue">Don't</span></td><td>Assertive redirect. Always paired with rewarding the correct choice.</td><td>Trained</td></tr>
-          <tr><td><span class="cue">Go tug</span></td><td>Pull open a door or fridge.</td><td>Planned</td></tr>
+          <tr><td><span class="cue">Go tug</span> / <span class="cue">Tug</span></td><td>Pull open a door, cabinet, or fridge.</td><td>Trained</td></tr>
+          <tr><td><span class="cue">Dress</span></td><td>Walk into the vest to self-vest.</td><td>Trained</td></tr>
+          <tr><td><span class="cue">Get the bottle</span></td><td>Chained fridge task: tug open, retrieve, deliver, close.</td><td>In progress</td></tr>
+          <tr><td><span class="cue">Go search</span></td><td>Find a hidden scented target unaided.</td><td>Trained</td></tr>
+          <tr><td><span class="cue">Bring it here</span></td><td>Carry the item to the handler.</td><td>Trained</td></tr>
+          <tr><td><span class="cue">Wait</span></td><td>Hold before proceeding. Used to set up dress.</td><td>Trained</td></tr>
         </table>
         <div class="note"><b>Scale</b>The full program covers roughly 80 commands. This list is what has come up in sessions so far.</div>
+      </div>
+
+      <div class="card" id="program">
+        <h3>How the Program Works</h3>
+        <p class="sub">Context behind the weekly sessions.</p>
+        <h4>Scale</h4>
+        <ul class="plain">
+          <li>Roughly 100 dogs in training per year across 7 sites.</li>
+          <li>Breeding center and headquarters in Boyce, Maryland, next to Germantown. A large share of dogs in training come out of there.</li>
+          <li>This site averages five to six dogs at a time and is connected to the VA.</li>
+        </ul>
+        <h4>Two paths into training</h4>
+        <ul class="plain">
+          <li><b>Remote raisers</b> — a volunteer program like foster parenting. Volunteers raise a service dog in training for its first two years using provided curriculum, with scheduled annual and bimonthly evaluations plus weekly classes.</li>
+          <li><b>This site</b> — dogs live with volunteer raisers but attend the facility like elementary school. Dropped off around 8am, picked up around 4pm, Monday through Friday.</li>
+        </ul>
+        <h4>A dog's day</h4>
+        <ul class="plain">
+          <li>Four to eight hours of structured work.</li>
+          <li>Sessions at the Palo Alto campus, including back-to-back work with the spinal cord recovery group. Participants get an alternative to physical therapy; the dogs get experience around manual and electric wheelchairs.</li>
+          <li>Outings and field trips. An Alcatraz trip layers dense city, then a confined boat with an unstable floor, then a museum with crowds — each stage further from the familiar.</li>
+          <li>Grooming desensitization at a commercial station: brushing, bathing, nails, ears.</li>
+          <li>Kennel rest and yard play. Not downtime — learning to find the off switch is part of the curriculum.</li>
+        </ul>
+        <div class="note"><b>Why grooming is training</b>A dog picking up a phone or a medication bottle is putting its mouth on personal items, so oral hygiene matters. Labs are also prone to ear infections. A trainer has the patience and reach to work a stressed dog through nail dremeling and ear swabbing. A veteran in a wheelchair may not. The dog has to be comfortable with all of it before placement.</div>
+        <div class="note good"><b>The plan follows the dog</b>There is a structured training plan, but personality and experience determine how a dog moves through it. A dog that is heavily dog-distracted or prey-driven does not go to a museum, it goes to a park to work on that. A dog too emotionally unregulated to focus works on regulation before it works on being a service dog student at all.</div>
+      </div>
+
+      <div class="card" id="equipment2">
+        <h3>Gear Shapes Behavior</h3>
+        <p class="sub">Dogs attach behavior patterns to specific equipment.</p>
+        <ul class="plain">
+          <li>The training harness disperses the energy of a lunge across the body before it reaches the leash end, turning the dog rather than letting it pull.</li>
+          <li>Attachment point changes the job. Clipped high, the same harness turns the dog into a sled dog, and it knows the difference.</li>
+          <li>A fully trained, placed dog often transitions to just a collar.</li>
+        </ul>
+        <div class="note good"><b>Swap gear to reset a habit</b>Introduce a new harness and treat it one specific way, and the dog will learn a whole new walking style attached to that equipment — even at three or four years old. When bad habits start forming, rotating the equipment gives a fresh slate.</div>
+        <div class="note"><b>Accessibility in the hardware</b>One vest replaces the pinch buckle with a magnetic red-tab clip. No finger grip strength required, just find the tab and it clips. The gear accommodates mobility needs the same way the dog does.</div>
       </div>
 
       <div class="card" id="teamtraining">
@@ -921,6 +1048,71 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
 
     <section class="block">
       <h2 class="sec">Session Log</h2>
+
+      <div class="session" id="s004">
+        <div class="card">
+          <div class="date">Session 4 · August 14, 2026 · 1h 26m</div>
+          <h3>Chaining the Fridge Task</h3>
+          <p class="sub">Dog: Flap · Trainer: Ketcher · Vesting, tug, chained retrieval, and the scent game</p>
+          <div>
+            <span class="tag">Dress</span>
+            <span class="tag">Tug</span>
+            <span class="tag">Chained task</span>
+            <span class="tag">Water bottle retrieval</span>
+            <span class="tag">Scent search</span>
+            <span class="tag">Program context</span>
+          </div>
+
+          <h4>Headline</h4>
+          <p>Flap chained tug, retrieve, and touch into a single command — <span class="cue">Get the bottle</span> — simulating a real fridge retrieval for a veteran. In the closing scent game he showed self-taught problem solving: memory of prior hiding spots, visual tracking, and possibly following a human scent trail as a secondary cue.</p>
+
+          <h4>What was covered</h4>
+          <ul class="plain">
+            <li>Program context: 100 dogs a year across 7 sites, the Maryland breeding center, the remote raiser volunteer program, the VA connection, and what a dog's four-to-eight-hour day actually contains.</li>
+            <li><span class="cue">Dress</span> — Flap walks himself into the vest so a mobility-limited handler does not have to bend and reach.</li>
+            <li>Harness design, including the magnetic red-tab clip that replaces a pinch buckle for veterans with limited grip strength.</li>
+            <li><span class="cue">Tug</span> on a practice door, then on the fridge.</li>
+            <li>Water bottle retrieval — slippery, round, and condensation-covered, requiring a soft mouth so it arrives full.</li>
+            <li>The full fridge sequence, first as separate commands, then collapsed into one.</li>
+            <li><span class="cue">Go search</span> — the hidden treat cup game, run several times at increasing difficulty.</li>
+          </ul>
+
+          <h4>Progress</h4>
+          <table>
+            <tr><th>Skill</th><th>Method</th><th>Result</th></tr>
+            <tr><td>Dress</td><td>Hold vest open, treat through the far side, "dress"</td><td>Walked himself through repeatedly. No ear sensitivity, though he noticed the straps.</td></tr>
+            <tr><td>Tug, practice door</td><td>Rope held slightly angled, "tug" once</td><td>Gentle grab, enough strength to swing it open. Excited, antsy, food-driven, some frustration.</td></tr>
+            <tr><td>Touch to close</td><td>Blue tape target, then tape removed</td><td>Knows touch well enough to identify the target without the tape.</td></tr>
+            <tr><td>Water bottle retrieval</td><td>Blue tape marks the bottle, "get the bottle"</td><td>Successful. Soft mouth held. Round and slippery took figuring out.</td></tr>
+            <tr><td>Fridge sequence, stepwise</td><td>Go tug → get the bottle → give → go touch</td><td>Completed. Treats given between steps in practice, though the design target is one treat for the whole chain.</td></tr>
+            <tr><td>Fridge sequence, one cue</td><td>"Get the bottle" only</td><td>Close. Confused opening with closing — went back to the tug rope. Technically closed it, under the wrong expectation.</td></tr>
+            <tr><td>Fridge sequence, second attempt</td><td>Same</td><td>Better. Real push on the close with the rope still dangling as a distraction.</td></tr>
+            <tr><td>Scent search</td><td>"Go search," cup hidden, no help given</td><td>Found it every round. Used pattern searching, memory of prior spots, and visual tracking.</td></tr>
+          </table>
+
+          <h4>Handler lesson: reward timing</h4>
+          <p>Rick reached for the treat partway through a retrieve. Flap dropped the bottle and fixated on food, since he only has room for one thing in his mouth. Ketcher chose to push the follow-through rather than reset, and Rick held him accountable through it. It took longer and Flap got spun up, but he completed the task. Resetting would also have been valid — the mistake was the mid-rep drift, not the choice.</p>
+
+          <h4>Behavior notes: Flap</h4>
+          <ul class="plain">
+            <li>Food obsession is his main distraction. He is close to working without it and reverts the moment food is visible.</li>
+            <li>Offers shortcuts when impatient — picks the item up, sets it down, waits for the paycheck without caring about the details.</li>
+            <li>Troubleshoots well. He works through the kinks, then makes appropriate adjustments so it does not happen again.</li>
+            <li>Licks the top end of his leash as a fidget or stim. Borderline acceptable — other dogs would chew through it. It is how he settles.</li>
+            <li>Handled a new room, the kitchen, with different smells, sounds, and footing without losing focus.</li>
+            <li>Never showed a dip in confidence during the search game, even when it took a long time.</li>
+            <li>He is a high candidate to be a breeding helper, so he will likely have a junior class.</li>
+          </ul>
+
+          <h4>Coming next</h4>
+          <ul class="plain">
+            <li>Ketcher: extend the <span class="cue">Get the bottle</span> chain across rooms.</li>
+            <li>Ketcher: repeat the scent search with different people hiding the cup, to test whether Flap is tracking a human scent trail.</li>
+            <li>Ketcher: run the same search exercise with William, where the lesson is confidence rather than frustration tolerance.</li>
+            <li>Rick: keep practicing the pause before treating so the reward does not interrupt task completion.</li>
+          </ul>
+        </div>
+      </div>
 
       <div class="session" id="s003">
         <div class="card">
@@ -1016,7 +1208,7 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
             <li>Retrieval introduced with a bone-shaped toy. Progressed from a one-second hold to full room-distance delivery.</li>
             <li>Generalized retrieval to a TV remote. Transferred immediately.</li>
             <li>Introduced <span class="cue">That's it</span> as the only repeatable phrase and the first-ask urgency principle.</li>
-            <li>Administered the intake and experience-sharing form. The form ties into PTSD and regulation research. Participants sharing how the dog affects their own emotional moments gives Catcher data on whether he taps into human emotion, which directly improves his odds of qualifying as a PTSD service dog.</li>
+            <li>Administered the intake and experience-sharing form. The form ties into PTSD and regulation research. Participants sharing how the dog affects their own emotional moments gives Ketcher data on whether he taps into human emotion, which directly improves his odds of qualifying as a PTSD service dog.</li>
           </ul>
 
           <h4>Progress</h4>
@@ -1048,8 +1240,8 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
           <h4>Action items</h4>
           <ul class="plain">
             <li>All participants: complete the QR-code intake and experience-sharing form. Paper version available on request.</li>
-            <li>Catcher: log the carpet fear response for future desensitization planning.</li>
-            <li>Catcher: introduce a new dog next session so participants can translate technique to a different temperament.</li>
+            <li>Ketcher: log the carpet fear response for future desensitization planning.</li>
+            <li>Ketcher: introduce a new dog next session so participants can translate technique to a different temperament.</li>
             <li>Participants: keep practicing first-ask urgency and the "that's it" encouragement technique.</li>
             <li>Participant furthest from the button: treat the distance and distraction difficulty as a learning opportunity, not a personal shortcoming.</li>
           </ul>
@@ -1105,10 +1297,10 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
             <tr><th>Dog</th><th>Age</th><th>Personality</th><th>Stress style</th><th>Handling note</th></tr>
             <tr><td><b>Flap</b></td><td>1.5 yrs, oldest in the group</td><td>Driver. Motivated, confident, high work ethic.</td><td>Activated</td><td>Slow him down. Build patience. Expect messy success.</td></tr>
             <tr><td><b>William</b></td><td>Just over 1 yr, Lab</td><td>Safety-seeking. Cuddly, cautious, trust-based.</td><td>Inhibited</td><td>Build him up. Heavy encouragement. Watch for hidden fear.</td></tr>
-            <tr><td>Unnamed female</td><td>10 months</td><td>Short-fused. Frustration escalates fast.</td><td>Activated</td><td>Lives in a shared-wall townhouse. Ignoring may not be viable there.</td></tr>
+            <tr><td>Unnamed female</td><td>Just turned 1, arrived at 10 months</td><td>Short-fused. Frustration escalates fast.</td><td>Activated</td><td>Arrived too unregulated to focus on service work. Regulation comes before curriculum. Lives in a shared-wall townhouse, so ignoring may not be viable there.</td></tr>
             <tr><td>Incoming puppy</td><td>10–12 weeks, expected</td><td>Not yet assessed</td><td>—</td><td>Socialization and play only. No task work.</td></tr>
           </table>
-          <p>Youngest dog in the program is around eight months.</p>
+          <p>This site averages five to six dogs at a time. Youngest is around eight months. Flap is a high candidate to be a breeding helper.</p>
         </div>
       </div>
 
@@ -1117,14 +1309,14 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
           <h3>Adding next week's session</h3>
           <p class="sub">Two ways to do this</p>
           <h4>Option A · Have Claude do it</h4>
-          <p>Drop the new session notes or recording summary into your PAWS folder, then say: "Add Session 4 to the training manual." The new session gets added to the log and any new commands or techniques get folded into the curriculum.</p>
+          <p>Drop the new session notes or recording summary into your PAWS folder, then say: "Add Session 5 to the training manual." The new session gets added to the log and any new commands or techniques get folded into the curriculum.</p>
           <h4>Option B · Edit the HTML yourself</h4>
           <p>Copy the block below and paste it directly above the newest session block in the source. Newest session goes on top.</p>
           <details class="tmpl">
             <summary>Session template</summary>
-<pre>&lt;div class="session" id="s004"&gt;
+<pre>&lt;div class="session" id="s005"&gt;
   &lt;div class="card"&gt;
-    &lt;div class="date"&gt;Session 4 · DATE · LENGTH&lt;/div&gt;
+    &lt;div class="date"&gt;Session 5 · DATE · LENGTH&lt;/div&gt;
     &lt;h3&gt;SESSION TITLE&lt;/h3&gt;
     &lt;p class="sub"&gt;Dog: NAME · FOCUS&lt;/p&gt;
     &lt;div&gt;
@@ -1162,8 +1354,6 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
 
 <div class="wrap"><footer>
   PAWS Service Dog Training Manual · Built from recorded session notes · All methods are positive reinforcement only
-  <div class="footer-memorial">In Memoriam: Regnar, Sabot, BoBo.</div>
-  <div class="footer-memorial">RLTW!</div>
 </footer></div>
 
 <script>
