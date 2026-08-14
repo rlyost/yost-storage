@@ -50,7 +50,13 @@ header.top{
 .tab.active{background:var(--ink);color:#fff}
 
 /* Hero */
-.hero{padding:44px 0 28px;border-bottom:1px solid var(--line)}
+.hero{padding:44px 24px 28px;border-bottom:1px solid var(--line)}
+.heroflex{display:flex;align-items:center;gap:36px;justify-content:space-between}
+.herotext{flex:1;min-width:0}
+.herologo{
+  width:132px;height:auto;flex:none;display:block;
+  filter:drop-shadow(0 6px 18px rgba(27,32,40,.14));
+}
 .hero h1{font-size:38px;line-height:1.12;letter-spacing:-.025em;margin:0 0 10px}
 .hero p{margin:0;color:var(--ink-soft);font-size:17px;max-width:640px}
 .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
@@ -173,7 +179,15 @@ pre{
   font-size:12.5px;line-height:1.55;margin:14px 0 0;
 }
 footer{
-  border-top:1px solid var(--line);padding:26px 0 44px;color:var(--ink-soft);font-size:13.5px;
+  border-top:1px solid var(--line);padding:26px 24px 48px;color:var(--ink-soft);font-size:13.5px;
+  text-align:center;
+}
+.footline{margin-bottom:18px}
+.signoff{
+  font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--ink);opacity:.45;margin-bottom:7px;
+}
+.memorial{
+  font-size:10px;font-weight:600;letter-spacing:.08em;color:var(--ink);opacity:.45;
 }
 .hidden{display:none !important}
 mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
@@ -181,6 +195,8 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
   .layout{grid-template-columns:1fr;gap:0}
   nav.side{display:none}
   .hero h1{font-size:29px}
+  .heroflex{gap:20px}
+  .herologo{width:78px}
   .tabs{margin-left:0}
   .topbar{flex-wrap:wrap}
   .searchbox{max-width:none;order:3;flex-basis:100%}
@@ -207,6 +223,8 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
 </header>
 
 <div class="wrap hero">
+ <div class="heroflex">
+  <div class="herotext">
   <h1>Service Dog Training Manual</h1>
   <p>Step-by-step methods for training service dogs for veterans, built from recorded PAWS program sessions. Positive reinforcement only.</p>
   <div class="meta">
@@ -216,6 +234,9 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
     <span class="pill">Track: PTSD + mobility</span>
     <span class="pill">Last updated: Aug 14, 2026</span>
   </div>
+  </div>
+  <img class="herologo" alt="" src="data:image/png;base64,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">
+ </div>
 </div>
 
 <div class="wrap layout">
@@ -1353,7 +1374,9 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
 </div>
 
 <div class="wrap"><footer>
-  PAWS Service Dog Training Manual · Built from recorded session notes · All methods are positive reinforcement only
+  <div class="footline">PAWS Service Dog Training Manual · Built from recorded session notes · All methods are positive reinforcement only</div>
+  <div class="signoff">RLTW!</div>
+  <div class="memorial">In Memoriam: Regnar, Sabot, and BoBo.</div>
 </footer></div>
 
 <script>
