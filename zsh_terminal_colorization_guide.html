@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mac macOS Zsh Terminal Prompt Colorization Guide</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-cyan: #38bdf8;
+            --accent-green: #4ade80;
+            --accent-yellow: #facc15;
+            --accent-blue: #2563eb;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --code-bg: #090d16;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: var(--accent-cyan);
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h2 {
+            font-size: 1.4rem;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .step-number {
+            background-color: var(--accent-cyan);
+            color: var(--bg-color);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            font-weight: bold;
+        }
+
+        p {
+            margin-bottom: 12px;
+            color: #cbd5e1;
+        }
+
+        code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: var(--accent-cyan);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            color: #f1f5f9;
+            font-size: 0.95rem;
+            display: block;
+            line-height: 1.5;
+        }
+
+        .prompt-preview {
+            background-color: #000000;
+            border-radius: 8px;
+            padding: 16px 20px;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 1.05rem;
+            margin: 15px 0;
+            border: 1px solid #333;
+        }
+
+        .user-cyan { color: var(--accent-cyan); }
+        .host-green { color: var(--accent-green); }
+        .path-badge {
+            background-color: var(--accent-blue);
+            color: #ffffff;
+            padding: 2px 8px;
+            border-radius: 2px;
+            font-weight: 500;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            color: var(--accent-cyan);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+        }
+
+        .tip-box {
+            background-color: rgba(56, 189, 248, 0.08);
+            border-left: 4px solid var(--accent-cyan);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 15px;
+        }
+
+        .tip-box p {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>macOS Zsh Terminal Colorization Guide</h1>
+        <p>Complete walkthrough to switch to Zsh, customize prompt colors, and add background contrast</p>
+    </header>
+
+    <!-- STEP 1 -->
+    <div class="card">
+        <h2><span class="step-number">1</span> Ensure You Are Using Zsh</h2>
+        <p>macOS defaults to Zsh since macOS Catalina. If your terminal was running <code>bash</code>, switch to Zsh first:</p>
+        
+        <p>Run the switch command:</p>
+        <pre><code>chsh -s /bin/zsh</code></pre>
+        <p>If you prefer using the macOS Terminal UI:</p>
+        <ol style="margin-left: 20px; color: #cbd5e1; margin-bottom: 12px;">
+            <li>Go to <strong>Terminal</strong> &gt; <strong>Settings</strong> (or Preferences) &gt; <strong>General</strong>.</li>
+            <li>Set <em>"Shells open with"</em> to <strong>Command (complete path)</strong>.</li>
+            <li>Enter <code>/bin/zsh</code> and restart Terminal.</li>
+        </ol>
+        <p>Verify by checking the top bar of your Terminal window or running <code>echo $SHELL</code>. It should indicate <code>zsh</code>.</p>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="card">
+        <h2><span class="step-number">2</span> Open Your Zsh Configuration File</h2>
+        <p>Open (or create) the <code>.zshrc</code> file in your user home directory using TextEdit:</p>
+        <pre><code>touch ~/.zshrc; open -e ~/.zshrc</code></pre>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="card">
+        <h2><span class="step-number">3</span> Add the Custom Colorized Prompt</h2>
+        <p>To combine colored text for your username & machine with a solid blue background block for your path, add these lines to your <code>.zshrc</code> file:</p>
+        
+        <pre><code># Enable prompt variable substitution
+setopt prompt_subst
+
+# Custom colored prompt with contrasting path background
+export PROMPT='%F{cyan}%n%f@%F{green}%m%f:%K{blue}%F{white} %~ %f%k %# '
+
+# Enable colors for file/directory listings (ls)
+export CLICOLOR=1
+export LSCOLORS=Gxfxcxdxbxegedabagacad</code></pre>
+
+        <p><strong>Visual Preview of Your New Prompt:</strong></p>
+        <div class="prompt-preview">
+            <span class="user-cyan">username</span>@<span class="host-green">macbook-name</span>:<span class="path-badge"> ~ </span> %
+        </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="card">
+        <h2><span class="step-number">4</span> Zsh Formatting Syntax Reference</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Meaning / Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>%n</code></td>
+                    <td>Username</td>
+                </tr>
+                <tr>
+                    <td><code>%m</code></td>
+                    <td>Hostname / Machine Name</td>
+                </tr>
+                <tr>
+                    <td><code>%~</code></td>
+                    <td>Current Working Directory Path (uses <code>~</code> for home)</td>
+                </tr>
+                <tr>
+                    <td><code>%F{color}</code> / <code>%f</code></td>
+                    <td>Start Foreground (Text) Color / Reset Text Color</td>
+                </tr>
+                <tr>
+                    <td><code>%K{color}</code> / <code>%k</code></td>
+                    <td>Start Background Block Color / Reset Background Color</td>
+                </tr>
+                <tr>
+                    <td><code>%#</code></td>
+                    <td>Prompt symbol (<code>%</code> for standard user, <code>#</code> for root)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="card">
+        <h2><span class="step-number">5</span> Save and Apply Changes</h2>
+        <p>1. Save the file in TextEdit (<code>Cmd + S</code>) and close it.</p>
+        <p>2. Reload your configuration in Terminal by running:</p>
+        <pre><code>source ~/.zshrc</code></pre>
+
+        <div class="tip-box">
+            <p><strong>Conda / Anaconda Note:</strong> If you see <code>(base)</code> in front of your prompt, Conda is active. The custom prompt above preserves your formatting and path colors alongside Conda environment indicators.</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>Generated for macOS Terminal Customization &bull; Zsh Guide</p>
+    </footer>
+</div>
+
+</body>
+</html>
