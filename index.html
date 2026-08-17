@@ -31,10 +31,31 @@
         padding-bottom: 4rem;
       }
 
+      .logo-frame {
+        position: relative;
+        width: min(70vw, 32rem);
+      }
+
       .logo {
         display: block;
-        width: min(70vw, 32rem);
+        width: 100%;
         height: auto;
+      }
+
+      /* Night: the mark is a black disc, so ring it to lift it off the page.
+         Percentages match the disc inside gitlabrador.webp (bbox 24,234-757,959
+         of 784x1168), so the ring tracks the logo at any size. */
+      [data-daylight="night"] .logo-frame::after {
+        content: "";
+        position: absolute;
+        top: 51.1%;
+        left: 49.8%;
+        width: 99%;
+        aspect-ratio: 1;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
       }
 
       .site-footer {
@@ -96,11 +117,25 @@
         white-space: nowrap;
         transform: translateX(-50%);
       }
+
+      /* Night palette, swapped with the logo at sunset and back at sunrise. */
+      [data-daylight="night"] body {
+        background: #000;
+      }
+
+      [data-daylight="night"] .footer-nav a,
+      [data-daylight="night"] .footer-nav a:hover,
+      [data-daylight="night"] .footer-signoff,
+      [data-daylight="night"] .memorial {
+        color: #fff;
+      }
     </style>
   </head>
   <body>
     <main>
-      <img class="logo" id="logo" alt="">
+      <div class="logo-frame">
+        <img class="logo" id="logo" alt="">
+      </div>
       <noscript>
         <img class="logo" src="HandlerPath_Gators.webp" width="1254" height="1254" alt="Handler Path logo">
       </noscript>
