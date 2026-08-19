@@ -57,7 +57,7 @@ header.top{
   width:132px;height:auto;flex:none;display:block;
   filter:drop-shadow(0 6px 18px rgba(27,32,40,.14));
 }
-.hero h1{font-size:38px;line-height:1.12;letter-spacing:-.025em;margin:0 0 10px}
+.hero h1{font-size:clamp(25px,4.6vw,38px);line-height:1.12;letter-spacing:-.025em;margin:0 0 10px}
 .hero p{margin:0;color:var(--ink-soft);font-size:17px;max-width:640px}
 .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
 .pill{
@@ -189,9 +189,18 @@ footer{
 .memorial{
   font-size:10px;font-weight:600;letter-spacing:.08em;color:var(--ink);opacity:.45;
 }
+/* Tables carry long prose in up to 5 columns; scroll them rather than
+   crushing the columns or widening the page. */
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tablewrap table{min-width:30rem}
+.tablewrap.wide table{min-width:44rem}
+td,th{overflow-wrap:break-word}
 .hidden{display:none !important}
 mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
 @media (max-width:860px){
+  /* The topbar wraps to two rows here, so anchor targets need to clear more. */
+  html{scroll-padding-top:132px}
+  section.block,.card{scroll-margin-top:132px}
   .layout{grid-template-columns:1fr;gap:0}
   nav.side{display:none}
   .hero h1{font-size:29px}
@@ -200,6 +209,22 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
   .tabs{margin-left:0}
   .topbar{flex-wrap:wrap}
   .searchbox{max-width:none;order:3;flex-basis:100%}
+}
+@media (max-width:560px){
+  .wrap{padding:0 15px}
+  .hero{padding:26px 15px 20px}
+  .heroflex{flex-direction:column;align-items:flex-start;gap:16px}
+  .herologo{width:64px}
+  .hero p{font-size:15.5px}
+  .card{padding:18px 16px}
+  .card h3{font-size:19px}
+  .layout{padding:24px 0 60px}
+  .topbar{gap:12px;padding:12px 0}
+  .tab{padding:7px 11px;font-size:13px}
+  ol.steps li{padding-left:34px}
+  .tablewrap table{min-width:26rem}
+  pre{font-size:11.5px;padding:12px}
+  footer{padding:22px 15px 40px}
 }
 @media print{
   header.top,nav.side,.tabs,.searchbox{display:none}
@@ -639,13 +664,13 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
           <li>Run the item until it is clean, then swap to the next one.</li>
         </ol>
         <h4>Why each item is a different problem</h4>
-        <table>
+        <div class="tablewrap"><table>
           <tr><th>Property</th><th>What it changes</th><th>Example</th></tr>
           <tr><td>Shape</td><td>Where the dog starts its teeth. A center grab point is easy. A flat object lying on a surface is not.</td><td>Bone toy vs. phone</td></tr>
           <tr><td>Texture</td><td>Grip. Chewed soft plastic grips well. Smooth glass with slobber on it is an ice rink with no tooth hook.</td><td>Phone screen, key card</td></tr>
           <tr><td>Weight and balance</td><td>Grabbing an end throws the balance off. The middle is balanced. The dog has to make calculated adjustments mid-carry.</td><td>Phone, remote</td></tr>
           <tr><td>Familiarity</td><td>Soft plastic reads as chew toy. Every dog wants to chew a TV remote, which makes it one of the trickier objects to teach.</td><td>TV remote</td></tr>
-        </table>
+        </table></div>
         <div class="note good"><b>Support harder items more</b>Raise your encouragement on difficult objects so the item never becomes something that overwhelms or deters the dog. Then give the dog time to process. Let it approach, figure out what it is dealing with, and only then add support. If the item falls, let the dog register what happened before you re-ignite.</div>
         <div class="note warn"><b>The exception: chew-prone items</b>A TV remote is soft plastic and every dog wants to treat it as a chew toy. Given time, the dog rewrites what the object means. On items like this, speed the retrieval up and cut any spare time spent fussing with the item. Processing time helps on a hard-to-grip object. It hurts on a temptingly chewable one.</div>
 
@@ -787,7 +812,7 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
         <h3>Personality Types</h3>
         <p class="sub">Same curriculum. Opposite handling.</p>
         <p>Dogs get sorted into personality categories, and the category decides which direction you push. Two dogs can run the identical exercise and need the exact opposite thing from you.</p>
-        <table>
+        <div class="tablewrap"><table>
           <tr><th></th><th>Driver</th><th>Safety-seeking</th></tr>
           <tr><td><b>Example</b></td><td>Flap, 1.5 years</td><td>William, just over 1 year</td></tr>
           <tr><td><b>Core trait</b></td><td>Driven to work. Wants to stay busy. Confident and forward-minded.</td><td>Seeks safety and comfort. Avoids what feels uncomfortable.</td></tr>
@@ -795,7 +820,7 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
           <tr><td><b>Your job</b></td><td>Slow the dog down. Build patience. Add pauses.</td><td>Build the dog up. Encourage heavily. Throw a party for small effort.</td></tr>
           <tr><td><b>Energy you spend</b></td><td>Managing and containing what is already there.</td><td>Generating and sharing energy the dog does not have yet.</td></tr>
           <tr><td><b>What success looks like</b></td><td>Fast and messy. You get to the finish line, then clean it up.</td><td>Slow and careful. The question is whether you reach the finish line at all.</td></tr>
-        </table>
+        </table></div>
         <div class="note good"><b>Both are valid</b>Neither is a bad quality. A driver dog shows high work ethic. A safety-seeking dog shows caution and trust. Read which one is in front of you and adjust your approach before the session starts.</div>
         <div class="note"><b>Age changes expectations</b>An older dog further through the program has been exposed to more and gets less room to make mistakes. A younger dog gets a wider margin. Match the standard to how long the dog has been learning.</div>
         <h4>The analytical mind</h4>
@@ -843,7 +868,7 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
       <div class="card" id="reading">
         <h3>Reading the Dog</h3>
         <p class="sub">The dog cannot say "I'm frustrated." It can only show you.</p>
-        <table>
+        <div class="tablewrap"><table>
           <tr><th>Signal</th><th>What it usually means</th><th>What to do</th></tr>
           <tr><td>Drooling, antsiness on entry</td><td>Anticipation building toward anxiety</td><td>Ask for a settled down-stay. Reset as needed.</td></tr>
           <tr><td>Popping up from a down-stay</td><td>Impatience, trying to lead the session</td><td>Reset every single time. No reaction beyond the reset.</td></tr>
@@ -855,7 +880,7 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
           <tr><td>Chewing an object mid-task</td><td>Self-soothing. The task got harder than expected.</td><td>Redirect with <span class="cue">That's it</span>. Do not go silent.</td></tr>
           <tr><td>Noticing a dropped treat but staying on task</td><td>Environmental awareness without derailment</td><td>Nothing. This is the trait you want.</td></tr>
           <tr><td>Spitting an item out on hearing "Yes"</td><td>Marker timing error. The dog is making room for food.</td><td>Re-engage and mark the handover instead.</td></tr>
-        </table>
+        </table></div>
         <div class="note good"><b>Awareness is not a fault</b>A dog that notices a toy, a smell, or a dropped treat and keeps working is showing you something valuable. It is affected by its environment and still holds its priority. That is not a robot, that is a service dog.</div>
         <div class="note"><b>Both are stress</b>Activated and inhibited are two valid expressions of the same thing. Inhibited dogs are easier to miss and easier to accidentally push too far.</div>
       </div>
@@ -951,7 +976,7 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
 
       <div class="card" id="cues">
         <h3>Full Cue List</h3>
-        <table>
+        <div class="tablewrap"><table>
           <tr><th>Cue</th><th>Behavior</th><th>Status</th></tr>
           <tr><td><span class="cue">Yes</span></td><td>Marker. Stamps the correct behavior. Always followed by a reward.</td><td>Core</td></tr>
           <tr><td><span class="cue">That's it</span></td><td>Encouragement. The only phrase that repeats.</td><td>Core</td></tr>
@@ -977,7 +1002,7 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
           <tr><td><span class="cue">Go search</span></td><td>Find a hidden scented target unaided.</td><td>Trained</td></tr>
           <tr><td><span class="cue">Bring it here</span></td><td>Carry the item to the handler.</td><td>Trained</td></tr>
           <tr><td><span class="cue">Wait</span></td><td>Hold before proceeding. Used to set up dress.</td><td>Trained</td></tr>
-        </table>
+        </table></div>
         <div class="note"><b>Scale</b>The full program covers roughly 80 commands. This list is what has come up in sessions so far.</div>
       </div>
 
@@ -1099,7 +1124,7 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
           </ul>
 
           <h4>Progress</h4>
-          <table>
+          <div class="tablewrap"><table>
             <tr><th>Skill</th><th>Method</th><th>Result</th></tr>
             <tr><td>Dress</td><td>Hold vest open, treat through the far side, "dress"</td><td>Walked himself through repeatedly. No ear sensitivity, though he noticed the straps.</td></tr>
             <tr><td>Tug, practice door</td><td>Rope held slightly angled, "tug" once</td><td>Gentle grab, enough strength to swing it open. Excited, antsy, food-driven, some frustration.</td></tr>
@@ -1109,7 +1134,7 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
             <tr><td>Fridge sequence, one cue</td><td>"Get the bottle" only</td><td>Close. Confused opening with closing — went back to the tug rope. Technically closed it, under the wrong expectation.</td></tr>
             <tr><td>Fridge sequence, second attempt</td><td>Same</td><td>Better. Real push on the close with the rope still dangling as a distraction.</td></tr>
             <tr><td>Scent search</td><td>"Go search," cup hidden, no help given</td><td>Found it every round. Used pattern searching, memory of prior spots, and visual tracking.</td></tr>
-          </table>
+          </table></div>
 
           <h4>Handler lesson: reward timing</h4>
           <p>Rick reached for the treat partway through a retrieve. Flap dropped the bottle and fixated on food, since he only has room for one thing in his mouth. Ketcher chose to push the follow-through rather than reset, and Rick held him accountable through it. It took longer and Flap got spun up, but he completed the task. Resetting would also have been valid — the mistake was the mid-rep drift, not the choice.</p>
@@ -1165,7 +1190,7 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
           </ul>
 
           <h4>Progress</h4>
-          <table>
+          <div class="tablewrap"><table>
             <tr><th>Skill</th><th>Method</th><th>Result</th></tr>
             <tr><td>Polite greeting</td><td>"Go say hi," no treats, hands up and away if unwanted</td><td>Worked the room. Quick to move person to person, needs slowing.</td></tr>
             <tr><td>Two-second pause</td><td>Name, "yes," freeze 2s, reach, pause, deliver</td><td>Responds well once set up for success. Shifts back and sits.</td></tr>
@@ -1176,7 +1201,7 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
             <tr><td>Retrieval, remote</td><td>"Get the remote"</td><td>Successful with re-gripping and some chewing. Soft plastic reads as chew toy.</td></tr>
             <tr><td>Retrieval, key card</td><td>"Get the card"</td><td>Completed and handed over. He likes the card enough that it needs watching.</td></tr>
             <tr><td>Drop it into cart</td><td>Point at target, "drop it"</td><td>Finicky. Small target produced frustration and required setup adjustments.</td></tr>
-          </table>
+          </table></div>
 
           <h4>Behavior notes: Flap</h4>
           <ul class="plain">
@@ -1233,14 +1258,14 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
           </ul>
 
           <h4>Progress</h4>
-          <table>
+          <div class="tablewrap"><table>
             <tr><th>Skill</th><th>Method</th><th>Result</th></tr>
             <tr><td>Eye contact / marker</td><td>Say name, reward direct eye contact only</td><td>Consistent engagement. Some treat-pouch fixation noted.</td></tr>
             <tr><td>Touch button</td><td>Say "touch" once, then "that's it"</td><td>Repeated successful presses. Distance and distraction added.</td></tr>
             <tr><td>Retrieval (bone toy)</td><td>Hand item, short hold, release on "yes"</td><td>Extended from 1-second hold to full room-distance delivery.</td></tr>
             <tr><td>Retrieval with distraction</td><td>Same task near the feared carpet spot</td><td>Initially avoided. Succeeded after the setup was moved.</td></tr>
             <tr><td>Alternate object (remote)</td><td>Repeat "get it" with new item</td><td>Generalized successfully.</td></tr>
-          </table>
+          </table></div>
 
           <h4>Behavior note: carpet avoidance</h4>
           <ul class="plain">
@@ -1314,13 +1339,13 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
         <div class="card">
           <h3>The Dogs</h3>
           <p class="sub">Six dogs currently in the program. These are the ones seen in sessions.</p>
-          <table>
+          <div class="tablewrap wide"><table>
             <tr><th>Dog</th><th>Age</th><th>Personality</th><th>Stress style</th><th>Handling note</th></tr>
             <tr><td><b>Flap</b></td><td>1.5 yrs, oldest in the group</td><td>Driver. Motivated, confident, high work ethic.</td><td>Activated</td><td>Slow him down. Build patience. Expect messy success.</td></tr>
             <tr><td><b>William</b></td><td>Just over 1 yr, Lab</td><td>Safety-seeking. Cuddly, cautious, trust-based.</td><td>Inhibited</td><td>Build him up. Heavy encouragement. Watch for hidden fear.</td></tr>
             <tr><td>Unnamed female</td><td>Just turned 1, arrived at 10 months</td><td>Short-fused. Frustration escalates fast.</td><td>Activated</td><td>Arrived too unregulated to focus on service work. Regulation comes before curriculum. Lives in a shared-wall townhouse, so ignoring may not be viable there.</td></tr>
             <tr><td>Incoming puppy</td><td>10–12 weeks, expected</td><td>Not yet assessed</td><td>—</td><td>Socialization and play only. No task work.</td></tr>
-          </table>
+          </table></div>
           <p>This site averages five to six dogs at a time. Youngest is around eight months. Flap is a high candidate to be a breeding helper.</p>
         </div>
       </div>
