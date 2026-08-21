@@ -67,7 +67,17 @@ header.top{
 
 /* Layout */
 .layout{display:grid;grid-template-columns:230px 1fr;gap:44px;padding:36px 0 90px;align-items:start}
-nav.side{position:sticky;top:78px}
+nav.side{
+  position:sticky;top:78px;
+  max-height:calc(100vh - 100px);
+  overflow-y:auto;overscroll-behavior:contain;
+  padding-right:8px;
+  scrollbar-width:thin;scrollbar-color:var(--line) transparent;
+}
+nav.side::-webkit-scrollbar{width:8px}
+nav.side::-webkit-scrollbar-track{background:transparent}
+nav.side::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px}
+nav.side:hover::-webkit-scrollbar-thumb{background:#d0c9ba}
 nav.side h4{
   font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-soft);
   margin:0 0 10px;font-weight:700;
@@ -1745,6 +1755,7 @@ document.querySelectorAll('.tab').forEach(function(t){
     document.getElementById('view-log').classList.toggle('hidden', v!=='log');
     document.getElementById('nav-curriculum').classList.toggle('hidden', v!=='curriculum');
     document.getElementById('nav-log').classList.toggle('hidden', v!=='log');
+    var sb = document.querySelector('nav.side'); if(sb) sb.scrollTop = 0;
     window.scrollTo({top:0,behavior:'smooth'});
   });
 });
