@@ -151,10 +151,12 @@
       }
 
       .alarm-status {
-        font-size: 0.6875rem;
+        /* Scales with the viewport like the clock below it, so the armed
+           readout stays legible across the row instead of at a fixed 11px. */
+        font-size: clamp(1rem, 4vw, 1.5rem);
         font-weight: 600;
-        letter-spacing: 0.12em;
-        opacity: 0.6;
+        letter-spacing: 0.1em;
+        opacity: 0.7;
       }
 
       .clock {
