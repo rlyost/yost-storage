@@ -54,6 +54,7 @@
       main {
         display: grid;
         place-items: center;
+        gap: clamp(1rem, 3vh, 2rem);
         min-height: calc(100svh - 4rem);
         padding-bottom: clamp(8rem, 24vh, 12rem);
       }
@@ -130,8 +131,6 @@
         text-underline-offset: 0.2rem;
       }
 
-      /* Sits above the clock so an armed alarm is visible without opening
-         the panel. Hidden entirely while idle. */
       /* One centred stack at the foot of the page. Grouping these lets the
          clock resize without four hand-tuned offsets drifting out of step. */
       .footer-stack {
@@ -150,12 +149,17 @@
         transform: translateX(-50%);
       }
 
+      /* Sits above the logo so an armed alarm is the first thing read on the
+         page, without opening the panel. Hidden entirely while idle, which
+         also drops its grid row so the logo stays centred. */
       .alarm-status {
-        /* Scales with the viewport like the clock below it, so the armed
-           readout stays legible across the row instead of at a fixed 11px. */
-        font-size: clamp(1rem, 4vw, 1.5rem);
+        /* Scales with the viewport like the clock, capped just under the
+           clock's size so it reads as a headline without crowding the logo. */
+        font-size: clamp(1.75rem, 7vw, 3rem);
         font-weight: 600;
         letter-spacing: 0.1em;
+        color: #111;
+        text-align: center;
         opacity: 0.7;
       }
 
@@ -448,6 +452,7 @@
       [data-daylight="night"] .footer-nav a,
       [data-daylight="night"] .footer-nav a:hover,
       [data-daylight="night"] .footer-nav .nav-action,
+      [data-daylight="night"] .alarm-status,
       [data-daylight="night"] .footer-stack {
         color: #fff;
       }
@@ -566,6 +571,7 @@
   </head>
   <body>
     <main>
+      <div class="alarm-status" id="alarm-status" hidden></div>
       <div class="logo-frame">
         <img class="logo" id="logo" alt="">
       </div>
@@ -669,7 +675,6 @@
         <button type="button" class="nav-action" id="alarm-link" aria-haspopup="dialog">Set Alarm</button>
       </nav>
       <div class="footer-stack">
-        <div class="alarm-status" id="alarm-status" hidden></div>
         <div class="clock" id="clock" role="timer" aria-live="off"></div>
         <div class="footer-signoff">RLTW!</div>
         <div class="memorial">In Memoriam: Regnar, Sabot, BoBo.</div>
