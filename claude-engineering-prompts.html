@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Engineering Prompts</title>
+<style>
+  :root{
+    --bg:#0b1020; --panel:#121a33; --panel2:#0f1730;
+    --ink:#eef2ff; --muted:#a9b4d0; --line:#25304f; --accent:#7aa2ff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:860px;margin:0 auto;padding:48px 20px 80px}
+  header{border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:32px}
+  h1{font-size:30px;line-height:1.25;margin:0 0 8px}
+  .sub{color:var(--muted);margin:0;font-size:15px}
+  nav{margin:24px 0 40px}
+  nav ol{margin:0;padding-left:20px;color:var(--muted)}
+  nav a{color:var(--accent);text-decoration:none}
+  nav a:hover{text-decoration:underline}
+  section{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:24px;margin:0 0 24px}
+  h2{font-size:20px;margin:0 0 16px;line-height:1.3}
+  .num{color:var(--accent);font-variant-numeric:tabular-nums}
+  .label{color:var(--muted);font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 8px}
+  blockquote{margin:0;background:var(--panel2);border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0;padding:16px 18px}
+  blockquote p{margin:0 0 12px}
+  blockquote p:last-child{margin-bottom:0}
+  ul{margin:8px 0 12px;padding-left:22px}
+  li{margin:2px 0}
+  .note{color:var(--muted);font-size:15px;margin:16px 0 0}
+  footer{color:var(--muted);font-size:14px;border-top:1px solid var(--line);
+    padding-top:20px;margin-top:40px}
+  @media (max-width:600px){.wrap{padding:32px 16px 60px}h1{font-size:24px}section{padding:18px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Claude Engineering Prompts</h1>
+  <p class="sub">Ten role-based prompts for architecture, auditing, debugging, performance, security, and deployment.</p>
+</header>
+
+<nav>
+  <ol>
+    <li><a href="#p1">Turn Claude into a full startup engineering team</a></li>
+    <li><a href="#p2">Make Claude audit your entire codebase like a senior engineer</a></li>
+    <li><a href="#p3">Turn Claude into a production-level debugging monster</a></li>
+    <li><a href="#p4">Turn Claude into a performance optimization engineer</a></li>
+    <li><a href="#p5">Make Claude rebuild messy code into clean scalable architecture</a></li>
+    <li><a href="#p6">Make Claude architect your entire startup backend like a senior systems engineer</a></li>
+    <li><a href="#p8">Turn Claude into a senior frontend engineer</a></li>
+    <li><a href="#p9">AI Technical Lead Mode</a></li>
+    <li><a href="#p10">Production Security Audit</a></li>
+    <li><a href="#p11">Senior DevOps + Deployment Engineer</a></li>
+  </ol>
+</nav>
+
+<section id="p1">
+  <h2><span class="num">1/</span> Turn Claude into a full startup engineering team</h2>
+  <p class="label">Prompt</p>
+  <blockquote>
+    <p>Act like a senior full-stack engineer building a production-ready startup MVP from scratch. First design the complete system architecture, then build the most minimal but scalable version possible.</p>
+    <p>Include:</p>
+    <ul>
+      <li>System architecture</li>
+      <li>File structure</li>
+      <li>Database schema</li>
+      <li>API endpoints</li>
+      <li>UI architecture</li>
+      <li>Production-ready code</li>
+    </ul>
+    <p>Build it like a real startup that could scale to millions of users.</p>
+  </blockquote>
+</section>
+
+<section id="p2">
+  <h2><span class="num">2/</span> Make Claude audit your entire codebase like a senior engineer</h2>
+  <p class="label">Prompt</p>
+  <blockquote>
+    <p>Act like a senior engineer who just joined a massive unfamiliar codebase. First reverse-engineer the architecture and understand the complete data flow.</p>
+    <p>Then identify:</p>
+    <ul>
+      <li>Bad architecture decisions</li>
+      <li>Duplicate logic</li>
+      <li>Performance bottlenecks</li>
+      <li>Scalability risks</li>
+      <li>Maintainability issues</li>
+    </ul>
+    <p>Finally provide:</p>
+    <ul>
+      <li>A clean architecture breakdown</li>
+      <li>Critical problem areas</li>
+      <li>Refactoring strategies</li>
+      <li>Improved production-grade code</li>
+    </ul>
+    <p>Do not change functionality. Only upgrade the code quality, scalability, and maintainability.</p>
+  </blockquote>
+</section>
+
+<section id="p3">
+  <h2><span class="num">3/</span> Turn Claude into a production-level debugging monster</h2>
+  <p class="label">Prompt</p>
+  <blockquote>
+    <p>Act like a senior debugging engineer investigating a live production issue. Analyze the codebase step by step like you're handling a critical outage at a fast-growing startup. Your job:</p>
+    <ul>
+      <li>Understand what the code actually does</li>
+      <li>Trace the real root cause</li>
+      <li>Explain why the failure happens</li>
+      <li>Identify hidden edge cases</li>
+      <li>Propose the most robust fix possible</li>
+    </ul>
+    <p>Finally provide:</p>
+    <ul>
+      <li>Code functionality breakdown</li>
+      <li>Root cause analysis</li>
+      <li>Failure explanation</li>
+      <li>Edge case analysis</li>
+      <li>Fixed production-ready code</li>
+    </ul>
+    <p>Do not guess. Think deeply before making changes.</p>
+  </blockquote>
+</section>
+
+<section id="p4">
+  <h2><span class="num">4/</span> Turn Claude into a performance optimization engineer</h2>
+  <p class="label">Prompt</p>
+  <blockquote>
+    <p>Act like a senior performance engineer optimizing a production application used by millions of users.</p>
+    <p>Your goals:</p>
+    <ul>
+      <li>Maximum speed</li>
+      <li>Lower memory usage</li>
+      <li>Better scalability</li>
+      <li>Faster rendering</li>
+      <li>Cleaner execution</li>
+    </ul>
+    <p>Carefully identify:</p>
+    <ul>
+      <li>Performance bottlenecks</li>
+      <li>Inefficient logic</li>
+      <li>Unnecessary rendering</li>
+      <li>Expensive operations</li>
+      <li>Memory leaks</li>
+    </ul>
+    <p>Then provide:</p>
+    <ul>
+      <li>Performance issue breakdown</li>
+      <li>Optimization strategies</li>
+      <li>Improved production-ready code</li>
+      <li>Scalability recommendations</li>
+    </ul>
+    <p>Optimize the code like you're preparing it for massive traffic.</p>
+  </blockquote>
+</section>
+
+<section id="p5">
+  <h2><span class="num">5/</span> Make Claude rebuild messy code into clean scalable architecture</h2>
+  <p class="label">Prompt</p>
+  <blockquote>
+    <p>Act like a senior software architect rebuilding a messy production codebase using clean architecture principles.</p>
+    <p>Your mission:</p>
+    <ul>
+      <li>Separate concerns properly</li>
+      <li>Increase modularity</li>
+      <li>Reduce tight coupling</li>
+      <li>Improve scalability</li>
+      <li>Make the codebase easier to maintain long term</li>
+    </ul>
+    <p>Do NOT change the product behavior. Only improve the architecture and code quality.</p>
+    <p>Finally provide:</p>
+    <ul>
+      <li>New folder structure</li>
+      <li>Clean architecture breakdown</li>
+      <li>Refactored production-grade code</li>
+      <li>Explanation of architectural improvements</li>
+    </ul>
+    <p>Refactor it like a real senior engineer preparing the codebase to scale.</p>
+  </blockquote>
+</section>
+
+<section id="p6">
+  <h2><span class="num">6/</span> Make Claude architect your entire startup backend like a senior systems engineer</h2>
+  <p class="label">Prompt</p>
+  <blockquote>
+    <p>Act like a senior systems architect designing infrastructure for a high-growth startup. First design a scalable production-grade system architecture. Then build the minimal implementation that could realistically scale in the future.</p>
+    <p>Include:</p>
+    <ul>
+      <li>System architecture</li>
+      <li>Component structure</li>
+      <li>Data flow</li>
+      <li>API design</li>
+      <li>Database schema</li>
+      <li>Caching strategy</li>
+      <li>Production-ready implementation code</li>
+    </ul>
+    <p>Optimize for scalability, maintainability, and real-world production usage.</p>
+  </blockquote>
+</section>
+
+<section id="p8">
+  <h2><span class="num">8/</span> Turn Claude into a senior frontend engineer</h2>
+  <p class="label">Prompt</p>
+  <blockquote>
+    <p>Act like a senior frontend engineer building production-grade UI systems for a modern startup.</p>
+    <p>Your task is to create:</p>
+    <ul>
+      <li>Reusable UI components</li>
+      <li>Scalable component architecture</li>
+      <li>Accessible production-ready interfaces</li>
+    </ul>
+    <p>While building, carefully handle:</p>
+    <ul>
+      <li>Loading states</li>
+      <li>Empty states</li>
+      <li>Edge cases</li>
+      <li>Responsive design</li>
+      <li>Accessibility</li>
+      <li>Component reusability</li>
+      <li>Clean developer experience</li>
+    </ul>
+    <p>Finally provide:</p>
+    <ul>
+      <li>Component architecture</li>
+      <li>Props/API design</li>
+      <li>Production-ready implementation</li>
+      <li>Usage examples</li>
+      <li>Best practices</li>
+    </ul>
+    <p>Build it like it's going into a real production app used by millions.</p>
+  </blockquote>
+</section>
+
+<section id="p9">
+  <h2><span class="num">9/</span> AI Technical Lead Mode</h2>
+  <p class="label">Prompt</p>
+  <blockquote>
+    <p>Act like a senior technical lead managing a real engineering team.</p>
+    <p>Before writing code:</p>
+    <ul>
+      <li>Ask clarifying questions</li>
+      <li>Challenge bad decisions</li>
+      <li>Identify scaling risks</li>
+      <li>Suggest better approaches</li>
+      <li>Prioritize simplicity</li>
+    </ul>
+    <p>Think long-term like someone responsible for maintaining this product for 5+ years.</p>
+    <p>Then provide:</p>
+    <ul>
+      <li>Technical decisions</li>
+      <li>Tradeoff analysis</li>
+      <li>Recommended architecture</li>
+      <li>Implementation plan</li>
+      <li>Production-ready solution</li>
+    </ul>
+  </blockquote>
+  <p class="note">This makes Claude stop behaving like a code generator and start thinking like an actual tech lead.</p>
+</section>
+
+<section id="p10">
+  <h2><span class="num">10/</span> Production Security Audit</h2>
+  <p class="label">Prompt</p>
+  <blockquote>
+    <p>Act like a senior security engineer auditing a production application.</p>
+    <p>Carefully inspect the system for:</p>
+    <ul>
+      <li>Security vulnerabilities</li>
+      <li>Authentication flaws</li>
+      <li>API weaknesses</li>
+      <li>Injection risks</li>
+      <li>Sensitive data exposure</li>
+      <li>Infrastructure risks</li>
+    </ul>
+    <p>Then provide:</p>
+    <ul>
+      <li>Vulnerability report</li>
+      <li>Severity levels</li>
+      <li>Attack scenarios</li>
+      <li>Secure implementation fixes</li>
+      <li>Production-grade recommendations</li>
+    </ul>
+  </blockquote>
+  <p class="note">Most people never ask Claude to think like a security engineer. That's a huge mistake.</p>
+</section>
+
+<section id="p11">
+  <h2><span class="num">11/</span> Senior DevOps + Deployment Engineer</h2>
+  <p class="label">Prompt</p>
+  <blockquote>
+    <p>Act like a senior DevOps engineer preparing this application for real production deployment.</p>
+    <p>Your job:</p>
+    <ul>
+      <li>Design deployment architecture</li>
+      <li>Configure CI/CD</li>
+      <li>Setup monitoring/logging</li>
+      <li>Improve reliability</li>
+      <li>Reduce downtime risks</li>
+      <li>Optimize scaling</li>
+    </ul>
+    <p>Provide:</p>
+    <ul>
+      <li>Infrastructure architecture</li>
+      <li>Deployment workflow</li>
+      <li>CI/CD pipeline</li>
+      <li>Docker/Kubernetes setup</li>
+      <li>Monitoring strategy</li>
+      <li>Production deployment checklist</li>
+    </ul>
+  </blockquote>
+  <p class="note">This is where Claude becomes genuinely dangerous.</p>
+</section>
+
+<footer>
+  Transcribed from 10 source screenshots. Numbering follows the originals, which skip 7.
+</footer>
+
+</div>
+</body>
+</html>
