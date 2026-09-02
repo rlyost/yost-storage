@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="Step-by-step guide to deploy the Cairnwell Flutter app to the Apple App Store and Google Play Store, including health-app compliance." name="description"/>
+<title>Cairnwell Store Deployment Guide — App Store and Google Play</title>
+<style>
+:root {
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --text: #1e252b;
+  --muted: #5d6972;
+  --accent: #245f94;
+  --accent-dark: #183e62;
+  --border: #dce3e8;
+  --code-bg: #111820;
+  --code-text: #edf4f8;
+  --note: #eef6fb;
+  --warning: #fff7e6;
+  --success: #eef8f0;
+  --danger: #fdecec;
+  --shadow: 0 10px 28px rgba(30, 50, 65, .08);
+  --max-width: 960px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--text);
+  background: var(--bg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.62;
+}
+a { color: var(--accent); }
+a:hover { color: var(--accent-dark); }
+.hero {
+  background: linear-gradient(135deg, #152b3e, #245f94 62%, #3987bd);
+  color: #fff;
+  padding: 68px 24px 58px;
+}
+.hero-inner { max-width: 1160px; margin: 0 auto; }
+.eyebrow {
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-weight: 750;
+  opacity: .8;
+}
+.hero h1 {
+  margin: .35rem 0 .65rem;
+  font-size: clamp(2.35rem, 6vw, 4.4rem);
+  line-height: 1.02;
+  letter-spacing: -.045em;
+}
+.hero p {
+  max-width: 780px;
+  font-size: 1.13rem;
+  margin: 0;
+  opacity: .94;
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin-top: 22px;
+  font-size: .9rem;
+  opacity: .9;
+}
+.hero-meta span strong { font-weight: 700; }
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+.button {
+  border-radius: 9px;
+  padding: 10px 15px;
+  border: 1px solid rgba(255,255,255,.4);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+.button.primary { background: #fff; color: #173a57; border-color: #fff; }
+.button.secondary { background: rgba(255,255,255,.08); color: #fff; }
+.layout {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(230px, 300px) minmax(0, var(--max-width));
+  gap: 34px;
+  padding: 36px 24px 76px;
+  align-items: start;
+}
+.sidebar {
+  position: sticky;
+  top: 18px;
+  max-height: calc(100vh - 36px);
+  overflow: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
+.sidebar h2 { font-size: 1rem; margin: 0 0 12px; }
+.sidebar ol { list-style: none; margin: 0 0 10px; padding: 0; }
+.sidebar li { margin: 4px 0; }
+.sidebar .group {
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--accent-dark);
+  font-weight: 800;
+  margin: 14px 0 4px;
+}
+.sidebar a {
+  display: block;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 5px 7px;
+  border-radius: 6px;
+}
+.sidebar a:hover { color: var(--accent-dark); background: #edf4f8; }
+.document {
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: clamp(26px, 5vw, 58px);
+}
+.content-section { scroll-margin-top: 18px; }
+.content-section + .content-section {
+  margin-top: 2.8rem;
+  padding-top: 2.4rem;
+  border-top: 1px solid var(--border);
+}
+.content-section h2 {
+  color: #183e62;
+  line-height: 1.2;
+  margin: 0 0 1rem;
+  letter-spacing: -.025em;
+  font-size: 1.75rem;
+}
+.content-section h3 { color: #183e62; margin-top: 1.8rem; }
+.part-label {
+  display: inline-block;
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-weight: 800;
+  color: var(--accent);
+  background: #e9f1f8;
+  padding: 3px 9px;
+  border-radius: 20px;
+  margin-bottom: .5rem;
+}
+.anchor { opacity: 0; margin-left: .4rem; text-decoration: none; font-weight: 500; }
+.content-section h2:hover .anchor { opacity: 1; }
+p { margin: .8rem 0; }
+ul, ol { padding-left: 1.5rem; margin: .7rem 0 1rem; }
+li { margin: .35rem 0; }
+pre {
+  overflow-x: auto;
+  padding: 16px 18px;
+  background: var(--code-bg);
+  color: var(--code-text);
+  border-radius: 10px;
+  border: 1px solid #24313c;
+  line-height: 1.5;
+  font-size: .9rem;
+}
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+p code, td code, li code {
+  background: #edf2f5;
+  color: #283943;
+  padding: .12rem .35rem;
+  border-radius: 5px;
+  font-size: .92em;
+}
+table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.4rem; font-size: .95rem; }
+th, td { border: 1px solid var(--border); padding: 10px 12px; text-align: left; vertical-align: top; }
+th { background: #edf4f8; color: #183e62; }
+.callout {
+  margin: 1.2rem 0;
+  padding: 14px 16px;
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  background: var(--note);
+}
+.callout.warning { border-left-color: #c98c19; background: var(--warning); }
+.callout.success { border-left-color: #3e8b52; background: var(--success); }
+.callout.danger { border-left-color: #cf4b4b; background: var(--danger); }
+.callout strong { color: #17383d; }
+.source { color: var(--muted); font-size: .88rem; }
+.steps { counter-reset: step; list-style: none; padding-left: 0; }
+.steps > li {
+  position: relative;
+  padding: 4px 0 14px 46px;
+  margin: 0;
+}
+.steps > li::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  font-weight: 800;
+  font-size: .9rem;
+}
+.checklist { list-style: none; padding: 0; }
+.checklist li {
+  position: relative;
+  padding: 9px 10px 9px 35px;
+  border-bottom: 1px solid var(--border);
+  margin: 0;
+}
+.checklist li::before {
+  content: "\2610";
+  position: absolute;
+  left: 9px;
+  top: 8px;
+  font-size: 1.15rem;
+  color: var(--accent);
+}
+.back-top {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: var(--accent-dark);
+  font-weight: 800;
+}
+.footer { text-align: center; padding: 0 20px 38px; color: var(--muted); font-size: .85rem; }
+@media (max-width: 980px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: static; max-height: none; }
+}
+@media (max-width: 620px) {
+  .hero { padding: 48px 20px 42px; }
+  .layout { padding: 20px 12px 56px; }
+  .document { padding: 23px 19px; border-radius: 10px; }
+  .sidebar { border-radius: 10px; }
+  .back-top { display: none; }
+}
+@media print {
+  @page { margin: .7in; }
+  body { background: #fff; font-size: 10.3pt; }
+  .hero { background: #fff; color: #111; padding: 0 0 20px; border-bottom: 2px solid #222; }
+  .hero-actions, .sidebar, .back-top, .footer { display: none !important; }
+  .layout { display: block; max-width: none; padding: 0; }
+  .document { border: 0; box-shadow: none; padding: 0; }
+  .content-section + .content-section { border-top: 0; }
+  .content-section h2 { break-after: avoid; }
+  pre { white-space: pre-wrap; background: #f4f4f4; color: #111; border: 1px solid #ccc; }
+  a { color: #111; text-decoration: none; }
+}
+</style>
+</head>
+<body id="top">
+<header class="hero">
+<div class="hero-inner">
+<div class="eyebrow">Release Engineering Guide</div>
+<h1>Deploying Cairnwell to the Stores</h1>
+<p>A step-by-step path to ship the Cairnwell Flutter app to the Apple App Store and Google Play, with the extra health-app compliance both stores require.</p>
+<div class="hero-meta">
+<span><strong>App:</strong> Cairnwell (Flutter, iOS and Android)</span>
+<span><strong>App ID:</strong> group.yost.cairnwell</span>
+<span><strong>Method:</strong> Manual, both platforms</span>
+</div>
+<div class="hero-actions">
+<a class="button primary" href="#overview">Start Here</a>
+<button class="button secondary" onclick="window.print()" type="button">Print or Save as PDF</button>
+</div>
+</div>
+</header>
+<main class="layout">
+<aside aria-label="Table of contents" class="sidebar">
+<h2>Contents</h2>
+<div class="group">Get Ready</div>
+<ol>
+<li><a href="#overview">Overview and release model</a></li>
+<li><a href="#prerequisites">Before you start</a></li>
+</ol>
+<div class="group">Part A · Apple App Store</div>
+<ol>
+<li><a href="#a1-enroll">A1. Enroll the Developer Program</a></li>
+<li><a href="#a2-identifiers">A2. App ID and capabilities</a></li>
+<li><a href="#a3-xcode">A3. Configure the Xcode project</a></li>
+<li><a href="#a4-storekit">A4. Set up subscriptions</a></li>
+<li><a href="#a5-build">A5. Build the IPA</a></li>
+<li><a href="#a6-upload">A6. Upload and TestFlight</a></li>
+<li><a href="#a7-listing">A7. Listing, privacy, age rating</a></li>
+<li><a href="#a8-submit">A8. Submit for review</a></li>
+</ol>
+<div class="group">Part B · Google Play</div>
+<ol>
+<li><a href="#b1-account">B1. Create the Play account</a></li>
+<li><a href="#b2-signing">B2. App signing</a></li>
+<li><a href="#b3-android">B3. Configure the Android project</a></li>
+<li><a href="#b4-billing">B4. Set up subscriptions</a></li>
+<li><a href="#b5-build">B5. Build the app bundle</a></li>
+<li><a href="#b6-console">B6. Create the app and test</a></li>
+<li><a href="#b7-declarations">B7. Listing and health declarations</a></li>
+<li><a href="#b8-production">B8. Roll out to production</a></li>
+</ol>
+<div class="group">Wrap Up</div>
+<ol>
+<li><a href="#compliance">Health-app compliance</a></li>
+<li><a href="#timeline">Timeline and updates</a></li>
+<li><a href="#checklist">Master submission checklist</a></li>
+</ol>
+</aside>
+<article class="document">
+
+<section class="content-section" id="overview"><h2>Overview and release model<a class="anchor" href="#overview">#</a></h2>
+<p>Cairnwell is one Flutter codebase that produces two native apps. You build an iOS app for the App Store and an Android app bundle for Google Play, then submit each through its own console. The Dart code stays shared. The store work is platform specific.</p>
+<p>This guide assumes the manual path with no CI system. You build on a Mac, upload through Apple and Google tooling, and press submit in each console. Once the first release is out, you can automate later.</p>
+<p>Because Cairnwell tracks medication and reads health data, both stores apply their health-app rules on top of the normal review. That means organization developer accounts, a published privacy policy, in-app account deletion, purpose strings for every health permission, and formal data declarations. The compliance work is not optional and it drives the timeline, so it runs through every section below.</p>
+<div class="callout">
+<strong>Fixed facts for this project.</strong> Application identifier <code>group.yost.cairnwell</code> on both platforms. Organization identifier <code>group.yost</code> from the domain <code>yost.group</code>. Minimum iOS target 13 or later. Android <code>minSdk 28</code>, <code>compileSdk 36</code>. Subscriptions run through StoreKit on iOS and Google Play Billing on Android at 7.99 monthly and 49.99 annual with a seven-day trial.
+</div>
+<table>
+<thead><tr><th>Track</th><th>Apple</th><th>Google</th></tr></thead>
+<tbody>
+<tr><td>Account type</td><td>Apple Developer Program, Organization</td><td>Play Console, Organization</td></tr>
+<tr><td>Build artifact</td><td><code>.ipa</code> from <code>flutter build ipa</code></td><td><code>.aab</code> from <code>flutter build appbundle</code></td></tr>
+<tr><td>Pre-release testing</td><td>TestFlight</td><td>Internal and closed testing tracks</td></tr>
+<tr><td>Health gate</td><td>HealthKit review, App Privacy labels</td><td>Health apps declaration, Health Connect data-type review, Data safety</td></tr>
+<tr><td>Store fee</td><td>99 USD per year</td><td>25 USD one time</td></tr>
+</tbody>
+</table>
+</section>
+
+<section class="content-section" id="prerequisites"><h2>Before you start<a class="anchor" href="#prerequisites">#</a></h2>
+<p>Gather these once. Both stores ask for the same core material, so preparing it up front saves you from stalling mid-submission.</p>
+<h3>Legal and policy pages</h3>
+<p>Host these at stable public URLs before you submit. Cairnwell cannot pass review without them.</p>
+<ul>
+<li>Privacy policy. It must state that health data is not sold and not used for advertising. On Android the URL you enter in Play must match the policy Health Connect shows when a user taps the privacy link.</li>
+<li>Consumer-health privacy policy that meets the Washington My Health My Data Act, per PRD section 31.4.</li>
+<li>Terms of service.</li>
+<li>Product-boundary statement. Cairnwell records and organizes. It does not diagnose, prescribe, or recommend doses.</li>
+<li>A support contact URL or email and a marketing or support website.</li>
+</ul>
+<h3>Store assets</h3>
+<ul>
+<li>App icon at 1024 by 1024 for Apple and 512 by 512 for Google, no alpha channel, no rounded corners baked in.</li>
+<li>Screenshots for the required device sizes. Apple wants a 6.9 inch iPhone set. Google wants phone screenshots. Use calm, data-focused frames that match PRD section 34 and avoid before-and-after weight-loss imagery.</li>
+<li>A feature graphic at 1024 by 500 for Google Play.</li>
+<li>Short and full descriptions. Keep health claims conservative. A clinical reviewer should sign off on any medical language per PRD section 39.4.</li>
+</ul>
+<h3>Tooling on your Mac</h3>
+<pre><code>flutter --version
+flutter doctor -v</code></pre>
+<p>You want green entries for Flutter, the Android toolchain, Xcode, and CocoaPods. If any are missing, fix them using the Cairnwell setup guide before continuing. Confirm the app runs cleanly on both a simulator and an emulator first.</p>
+<pre><code>flutter clean
+flutter pub get
+flutter analyze
+flutter test</code></pre>
+<div class="callout warning">
+<strong>Decide your version now.</strong> The first public release is usually <code>1.0.0+1</code> in <code>pubspec.yaml</code>. The part before the plus is the user-facing version. The number after the plus is the build number. Every upload to either store needs a higher build number than the last, even for a rejected build you resubmit.
+</div>
+</section>
+
+<section class="content-section" id="a1-enroll"><span class="part-label">Part A · Apple App Store</span><h2>A1. Enroll the Apple Developer Program<a class="anchor" href="#a1-enroll">#</a></h2>
+<p>Cairnwell should ship under an organization account, not a personal one. Organization accounts show your company as the seller, which fits a health product, and they are the practical choice for HealthKit apps.</p>
+<ol class="steps">
+<li>Get a D-U-N-S number for the Yost entity. Apple uses it to verify the organization. Look it up or request it free from Dun and Bradstreet. Allow a few days if you do not already have one.</li>
+<li>Have legal authority to bind the organization, or line up someone who does, because Apple verifies this during enrollment.</li>
+<li>Go to <a href="https://developer.apple.com/programs/enroll/">developer.apple.com/programs/enroll</a> and enroll as an Organization. Pay the 99 USD yearly fee.</li>
+<li>Wait for Apple to verify the entity. This can take a few days and sometimes a phone call. Nothing else on the Apple side can finish until this clears.</li>
+<li>Once approved, sign the Paid Applications Agreement in App Store Connect and fill in banking and tax details. Cairnwell sells subscriptions, so this agreement must be active or your in-app purchases will not work.</li>
+</ol>
+<p class="source">References: <a href="https://developer.apple.com/programs/enroll/">Apple Developer Program enrollment</a> and <a href="https://developer.apple.com/support/D-U-N-S/">Apple D-U-N-S lookup</a>.</p>
+</section>
+
+<section class="content-section" id="a2-identifiers"><h2>A2. Register the App ID and capabilities<a class="anchor" href="#a2-identifiers">#</a></h2>
+<p>Register the identifier and turn on the capabilities Cairnwell uses. These must match what the app declares, or the upload fails.</p>
+<ol class="steps">
+<li>Open <a href="https://developer.apple.com/account/resources/identifiers/list">Certificates, Identifiers and Profiles</a> and create a new App ID. Choose Explicit and enter <code>group.yost.cairnwell</code>.</li>
+<li>Enable the capabilities the app needs now: HealthKit, In-App Purchase, Push Notifications, Sign in with Apple, and Background Modes. In-App Purchase is on for every account by default.</li>
+<li>Register at least one Apple device UDID if you plan to run release builds on hardware before TestFlight. TestFlight itself does not need this.</li>
+<li>Let Xcode manage certificates and profiles automatically. Manual certificates are only worth it once you move to CI.</li>
+</ol>
+<div class="callout">
+<strong>Match the app record.</strong> Whatever you enable here has to match the entitlements in the Xcode project and the App Privacy answers later. If HealthKit is on in the App ID but missing from the project, or the reverse, the build is rejected at upload or review.
+</div>
+</section>
+
+<section class="content-section" id="a3-xcode"><h2>A3. Configure the Xcode project<a class="anchor" href="#a3-xcode">#</a></h2>
+<p>Open the workspace, not the project file. The workspace includes the CocoaPods dependencies that Flutter plugins rely on.</p>
+<pre><code>open ios/Runner.xcworkspace</code></pre>
+<h3>Signing and identity</h3>
+<p>Select the Runner target, then Signing and Capabilities.</p>
+<ul>
+<li>Turn on Automatically manage signing.</li>
+<li>Select the Yost organization team.</li>
+<li>Confirm the bundle identifier reads <code>group.yost.cairnwell</code>.</li>
+<li>Confirm HealthKit, Push Notifications, Background Modes, Sign in with Apple, and In-App Purchase appear as capabilities. Add any that are missing.</li>
+<li>Under Deployment, set the iOS target to 13 or later.</li>
+</ul>
+<h3>Privacy purpose strings</h3>
+<p>Apple rejects health apps that request data without a clear reason. Add plain-language usage strings to <code>ios/Runner/Info.plist</code>. Write them from the user's point of view.</p>
+<pre><code>&lt;key&gt;NSHealthShareUsageDescription&lt;/key&gt;
+&lt;string&gt;Cairnwell reads weight, activity, and nutrition
+data so you can see your progress in one place.&lt;/string&gt;
+
+&lt;key&gt;NSHealthUpdateUsageDescription&lt;/key&gt;
+&lt;string&gt;Cairnwell saves weight, workouts, and nutrition
+you enter back to the Health app when you choose to.&lt;/string&gt;
+
+&lt;key&gt;NSCameraUsageDescription&lt;/key&gt;
+&lt;string&gt;Cairnwell uses the camera for optional progress
+photos, which stay private on your device.&lt;/string&gt;
+
+&lt;key&gt;NSPhotoLibraryUsageDescription&lt;/key&gt;
+&lt;string&gt;Cairnwell can import progress photos you
+select from your library.&lt;/string&gt;</code></pre>
+<div class="callout warning">
+<strong>Request in context.</strong> PRD section 15.3 requires health permissions to be asked for when the related feature is used, not through one blanket request at launch. Confirm the runtime permission flow follows this before you submit, because reviewers test it.
+</div>
+<h3>Icons and version</h3>
+<p>Set the app icons in <code>Assets.xcassets</code> inside the Runner folder. Confirm the version in <code>pubspec.yaml</code> reads <code>1.0.0+1</code>. Flutter maps the name to <code>CFBundleShortVersionString</code> and the build number to <code>CFBundleVersion</code>.</p>
+<p class="source">References: <a href="https://docs.flutter.dev/deployment/ios">Flutter iOS deployment</a> and <a href="https://developer.apple.com/documentation/healthkit/setting-up-healthkit">Setting up HealthKit</a>.</p>
+</section>
+
+<section class="content-section" id="a4-storekit"><h2>A4. Set up subscriptions in App Store Connect<a class="anchor" href="#a4-storekit">#</a></h2>
+<p>Create the app record first, then the subscription products. For a first release, Apple reviews your in-app purchases together with the app, so both must be ready at submission.</p>
+<ol class="steps">
+<li>In <a href="https://appstoreconnect.apple.com/">App Store Connect</a>, open Apps, click the plus, and choose New App. Select iOS, set the name, primary language, and the <code>group.yost.cairnwell</code> bundle ID, then create.</li>
+<li>Open Subscriptions. Create a subscription group, for example Cairnwell Premium.</li>
+<li>Add two auto-renewable subscriptions inside the group: a monthly at 7.99 and an annual at 49.99. Set the annual to offer a seven-day free trial through an introductory offer.</li>
+<li>Add a localized display name, description, and a review screenshot for each product.</li>
+<li>Confirm your backend validates receipts and stores a platform-independent entitlement, per PRD section 28.4. Test with a sandbox account before you submit.</li>
+</ol>
+<div class="callout">
+<strong>Keep pricing configurable.</strong> PRD section 28.3 calls for remotely configurable pricing. Drive entitlement from your backend so you can test 7.99 and 49.99 against alternative price points without shipping a new build.
+</div>
+<p class="source">Reference: <a href="https://developer.apple.com/storekit/">Apple StoreKit</a>.</p>
+</section>
+
+<section class="content-section" id="a5-build"><h2>A5. Build the IPA<a class="anchor" href="#a5-build">#</a></h2>
+<p>Build a signed release archive from the command line.</p>
+<pre><code>flutter clean
+flutter pub get
+flutter build ipa --build-name=1.0.0 --build-number=1</code></pre>
+<p>To protect the Dart code, add obfuscation.</p>
+<pre><code>flutter build ipa --obfuscate --split-debug-info=build/ios/symbols \
+  --build-name=1.0.0 --build-number=1</code></pre>
+<p>This produces an archive under <code>build/ios/archive/</code> and an <code>.ipa</code> under <code>build/ios/ipa/</code>. Keep the symbols folder. You need it to read crash reports later.</p>
+<div class="callout warning">
+<strong>Save your symbols.</strong> If you obfuscate, store the <code>build/ios/symbols</code> output somewhere safe for every release. Without it, crash logs from that build are unreadable.
+</div>
+</section>
+
+<section class="content-section" id="a6-upload"><h2>A6. Upload the build and test on TestFlight<a class="anchor" href="#a6-upload">#</a></h2>
+<ol class="steps">
+<li>Install <a href="https://apps.apple.com/us/app/transporter/id1450874784">Apple Transporter</a> from the Mac App Store. Sign in with the Apple ID tied to the organization account.</li>
+<li>Drag the <code>.ipa</code> from <code>build/ios/ipa/</code> into Transporter and deliver it. You can also open the archive in Xcode and use Validate App, then Distribute App, which catches signing and entitlement problems before delivery.</li>
+<li>Wait for the processing email, usually under 30 minutes. Apple runs an automated pass first.</li>
+<li>Open the TestFlight tab, add the build to Internal Testing, and invite your team. Internal testers do not need a separate Apple review.</li>
+<li>Run the health flows on a real device: HealthKit permission prompts, injection logging, subscription purchase in sandbox, report generation, and account deletion. These are the areas reviewers probe.</li>
+</ol>
+<div class="callout">
+<strong>Closed beta.</strong> To reach the mixed-device beta group in PRD section 41.2, add an External Testing group in TestFlight. External groups need a light Apple review of the first build, which is quick compared to full App Store review.
+</div>
+</section>
+
+<section class="content-section" id="a7-listing"><h2>A7. Store listing, App Privacy, and age rating<a class="anchor" href="#a7-listing">#</a></h2>
+<p>Fill in the App Store product page and the privacy and rating sections. These carry weight for a health app.</p>
+<h3>App Privacy labels</h3>
+<p>In the App Privacy section, declare the data Cairnwell collects and how it is used. State clearly that health data is not sold and not used for advertising, matching PRD section 31.4. Cairnwell does not track users across other companies' apps, so it does not need an App Tracking Transparency prompt. Keep your answers consistent with that.</p>
+<h3>Age rating</h3>
+<p>Cairnwell is for adults, minimum age 18 per the PRD. Answer the age-rating questionnaire so the app lands at a mature rating and set the minimum age in availability where offered.</p>
+<h3>Required URLs and account deletion</h3>
+<ul>
+<li>Enter the privacy policy URL and a support URL.</li>
+<li>Confirm in-app account deletion works and is easy to reach. Apple requires apps that support account creation to also support account deletion inside the app. PRD section 31.5 already specifies this flow.</li>
+<li>Complete Pricing and Availability. United States first, per the PRD.</li>
+</ul>
+</section>
+
+<section class="content-section" id="a8-submit"><h2>A8. Submit for App Store review<a class="anchor" href="#a8-submit">#</a></h2>
+<ol class="steps">
+<li>Attach the processed build to the version.</li>
+<li>In App Review Information, add notes that explain the health features, how to reach account deletion, and a demo account or sandbox subscription steps so the reviewer can test premium features.</li>
+<li>State plainly that Cairnwell is a wellness and recordkeeping tool that does not provide medical advice, diagnose, or recommend doses. This heads off the most common health-app rejection.</li>
+<li>Submit for review.</li>
+</ol>
+<div class="callout warning">
+<strong>Plan for extra time.</strong> Health apps can draw longer or stricter review. PRD section 46 already carries a two to four week buffer. Build that into your launch date and do not promise a hard ship date before the first approval.
+</div>
+<p class="source">Reference: <a href="https://developer.apple.com/app-store/review/guidelines/">Apple App Review Guidelines</a>.</p>
+</section>
+
+<section class="content-section" id="b1-account"><span class="part-label">Part B · Google Play</span><h2>B1. Create the Google Play organization account<a class="anchor" href="#b1-account">#</a></h2>
+<p>Cairnwell should use an organization Play Console account. Google requires an organization account for certain health distributions, and it also exempts you from a testing rule that would otherwise slow your first release.</p>
+<ol class="steps">
+<li>Go to <a href="https://play.google.com/console/signup">play.google.com/console/signup</a> and choose the Organization account type. You need a D-U-N-S number for the Yost entity, the same one Apple uses.</li>
+<li>Pay the one-time 25 USD fee.</li>
+<li>Complete organization verification. Google confirms the entity and your authority to act for it. This can take a few days.</li>
+<li>Set up the Payments profile so you can sell subscriptions.</li>
+</ol>
+<div class="callout success">
+<strong>You skip the 12-tester rule.</strong> Google now requires new personal developer accounts to run a closed test with at least 12 testers for 14 continuous days before production. That rule applies only to personal accounts created after November 13, 2023. Organization accounts are exempt. You still should test, but you are not forced through the 14-day gate.
+</div>
+<p class="source">Reference: <a href="https://support.google.com/googleplay/android-developer/answer/14151465?hl=en">Play testing requirements for new personal accounts</a>.</p>
+</section>
+
+<section class="content-section" id="b2-signing"><h2>B2. Set up app signing<a class="anchor" href="#b2-signing">#</a></h2>
+<p>Google Play signs the app your users download. You sign your uploads with an upload key. Create that key once and keep it safe. Losing it means you cannot ship updates under the same listing.</p>
+<ol class="steps">
+<li>Create an upload keystore.
+<pre><code>keytool -genkey -v -keystore ~/upload-keystore.jks \
+  -keyalg RSA -keysize 2048 -validity 10000 -alias upload</code></pre></li>
+<li>Create <code>android/key.properties</code>. Do not commit it.
+<pre><code>storePassword=your-store-password
+keyPassword=your-key-password
+keyAlias=upload
+storeFile=/Users/yourname/upload-keystore.jks</code></pre></li>
+<li>Wire the signing config into <code>android/app/build.gradle.kts</code>, loading the properties before the <code>android</code> block and referencing them in a release signing config.
+<pre><code>import java.util.Properties
+import java.io.FileInputStream
+
+val keystoreProperties = Properties()
+val keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
+
+android {
+    signingConfigs {
+        create("release") {
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
+            storeFile = keystoreProperties["storeFile"]?.let { file(it) }
+            storePassword = keystoreProperties["storePassword"] as String
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.getByName("release")
+        }
+    }
+}</code></pre></li>
+</ol>
+<div class="callout danger">
+<strong>Guard the keystore and passwords.</strong> Store <code>upload-keystore.jks</code> and <code>key.properties</code> outside the repository, in a password manager or secret store. PRD section 8 lists keystore files among things you must never commit. Back them up in two places.
+</div>
+</section>
+
+<section class="content-section" id="b3-android"><h2>B3. Configure the Android project<a class="anchor" href="#b3-android">#</a></h2>
+<h3>Application ID and SDK levels</h3>
+<p>In <code>android/app/build.gradle.kts</code>, confirm the identity and SDK levels match the project standard.</p>
+<pre><code>applicationId = "group.yost.cairnwell"
+minSdk = 28
+compileSdk = 36
+targetSdk = 36</code></pre>
+<p><code>minSdk 28</code> is the practical floor because Health Connect requires Android 9 or newer.</p>
+<h3>Health Connect permissions</h3>
+<p>Declare only the Health Connect data types tied to visible features, per PRD section 22.2. Add the read and write permissions your features actually use to <code>AndroidManifest.xml</code>, and include the privacy-policy intent that Health Connect looks for.</p>
+<pre><code>&lt;uses-permission android:name="android.permission.health.READ_WEIGHT"/&gt;
+&lt;uses-permission android:name="android.permission.health.WRITE_WEIGHT"/&gt;
+&lt;uses-permission android:name="android.permission.health.READ_STEPS"/&gt;
+&lt;uses-permission android:name="android.permission.health.READ_NUTRITION"/&gt;
+&lt;!-- add only the types Cairnwell actually reads or writes --&gt;</code></pre>
+<div class="callout warning">
+<strong>Request only what you use.</strong> Google reviews every Health Connect permission against a visible feature. Extra permissions with no matching feature cause rejection. Keep the list tight and be ready to justify each one in the declaration.
+</div>
+</section>
+
+<section class="content-section" id="b4-billing"><h2>B4. Set up subscriptions in Play Console<a class="anchor" href="#b4-billing">#</a></h2>
+<p>Create the products in Google Play Billing to mirror the Apple setup.</p>
+<ol class="steps">
+<li>In Play Console, open Monetize, then Subscriptions.</li>
+<li>Create a monthly base plan at 7.99 and an annual base plan at 49.99.</li>
+<li>Add a seven-day free trial as an offer on the annual plan.</li>
+<li>Confirm your backend validates Play purchases and shares the same entitlement record used on iOS, per PRD section 28.4.</li>
+<li>Test purchases with a license-test account before you promote a build to production.</li>
+</ol>
+</section>
+
+<section class="content-section" id="b5-build"><h2>B5. Build the app bundle<a class="anchor" href="#b5-build">#</a></h2>
+<p>Build a signed Android App Bundle. Google Play prefers bundles over APKs.</p>
+<pre><code>flutter clean
+flutter pub get
+flutter build appbundle --build-name=1.0.0 --build-number=1</code></pre>
+<p>With obfuscation:</p>
+<pre><code>flutter build appbundle --obfuscate --split-debug-info=build/android/symbols \
+  --build-name=1.0.0 --build-number=1</code></pre>
+<p>The bundle lands at <code>build/app/outputs/bundle/release/app-release.aab</code>. Flutter maps the build name to <code>versionName</code> and the build number to <code>versionCode</code>. Every upload needs a higher <code>versionCode</code> than the last.</p>
+</section>
+
+<section class="content-section" id="b6-console"><h2>B6. Create the app and run internal testing<a class="anchor" href="#b6-console">#</a></h2>
+<ol class="steps">
+<li>In Play Console, create the app. Set the name, default language, that it is an app not a game, and that it is free with in-app purchases.</li>
+<li>Open Testing, then Internal testing. Create a release, upload <code>app-release.aab</code>, and accept Play App Signing when prompted. Google generates and holds the app signing key. You keep signing with your upload key.</li>
+<li>Add your team as internal testers with their Google accounts and share the opt-in link.</li>
+<li>Install through the link and run the health flows: Health Connect permissions, injection logging, subscription purchase, report generation, and account deletion.</li>
+<li>When internal testing looks good, promote to a Closed testing track for the wider beta group in PRD section 41.2.</li>
+</ol>
+</section>
+
+<section class="content-section" id="b7-declarations"><h2>B7. Store listing and health declarations<a class="anchor" href="#b7-declarations">#</a></h2>
+<p>This is where the Android health-app work concentrates. Complete all of it before you request production.</p>
+<h3>Main store listing</h3>
+<p>Add the icon, feature graphic, screenshots, short description, and full description. Keep medical language conservative and clinically reviewed.</p>
+<h3>Data safety</h3>
+<p>Declare what Cairnwell collects, how it is used, whether it is shared, and how it is secured. State that health data is not sold and not used for advertising. Your answers here must line up with the privacy policy and the Health Connect declaration.</p>
+<h3>Health apps declaration</h3>
+<p>Every app on Play must complete the Health apps declaration. Cairnwell falls under Medication management, and likely Nutrition and weight management and Activity and fitness tracking as well. Select the categories that match the features you ship and justify each.</p>
+<h3>Health Connect data-type review</h3>
+<p>Because Cairnwell requests Health Connect permissions, you declare each data type and give a clear reason tied to a feature. Request the minimum needed. Your Play Store privacy-policy URL must match the policy Health Connect displays. Apps that request Health Connect access without an approved declaration show users a dialog saying the app cannot access Health Connect, so this step gates the integration.</p>
+<div class="callout">
+<strong>Set the content rating and target audience.</strong> Complete the content-rating questionnaire and set the target audience to adults, matching the 18 and older requirement. Provide the account-deletion details Google asks for, since in-app deletion is required and already built per PRD section 31.5.
+</div>
+<p class="source">References: <a href="https://support.google.com/googleplay/android-developer/answer/14738291?hl=en">Health apps declaration form</a>, <a href="https://developer.android.com/health-and-fitness/health-connect/publish">Publish a Health Connect app</a>, and <a href="https://support.google.com/googleplay/android-developer/answer/13996367?hl=en">Google Play health apps policy</a>.</p>
+</section>
+
+<section class="content-section" id="b8-production"><h2>B8. Roll out to production<a class="anchor" href="#b8-production">#</a></h2>
+<ol class="steps">
+<li>Confirm every section under App content shows complete: privacy policy, data safety, health declarations, content rating, target audience, and ads status. Cairnwell serves no ads, so declare that.</li>
+<li>Open Production, create a release, and reuse the tested bundle by promoting it from a testing track rather than uploading a fresh untested build.</li>
+<li>Use a staged rollout. Start at a small percentage so you can watch crash-free rate and Health Connect behavior on real devices before reaching everyone.</li>
+<li>Submit for review. First-time health apps can take longer than standard review, so treat the timeline like Apple's.</li>
+</ol>
+</section>
+
+<section class="content-section" id="compliance"><span class="part-label">Wrap Up</span><h2>Health-app compliance that spans both stores<a class="anchor" href="#compliance">#</a></h2>
+<p>Both reviews check the same underlying commitments. Get these right once and they carry across Apple and Google.</p>
+<table>
+<thead><tr><th>Requirement</th><th>What reviewers check</th><th>PRD anchor</th></tr></thead>
+<tbody>
+<tr><td>No medical claims</td><td>App and listing describe recordkeeping and wellness, never diagnosis, dosing, or treatment advice</td><td>9, 32</td></tr>
+<tr><td>Purpose strings and scoped permissions</td><td>Every health permission maps to a visible feature and explains itself in plain language</td><td>15.3, 22</td></tr>
+<tr><td>Privacy policy live and consistent</td><td>Public URL, no sale of health data, no health data for ads, matches store answers and Health Connect</td><td>31.3, 31.4</td></tr>
+<tr><td>In-app account deletion</td><td>Reachable inside the app, offers export first, confirms completion</td><td>31.5</td></tr>
+<tr><td>Data export is free</td><td>CSV export available on the free tier as a portability commitment</td><td>24.3</td></tr>
+<tr><td>Analytics exclude health values</td><td>No medication names, doses, weights, or notes in analytics events</td><td>36.2</td></tr>
+<tr><td>Clinical content reviewed</td><td>Symptom names, safety language, and store health claims approved by a qualified reviewer</td><td>39.4</td></tr>
+</tbody>
+</table>
+<div class="callout danger">
+<strong>The fastest way to get rejected.</strong> Any wording that reads as medical advice, a permission with no matching feature, or a privacy answer that contradicts your policy. Sweep the app and both listings for these before you submit.
+</div>
+</section>
+
+<section class="content-section" id="timeline"><h2>Timeline and updates<a class="anchor" href="#timeline">#</a></h2>
+<p>Rough sequence for a first release. Account verification and health review are the long poles, so start them early.</p>
+<table>
+<thead><tr><th>Phase</th><th>Typical duration</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Account enrollment, both stores</td><td>A few days to two weeks</td><td>D-U-N-S and organization verification drive this. Start it first.</td></tr>
+<tr><td>Project config and first builds</td><td>1 to 3 days</td><td>Signing, capabilities, purpose strings, subscription products.</td></tr>
+<tr><td>Internal and closed testing</td><td>1 to 3 weeks</td><td>Verify health flows, purchases, and reports on real devices.</td></tr>
+<tr><td>Store review, first submission</td><td>Several days to a few weeks</td><td>Health apps can take longer. Keep the PRD's two to four week buffer.</td></tr>
+</tbody>
+</table>
+<h3>Shipping updates later</h3>
+<p>For each new release, bump the version in <code>pubspec.yaml</code>, rebuild, upload, test on a track, then promote. The one-time work in this guide, accounts, signing keys, capabilities, and declarations, does not repeat. Once the manual flow is steady, a tool like Fastlane or Codemagic can automate the build and upload steps.</p>
+</section>
+
+<section class="content-section" id="checklist"><h2>Master submission checklist<a class="anchor" href="#checklist">#</a></h2>
+<h3>Shared, do once</h3>
+<ul class="checklist">
+<li>D-U-N-S number for the Yost organization</li>
+<li>Privacy policy and consumer-health privacy policy live at public URLs</li>
+<li>Terms of service and product-boundary statement published</li>
+<li>Support URL and marketing site ready</li>
+<li>Icon, screenshots, and descriptions prepared, health claims reviewed</li>
+<li>In-app account deletion and free CSV export confirmed working</li>
+<li>Version set to 1.0.0+1 and a plan for bumping build numbers</li>
+</ul>
+<h3>Apple App Store</h3>
+<ul class="checklist">
+<li>Organization enrolled and Paid Applications Agreement signed</li>
+<li>App ID group.yost.cairnwell with HealthKit, IAP, Push, Sign in with Apple, Background Modes</li>
+<li>Xcode signing, capabilities, and Info.plist purpose strings set</li>
+<li>Monthly and annual subscriptions created with seven-day trial</li>
+<li>IPA built, uploaded via Transporter, tested on TestFlight</li>
+<li>App Privacy labels, adult age rating, and URLs complete</li>
+<li>Review notes explain health scope and how to test premium and deletion</li>
+<li>Submitted for review</li>
+</ul>
+<h3>Google Play</h3>
+<ul class="checklist">
+<li>Organization account created and verified, payments profile set</li>
+<li>Upload keystore created, key.properties and gradle signing configured, keystore backed up</li>
+<li>applicationId, minSdk 28, compileSdk 36, and scoped Health Connect permissions set</li>
+<li>Monthly and annual subscriptions created with seven-day trial</li>
+<li>App bundle built, uploaded to internal testing, health flows verified</li>
+<li>Data safety, Health apps declaration, and Health Connect data-type review complete</li>
+<li>Content rating, adult target audience, and no-ads status set</li>
+<li>Promoted to production with a staged rollout and submitted for review</li>
+</ul>
+</section>
+
+</article>
+</main>
+<a aria-label="Back to top" class="back-top" href="#top">&#8593;</a>
+<footer class="footer">Cairnwell · Store Deployment Guide · Apple App Store and Google Play · Manual release path</footer>
+</body>
+</html>
