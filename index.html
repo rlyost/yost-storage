@@ -76,6 +76,95 @@
         height: auto;
       }
 
+      /* ---- Calculator ---- */
+
+      .calculator {
+        position: fixed;
+        z-index: 10;
+        top: 50%;
+        right: calc(50% + min(35vw, 16rem) + 1.5rem);
+        left: auto;
+        width: min(18rem, calc(100vw - 2rem));
+        padding: 1rem;
+        border: 1px solid #d8d8d8;
+        border-radius: 0.75rem;
+        background: #fff;
+        color: #111;
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.18);
+        margin: 0;
+        transform: translateY(-50%);
+      }
+
+      .calculator:not([open]) {
+        display: none;
+      }
+
+      .calc-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.75rem;
+      }
+
+      .calc-head h2 {
+        margin: 0;
+        font-size: 0.75rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .calc-close {
+        padding: 0 0.2rem;
+        border: 0;
+        background: none;
+        color: inherit;
+        font-size: 1.35rem;
+        line-height: 1;
+        opacity: 0.55;
+        cursor: pointer;
+      }
+
+      .calc-close:hover { opacity: 1; }
+
+      .calc-display {
+        display: block;
+        width: 100%;
+        min-height: 4.25rem;
+        margin-bottom: 0.75rem;
+        padding: 0.8rem;
+        overflow: hidden;
+        border: 1px solid #d8d8d8;
+        border-radius: 0.5rem;
+        background: #f5f5f5;
+        font: 600 1.75rem/1.4 ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+        font-variant-numeric: tabular-nums;
+        text-align: right;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .calc-keys {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.45rem;
+      }
+
+      .calc-keys button {
+        min-height: 2.8rem;
+        border: 1px solid #d8d8d8;
+        border-radius: 0.45rem;
+        background: #f5f5f5;
+        color: inherit;
+        font: 650 1rem/1 inherit;
+        cursor: pointer;
+      }
+
+      .calc-keys button:hover { border-color: #111; }
+      .calc-keys button:active { transform: translateY(1px); }
+      .calc-keys .operator { background: #e8e8e8; }
+      .calc-keys .equals { background: #111; color: #fff; }
+      .calc-keys .span-two { grid-column: span 2; }
+
       /* Night: the mark is a black disc, so ring it to lift it off the page.
          Percentages match the disc inside gitlabrador.webp (bbox 24,234-757,959
          of 784x1168), so the ring tracks the logo at any size. */
@@ -469,6 +558,22 @@
         color: #fff;
       }
 
+      [data-daylight="night"] .calculator {
+        border-color: #333;
+        background: #111;
+        color: #fff;
+      }
+
+      [data-daylight="night"] .calc-display,
+      [data-daylight="night"] .calc-keys button {
+        border-color: #3b3b3b;
+        background: #202020;
+      }
+
+      [data-daylight="night"] .calc-keys .operator { background: #303030; }
+      [data-daylight="night"] .calc-keys .equals { background: #fff; color: #111; }
+      [data-daylight="night"] .calc-keys button:hover { border-color: #fff; }
+
       [data-daylight="night"] .alarm-dialog input,
       [data-daylight="night"] .alarm-modes,
       [data-daylight="night"] .alarm-presets button {
@@ -546,6 +651,13 @@
           margin-top: 2rem;
           padding: 0;
           transform: none;
+        }
+
+        .calculator {
+          top: 50%;
+          right: auto;
+          left: 50%;
+          transform: translate(-50%, -50%);
         }
       }
 
@@ -685,6 +797,7 @@
         <a href="claude-engineering-prompts.html">Claude Engineering Prompts</a>
         <a href="multi_platform_deployment_guide.html">Multi-Platform Deployment Guide</a>
         <button type="button" class="nav-action" id="alarm-link" aria-haspopup="dialog">Set Alarm</button>
+        <button type="button" class="nav-action" id="calc-link" aria-expanded="false" aria-controls="calculator">Calc</button>
       </nav>
       <div class="footer-stack">
         <div class="clock" id="clock" role="timer" aria-live="off"></div>
@@ -714,6 +827,166 @@
         })();
       </script>
     </footer>
+
+    <dialog class="calculator" id="calculator" aria-labelledby="calc-title">
+      <div class="calc-head">
+        <h2 id="calc-title">Calculator</h2>
+        <button type="button" class="calc-close" id="calc-close" aria-label="Close calculator">&times;</button>
+      </div>
+      <output class="calc-display" id="calc-display" aria-live="polite">0</output>
+      <div class="calc-keys" id="calc-keys">
+        <button type="button" data-action="clear">AC</button>
+        <button type="button" data-action="sign">+/−</button>
+        <button type="button" data-action="percent">%</button>
+        <button type="button" class="operator" data-operation="/" aria-label="Divide">÷</button>
+        <button type="button" data-digit="7">7</button>
+        <button type="button" data-digit="8">8</button>
+        <button type="button" data-digit="9">9</button>
+        <button type="button" class="operator" data-operation="*" aria-label="Multiply">×</button>
+        <button type="button" data-digit="4">4</button>
+        <button type="button" data-digit="5">5</button>
+        <button type="button" data-digit="6">6</button>
+        <button type="button" class="operator" data-operation="-" aria-label="Subtract">−</button>
+        <button type="button" data-digit="1">1</button>
+        <button type="button" data-digit="2">2</button>
+        <button type="button" data-digit="3">3</button>
+        <button type="button" class="operator" data-operation="+" aria-label="Add">+</button>
+        <button type="button" class="span-two" data-digit="0">0</button>
+        <button type="button" data-action="decimal">.</button>
+        <button type="button" class="equals" data-action="equals">=</button>
+      </div>
+    </dialog>
+
+    <script>
+      (function () {
+        var panel = document.getElementById("calculator");
+        var launcher = document.getElementById("calc-link");
+        var display = document.getElementById("calc-display");
+        var keys = document.getElementById("calc-keys");
+        var current = "0";
+        var accumulator = null;
+        var operation = null;
+        var replace = true;
+
+        function render() { display.textContent = current; }
+
+        function reset() {
+          current = "0";
+          accumulator = null;
+          operation = null;
+          replace = true;
+          render();
+        }
+
+        function format(value) {
+          if (!Number.isFinite(value)) return "Error";
+          return String(Number(value.toPrecision(12)));
+        }
+
+        function calculate(left, op, right) {
+          if (op === "+") return left + right;
+          if (op === "-") return left - right;
+          if (op === "*") return left * right;
+          if (op === "/") return right === 0 ? NaN : left / right;
+          return right;
+        }
+
+        function digit(value) {
+          if (current === "Error" || replace) {
+            current = value;
+            replace = false;
+          } else if (current.replace("-", "").replace(".", "").length < 12) {
+            current = current === "0" ? value : current + value;
+          }
+          render();
+        }
+
+        function decimal() {
+          if (current === "Error" || replace) {
+            current = "0.";
+            replace = false;
+          } else if (current.indexOf(".") === -1) {
+            current += ".";
+          }
+          render();
+        }
+
+        function chooseOperation(next) {
+          var value = Number(current);
+          if (current === "Error") { reset(); return; }
+          if (operation && !replace) {
+            value = calculate(accumulator, operation, value);
+            current = format(value);
+            render();
+          }
+          accumulator = value;
+          operation = next;
+          replace = true;
+        }
+
+        function equals() {
+          if (!operation || current === "Error") return;
+          current = format(calculate(accumulator, operation, Number(current)));
+          accumulator = null;
+          operation = null;
+          replace = true;
+          render();
+        }
+
+        function action(name) {
+          if (name === "clear") reset();
+          else if (name === "decimal") decimal();
+          else if (name === "equals") equals();
+          else if (name === "sign" && current !== "0" && current !== "Error") {
+            current = current.charAt(0) === "-" ? current.slice(1) : "-" + current;
+            render();
+          } else if (name === "percent" && current !== "Error") {
+            current = format(Number(current) / 100);
+            replace = true;
+            render();
+          }
+        }
+
+        function open() {
+          panel.show();
+          launcher.setAttribute("aria-expanded", "true");
+          panel.querySelector("button").focus();
+        }
+
+        function close() {
+          panel.close();
+          launcher.setAttribute("aria-expanded", "false");
+          launcher.focus();
+        }
+
+        launcher.addEventListener("click", function () {
+          if (panel.open) close(); else open();
+        });
+        document.getElementById("calc-close").addEventListener("click", close);
+        keys.addEventListener("click", function (event) {
+          var button = event.target.closest("button");
+          if (!button) return;
+          if (button.dataset.digit) digit(button.dataset.digit);
+          else if (button.dataset.operation) chooseOperation(button.dataset.operation);
+          else action(button.dataset.action);
+        });
+
+        document.addEventListener("keydown", function (event) {
+          if (!panel.open || /INPUT|TEXTAREA|SELECT/.test(event.target.tagName)) return;
+          if (/^[0-9]$/.test(event.key)) digit(event.key);
+          else if (event.key === "." || event.key === ",") decimal();
+          else if (/^[+\-*/]$/.test(event.key)) chooseOperation(event.key);
+          else if (event.key === "Enter" || event.key === "=") equals();
+          else if (event.key === "%") action("percent");
+          else if (event.key === "Escape") close();
+          else if (event.key === "Backspace") {
+            current = current.length > 1 ? current.slice(0, -1) : "0";
+            render();
+          } else return;
+          event.preventDefault();
+        });
+      })();
+    </script>
 
     <dialog class="alarm-dialog" id="alarm-dialog" aria-labelledby="alarm-title">
       <div class="alarm-head">

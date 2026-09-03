@@ -1,16 +1,21 @@
 # Yost Storage
 
-A lightweight static website hosted at [ryost.us](https://ryost.us). No build step, no
-dependencies, no third-party scripts — every page is a single self-contained HTML file.
+A lightweight static website hosted at [ryost.us](https://ryost.us). It has no build
+step, runtime dependencies, frameworks, or third-party scripts. Pages are plain HTML,
+CSS, and JavaScript; the landing page additionally loads local responsive image assets.
 
 ## Pages
 
 - `index.html` — **The Pack.** Landing page: a logo that swaps itself at sunrise and
-  sunset, a large digital clock, a timer/alarm, and the **RLTW!** signoff.
+  sunset, a large digital clock, a pop-up calculator, a timer/alarm, and the **RLTW!**
+  signoff.
 - `PAWS_Training_Manual.html` — PAWS Service Dog Training Manual. Sticky header with
   live search and tab filtering, a sidebar table of contents, and session logs.
 - `zsh_terminal_colorization_guide.html` — Walkthrough for switching to Zsh and
   colorizing the macOS Terminal prompt.
+- `claude-engineering-prompts.html` — Reusable prompts for Claude engineering work.
+- `multi_platform_deployment_guide.html` — Deployment guidance across supported
+  platforms.
 
 ## Landing page
 
@@ -20,8 +25,8 @@ The logo and page palette follow the sun rather than a fixed clock time:
 
 | | Logo | Background |
 |---|---|---|
-| Day | `HandlerPath_Gators.webp` | light (`#f3f3f3`) |
-| Night | `gitlabrador.webp` | black, with a white ring around the mark |
+| Day | `HandlerPath_Gators-512.webp` / `HandlerPath_Gators-1024.webp` | light (`#f3f3f3`) |
+| Night | `gitlabrador-512.webp` / `gitlabrador-784.webp` | black, with a white ring around the mark |
 
 The sun's altitude is computed in-page from the NOAA solar-position formulas using the
 viewer's clock and time zone — no API call, no geolocation prompt, no network round
@@ -63,6 +68,24 @@ State persists in `localStorage` under `handlerpath.alarm`. A deadline missed wh
 tab was closed still rings if it came due in the last five minutes; anything staler is
 dropped silently. Deadlines are stored as absolute timestamps rather than accumulated
 intervals, so a throttled background tab or a sleeping laptop cannot drift the count.
+The visible countdown updates once per second and skips DOM rendering while the page is
+hidden.
+
+### Calculator
+
+Opened from **Calc** in the menu. The calculator appears to the left of the logo on
+desktop and as a centered overlay on narrow screens. It supports addition,
+subtraction, multiplication, division, percentages, sign changes, decimals, clearing,
+and keyboard input. Division by zero reports an error without executing arbitrary
+expressions or using `eval`.
+
+## PAWS manual search
+
+Search is performed locally across all manual cards. Each card's normalized text is
+cached once, input work is coalesced to the next animation frame, and matching text is
+highlighted with DOM nodes rather than injected HTML. Clearing a query unwraps the
+highlights without rebuilding card contents, preserving listeners and avoiding retained
+copies of every card's markup.
 
 ## Navigation
 
@@ -78,11 +101,14 @@ The landing-page menu links to:
 - [Citadel Money](https://app.citadel-map.com)
 - [GitHub](https://github.com/rlyost)
 - Zsh Color Guide
+- Claude Engineering Prompts
+- Multi-Platform Deployment Guide
 - Set Alarm — opens the timer/alarm panel on the page rather than navigating
+- Calc — opens the calculator beside the logo
 
 ## Responsive behaviour
 
-All three pages carry a viewport meta tag and are laid out fluidly.
+All pages carry a viewport meta tag and are laid out fluidly.
 
 - **Landing page** — below 720px the right-hand nav rail becomes a centred wrapped row
   and the footer returns to normal flow, since the rail would otherwise sit on top of
@@ -91,9 +117,11 @@ All three pages carry a viewport meta tag and are laid out fluidly.
   `(min-width: 721px) and (max-height: 640px)` rule caps the logo for landscape phones,
   where the viewport is wide enough for the desktop layout but far too short for a
   full-size mark. The alarm card tightens below 420px.
+  The calculator moves from the logo's left side to a centered overlay below 720px.
 - **PAWS manual** — breakpoints at 860px (sidebar collapses, topbar wraps) and 560px.
   Tables sit in `.tablewrap` scroll containers so the wide five-column table scrolls
-  instead of crushing its columns. A print stylesheet strips the chrome.
+  instead of crushing its columns. Off-screen cards use `content-visibility: auto` to
+  defer rendering work. A print stylesheet strips the chrome.
 - **Zsh guide** — breakpoint at 640px. The sample prompt is unbreakable monospace, so it
   scrolls in place rather than widening the page.
 
@@ -110,6 +138,23 @@ All three pages carry a viewport meta tag and are laid out fluidly.
 The PAWS manual embeds its own hero logo as an inline base64 PNG and has no external
 image dependencies.
 
+## Performance
+
+- Both possible above-the-fold logos are preloaded so the JavaScript daylight decision
+  does not delay image discovery.
+- Responsive `srcset` candidates prevent small screens from decoding oversized images.
+- The production favicon is 64 × 64 and approximately 4 KB; the original source is
+  retained for future asset generation.
+- Image dimensions are assigned before each logo source, preventing layout shift.
+- Static system font stacks avoid font downloads and layout changes.
+- The PAWS manual defers off-screen card rendering and avoids whole-card HTML cloning
+  during search.
+
+A local Chrome performance trace is useful for regression testing, but its timings are
+machine-dependent. Validate deployed performance separately because CDN latency, cache
+headers, compression, and connection conditions are not represented by a local file
+load.
+
 ## Local preview
 
 No build step is required. Open `index.html` directly in a browser, or serve the
@@ -124,3 +169,7 @@ Then visit <http://localhost:8000>.
 ## Deployment
 
 Served as a static site; the `CNAME` file configures the custom domain as `ryost.us`.
+For high-traffic deployment, serve HTML with Brotli compression and a short revalidation
+window. Serve versioned images with a long-lived immutable cache policy through a global
+CDN. When replacing an asset in place, change its filename or shorten its cache lifetime
+until all pages reference the new version.
