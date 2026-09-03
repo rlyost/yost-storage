@@ -101,9 +101,10 @@ All three pages carry a viewport meta tag and are laid out fluidly.
 
 | File | Used by |
 |---|---|
-| `HandlerPath_Gators.webp` | landing page, daytime logo |
-| `gitlabrador.webp` | landing page, night logo and alarm flash |
-| `favicon.png` | landing page favicon |
+| `HandlerPath_Gators-512.webp`, `HandlerPath_Gators-1024.webp` | responsive daytime logo |
+| `gitlabrador-512.webp`, `gitlabrador-784.webp` | responsive night logo and alarm flash |
+| `favicon-64.png` | right-sized landing page favicon |
+| `HandlerPath_Gators.webp`, `gitlabrador.webp`, `favicon.png` | retained source assets |
 | `gitlabrador.jpg` | currently unreferenced |
 
 The PAWS manual embeds its own hero logo as an inline base64 PNG and has no external

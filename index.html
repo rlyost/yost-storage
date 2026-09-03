@@ -1,4 +1,7 @@
 <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
 <!--
   ==============================================================================
 
@@ -26,11 +29,14 @@
 
   ==============================================================================
 -->
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="icon" type="image/png" href="favicon-64.png" sizes="64x64">
+    <link rel="preload" as="image" href="HandlerPath_Gators-512.webp"
+      imagesrcset="HandlerPath_Gators-512.webp 512w, HandlerPath_Gators-1024.webp 1024w"
+      imagesizes="min(70vw, 32rem)" fetchpriority="high">
+    <link rel="preload" as="image" href="gitlabrador-512.webp"
+      imagesrcset="gitlabrador-512.webp 512w, gitlabrador-784.webp 784w"
+      imagesizes="min(70vw, 32rem)" fetchpriority="high">
     <title>The Pack</title>
     <style>
       * {
@@ -573,16 +579,19 @@
     <main>
       <div class="alarm-status" id="alarm-status" hidden></div>
       <div class="logo-frame">
-        <img class="logo" id="logo" alt="">
+        <img class="logo" id="logo" sizes="min(70vw, 32rem)"
+          fetchpriority="high" decoding="async" alt="">
       </div>
       <noscript>
-        <img class="logo" src="HandlerPath_Gators.webp" width="1254" height="1254" alt="Handler Path logo">
+        <img class="logo" src="HandlerPath_Gators-512.webp"
+          srcset="HandlerPath_Gators-512.webp 512w, HandlerPath_Gators-1024.webp 1024w"
+          sizes="min(70vw, 32rem)" width="1254" height="1254" alt="Handler Path logo">
       </noscript>
       <script>
         (function () {
           // Sunset -> sunrise keeps the original logo; daylight shows Handler Path.
-          var NIGHT = { src: "gitlabrador.webp", w: 784, h: 1168, alt: "Dog logo" };
-          var DAY = { src: "HandlerPath_Gators.webp", w: 1254, h: 1254, alt: "Handler Path logo" };
+          var NIGHT = { src: "gitlabrador-512.webp", srcset: "gitlabrador-512.webp 512w, gitlabrador-784.webp 784w", w: 784, h: 1168, alt: "Dog logo" };
+          var DAY = { src: "HandlerPath_Gators-512.webp", srcset: "HandlerPath_Gators-512.webp 512w, HandlerPath_Gators-1024.webp 1024w", w: 1254, h: 1254, alt: "Handler Path logo" };
 
           // Viewer's coordinates, inferred from their time zone. Set both to fixed
           // numbers instead to pin the whole site to one location's sun.
@@ -648,6 +657,7 @@
             img.width = next.w;
             img.height = next.h;
             img.alt = next.alt;
+            img.srcset = next.srcset;
             img.src = next.src;
             document.documentElement.setAttribute("data-daylight", daylight ? "day" : "night");
           }
@@ -937,8 +947,8 @@
           ticker = setInterval(function () {
             if (st.state !== "running") return;
             if (Date.now() >= st.deadline) fire();
-            else render();
-          }, 250);
+            else if (!document.hidden) render();
+          }, 1000);
         }
 
         function stopTicking() {
@@ -996,7 +1006,7 @@
           save();
 
           var live = document.getElementById("logo");
-          ringLogo.src = (live && live.src) || "HandlerPath_Gators.webp";
+          ringLogo.src = (live && live.currentSrc) || "HandlerPath_Gators-512.webp";
           ringLogo.alt = "Alarm";
           if (dlg.open) dlg.close();
           ring.hidden = false;

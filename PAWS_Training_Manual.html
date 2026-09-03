@@ -98,6 +98,7 @@ h2.sec{
 .card{
   background:var(--card);border:1px solid var(--line);border-radius:12px;
   padding:26px 28px;margin-bottom:18px;box-shadow:var(--shadow);scroll-margin-top:84px;
+  content-visibility:auto;contain-intrinsic-size:auto 32rem;
 }
 .card h3{margin:0 0 4px;font-size:21px;letter-spacing:-.015em}
 .card .sub{color:var(--ink-soft);font-size:14.5px;margin:0 0 18px}
@@ -1745,11 +1746,13 @@ mark{background:#ffeaa0;padding:0 2px;border-radius:2px}
 </footer></div>
 
 <script>
-// View switching
-document.querySelectorAll('.tab').forEach(function(t){
-  t.addEventListener('click', function(){
+// View switching: one delegated listener avoids per-button closures.
+var tabs = document.querySelector('.tabs');
+tabs.addEventListener('click', function(event){
+    var t = event.target.closest('.tab');
+    if(!t) return;
     var v = t.dataset.view;
-    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active')});
+    tabs.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active')});
     t.classList.add('active');
     document.getElementById('view-curriculum').classList.toggle('hidden', v!=='curriculum');
     document.getElementById('view-log').classList.toggle('hidden', v!=='log');
@@ -1757,30 +1760,39 @@ document.querySelectorAll('.tab').forEach(function(t){
     document.getElementById('nav-log').classList.toggle('hidden', v!=='log');
     var sb = document.querySelector('nav.side'); if(sb) sb.scrollTop = 0;
     window.scrollTo({top:0,behavior:'smooth'});
-  });
 });
 
 // Search across both views
 var q = document.getElementById('q');
 var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
-cards.forEach(function(c){ c.dataset.orig = c.innerHTML; });
+cards.forEach(function(c){ c._searchText = c.textContent.toLocaleLowerCase(); });
 
 function clearMarks(){
+  document.querySelectorAll('mark[data-search]').forEach(function(mark){
+    var parent = mark.parentNode;
+    mark.replaceWith(document.createTextNode(mark.textContent));
+    parent.normalize();
+  });
   cards.forEach(function(c){
-    if(c.innerHTML !== c.dataset.orig) c.innerHTML = c.dataset.orig;
     c.classList.remove('hidden');
     var s = c.closest('.session'); if(s) s.classList.remove('hidden');
   });
 }
 
+var searchFrame = 0;
 q.addEventListener('input', function(){
+  cancelAnimationFrame(searchFrame);
+  searchFrame = requestAnimationFrame(search);
+});
+
+function search(){
   var term = q.value.trim();
   clearMarks();
   if(term.length < 2) return;
   var re = new RegExp('(' + term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')','gi');
+  var needle = term.toLocaleLowerCase();
   cards.forEach(function(c){
-    var hit = re.test(c.textContent);
-    re.lastIndex = 0;
+    var hit = c._searchText.indexOf(needle) !== -1;
     if(!hit){
       c.classList.add('hidden');
       var s = c.closest('.session'); if(s) s.classList.add('hidden');
@@ -1794,12 +1806,22 @@ q.addEventListener('input', function(){
       if(node.parentNode.nodeName === 'PRE') return;
       if(!re.test(node.nodeValue)){ re.lastIndex = 0; return; }
       re.lastIndex = 0;
-      var span = document.createElement('span');
-      span.innerHTML = node.nodeValue.replace(re,'<mark>$1</mark>');
-      node.parentNode.replaceChild(span, node);
+      var fragment = document.createDocumentFragment();
+      var last = 0;
+      node.nodeValue.replace(re, function(match, _, offset){
+        fragment.append(document.createTextNode(node.nodeValue.slice(last, offset)));
+        var mark = document.createElement('mark');
+        mark.dataset.search = '';
+        mark.textContent = match;
+        fragment.append(mark);
+        last = offset + match.length;
+        return match;
+      });
+      fragment.append(document.createTextNode(node.nodeValue.slice(last)));
+      node.replaceWith(fragment);
     });
   });
-});
+}
 </script>
 </body>
 </html>
