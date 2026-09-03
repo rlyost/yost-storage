@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="Step-by-step guide to deploy a Flutter app to the Apple App Store and Google Play, from project configuration through store review, with optional in-app purchase and sensitive-data compliance steps." name="description"/>
+<title>Multi-Platform Deployment Guide</title>
+<style>
+:root {
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --text: #1e252b;
+  --muted: #5d6972;
+  --accent: #245f94;
+  --accent-dark: #183e62;
+  --border: #dce3e8;
+  --code-bg: #111820;
+  --code-text: #edf4f8;
+  --note: #eef6fb;
+  --warning: #fff7e6;
+  --success: #eef8f0;
+  --danger: #fdecec;
+  --shadow: 0 10px 28px rgba(30, 50, 65, .08);
+  --max-width: 960px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--text);
+  background: var(--bg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.62;
+}
+a { color: var(--accent); }
+a:hover { color: var(--accent-dark); }
+.hero {
+  background: linear-gradient(135deg, #152b3e, #245f94 62%, #3987bd);
+  color: #fff;
+  padding: 68px 24px 58px;
+}
+.hero-inner { max-width: 1160px; margin: 0 auto; }
+.eyebrow {
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-weight: 750;
+  opacity: .8;
+}
+.hero h1 {
+  margin: .35rem 0 .65rem;
+  font-size: clamp(2.35rem, 6vw, 4.4rem);
+  line-height: 1.02;
+  letter-spacing: -.045em;
+}
+.hero p {
+  max-width: 780px;
+  font-size: 1.13rem;
+  margin: 0;
+  opacity: .94;
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin-top: 22px;
+  font-size: .9rem;
+  opacity: .9;
+}
+.hero-meta span strong { font-weight: 700; }
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+.button {
+  border-radius: 9px;
+  padding: 10px 15px;
+  border: 1px solid rgba(255,255,255,.4);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+.button.primary { background: #fff; color: #173a57; border-color: #fff; }
+.button.secondary { background: rgba(255,255,255,.08); color: #fff; }
+.layout {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(230px, 300px) minmax(0, var(--max-width));
+  gap: 34px;
+  padding: 36px 24px 76px;
+  align-items: start;
+}
+.sidebar {
+  position: sticky;
+  top: 18px;
+  max-height: calc(100vh - 36px);
+  overflow: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
+.sidebar h2 { font-size: 1rem; margin: 0 0 12px; }
+.sidebar ol { list-style: none; margin: 0 0 10px; padding: 0; }
+.sidebar li { margin: 4px 0; }
+.sidebar .group {
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--accent-dark);
+  font-weight: 800;
+  margin: 14px 0 4px;
+}
+.sidebar a {
+  display: block;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 5px 7px;
+  border-radius: 6px;
+}
+.sidebar a:hover { color: var(--accent-dark); background: #edf4f8; }
+.document {
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: clamp(26px, 5vw, 58px);
+}
+.content-section { scroll-margin-top: 18px; }
+.content-section + .content-section {
+  margin-top: 2.8rem;
+  padding-top: 2.4rem;
+  border-top: 1px solid var(--border);
+}
+.content-section h2 {
+  color: #183e62;
+  line-height: 1.2;
+  margin: 0 0 1rem;
+  letter-spacing: -.025em;
+  font-size: 1.75rem;
+}
+.content-section h3 { color: #183e62; margin-top: 1.8rem; }
+.part-label {
+  display: inline-block;
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-weight: 800;
+  color: var(--accent);
+  background: #e9f1f8;
+  padding: 3px 9px;
+  border-radius: 20px;
+  margin-bottom: .5rem;
+}
+.anchor { opacity: 0; margin-left: .4rem; text-decoration: none; font-weight: 500; }
+.content-section h2:hover .anchor { opacity: 1; }
+p { margin: .8rem 0; }
+ul, ol { padding-left: 1.5rem; margin: .7rem 0 1rem; }
+li { margin: .35rem 0; }
+pre {
+  overflow-x: auto;
+  padding: 16px 18px;
+  background: var(--code-bg);
+  color: var(--code-text);
+  border-radius: 10px;
+  border: 1px solid #24313c;
+  line-height: 1.5;
+  font-size: .9rem;
+}
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+p code, td code, li code {
+  background: #edf2f5;
+  color: #283943;
+  padding: .12rem .35rem;
+  border-radius: 5px;
+  font-size: .92em;
+}
+table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.4rem; font-size: .95rem; }
+th, td { border: 1px solid var(--border); padding: 10px 12px; text-align: left; vertical-align: top; }
+th { background: #edf4f8; color: #183e62; }
+.callout {
+  margin: 1.2rem 0;
+  padding: 14px 16px;
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  background: var(--note);
+}
+.callout.warning { border-left-color: #c98c19; background: var(--warning); }
+.callout.success { border-left-color: #3e8b52; background: var(--success); }
+.callout.danger { border-left-color: #cf4b4b; background: var(--danger); }
+.callout strong { color: #17383d; }
+.source { color: var(--muted); font-size: .88rem; }
+.steps { counter-reset: step; list-style: none; padding-left: 0; }
+.steps > li {
+  position: relative;
+  padding: 4px 0 14px 46px;
+  margin: 0;
+}
+.steps > li::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  font-weight: 800;
+  font-size: .9rem;
+}
+.checklist { list-style: none; padding: 0; }
+.checklist li {
+  position: relative;
+  padding: 9px 10px 9px 35px;
+  border-bottom: 1px solid var(--border);
+  margin: 0;
+}
+.checklist li::before {
+  content: "\2610";
+  position: absolute;
+  left: 9px;
+  top: 8px;
+  font-size: 1.15rem;
+  color: var(--accent);
+}
+.back-top {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: var(--accent-dark);
+  font-weight: 800;
+}
+.footer { text-align: center; padding: 0 20px 38px; color: var(--muted); font-size: .85rem; }
+@media (max-width: 980px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: static; max-height: none; }
+}
+@media (max-width: 620px) {
+  .hero { padding: 48px 20px 42px; }
+  .layout { padding: 20px 12px 56px; }
+  .document { padding: 23px 19px; border-radius: 10px; }
+  .sidebar { border-radius: 10px; }
+  .back-top { display: none; }
+}
+@media print {
+  @page { margin: .7in; }
+  body { background: #fff; font-size: 10.3pt; }
+  .hero { background: #fff; color: #111; padding: 0 0 20px; border-bottom: 2px solid #222; }
+  .hero-actions, .sidebar, .back-top, .footer { display: none !important; }
+  .layout { display: block; max-width: none; padding: 0; }
+  .document { border: 0; box-shadow: none; padding: 0; }
+  .content-section + .content-section { border-top: 0; }
+  .content-section h2 { break-after: avoid; }
+  pre { white-space: pre-wrap; background: #f4f4f4; color: #111; border: 1px solid #ccc; }
+  a { color: #111; text-decoration: none; }
+}
+</style>
+</head>
+<body id="top">
+<header class="hero">
+<div class="hero-inner">
+<div class="eyebrow">Release Engineering Guide</div>
+<h1>Multi-Platform Deployment Guide</h1>
+<p>A step-by-step path to ship a Flutter app to the Apple App Store and Google Play, from a working project through store review, including the extra steps that in-app purchases and sensitive data add.</p>
+<div class="hero-meta">
+<span><strong>Platforms:</strong> iOS and Android from one Flutter codebase</span>
+<span><strong>Assumes:</strong> Apple Developer Program and Google Play Console accounts already active</span>
+<span><strong>Method:</strong> Manual, both platforms</span>
+</div>
+<div class="hero-actions">
+<a class="button primary" href="#overview">Start Here</a>
+<button class="button secondary" onclick="window.print()" type="button">Print or Save as PDF</button>
+</div>
+</div>
+</header>
+<main class="layout">
+<aside aria-label="Table of contents" class="sidebar">
+<h2>Contents</h2>
+<div class="group">Get Ready</div>
+<ol>
+<li><a href="#overview">Overview and release model</a></li>
+<li><a href="#prerequisites">Before you start</a></li>
+</ol>
+<div class="group">Part A · Apple App Store</div>
+<ol>
+<li><a href="#a1-identifiers">A1. App ID and capabilities</a></li>
+<li><a href="#a2-xcode">A2. Configure the Xcode project</a></li>
+<li><a href="#a3-storekit">A3. App record and purchases</a></li>
+<li><a href="#a4-build">A4. Build the IPA</a></li>
+<li><a href="#a5-upload">A5. Upload and TestFlight</a></li>
+<li><a href="#a6-listing">A6. Listing, privacy, age rating</a></li>
+<li><a href="#a7-submit">A7. Submit for review</a></li>
+</ol>
+<div class="group">Part B · Google Play</div>
+<ol>
+<li><a href="#b1-signing">B1. App signing</a></li>
+<li><a href="#b2-android">B2. Configure the Android project</a></li>
+<li><a href="#b3-build">B3. Build the app bundle</a></li>
+<li><a href="#b4-console">B4. Create the app and test</a></li>
+<li><a href="#b5-billing">B5. In-app purchases</a></li>
+<li><a href="#b6-declarations">B6. Listing and declarations</a></li>
+<li><a href="#b7-production">B7. Roll out to production</a></li>
+</ol>
+<div class="group">Wrap Up</div>
+<ol>
+<li><a href="#sensitive">Sensitive-data apps</a></li>
+<li><a href="#timeline">Timeline and updates</a></li>
+<li><a href="#checklist">Master submission checklist</a></li>
+</ol>
+</aside>
+<article class="document">
+
+<section class="content-section" id="overview"><h2>Overview and release model<a class="anchor" href="#overview">#</a></h2>
+<p>One Flutter codebase produces two native apps. You build an iOS app for the App Store and an Android app bundle for Google Play, then submit each through its own console. The Dart code stays shared. The store work is platform specific, and that is what this guide covers.</p>
+<p>This guide assumes the manual path with no CI system. You build on a Mac, upload through Apple and Google tooling, and press submit in each console. Once the first release is out, you can automate later.</p>
+<p>It also assumes the accounts already exist. You are enrolled in the Apple Developer Program with access to App Store Connect, and you have a verified Google Play Console developer account. Account enrollment and identity verification are not covered here.</p>
+<div class="callout">
+<strong>Decide these before you start.</strong> A reverse-domain application identifier, the same on both platforms where possible, for example <code>com.example.yourapp</code>. A minimum iOS version and an Android <code>minSdk</code>. Whether the app is free, paid, or free with in-app purchases. Which device permissions the app needs. These choices show up in project files, store forms, and review notes, so settle them once.
+</div>
+<table>
+<thead><tr><th>Track</th><th>Apple</th><th>Google</th></tr></thead>
+<tbody>
+<tr><td>Console</td><td>App Store Connect</td><td>Google Play Console</td></tr>
+<tr><td>Build artifact</td><td><code>.ipa</code> from <code>flutter build ipa</code></td><td><code>.aab</code> from <code>flutter build appbundle</code></td></tr>
+<tr><td>Signing</td><td>Xcode automatic signing with your team</td><td>Your upload key plus Play App Signing</td></tr>
+<tr><td>Pre-release testing</td><td>TestFlight</td><td>Internal and closed testing tracks</td></tr>
+<tr><td>Privacy forms</td><td>App Privacy labels</td><td>Data safety, plus category declarations</td></tr>
+<tr><td>Typical first review</td><td>1 to 3 days, longer for sensitive categories</td><td>Up to 7 days, longer for sensitive categories</td></tr>
+</tbody>
+</table>
+</section>
+
+<section class="content-section" id="prerequisites"><h2>Before you start<a class="anchor" href="#prerequisites">#</a></h2>
+<h3>Accounts and agreements</h3>
+<p>Confirm these are in place. Each one blocks a later step if it is missing.</p>
+<ul>
+<li>Apple Developer Program membership is active, and your Apple ID has the Admin or App Manager role in App Store Connect.</li>
+<li>If you sell anything in-app, the Paid Applications Agreement is signed in App Store Connect under Business, with banking and tax details entered. In-app purchases do not work until this is active.</li>
+<li>Google Play Console account is verified, and your Google account has permission to create apps and manage releases.</li>
+<li>If you sell anything in-app, a Google Payments profile is linked to the Play account.</li>
+</ul>
+<h3>Legal and policy pages</h3>
+<p>Host these at stable public URLs before you submit. Both stores ask for them and reviewers open them.</p>
+<ul>
+<li>Privacy policy. Both stores require one for every app, even apps that collect nothing. It must match the answers you give in the App Privacy and Data safety forms.</li>
+<li>Terms of service, if the app has accounts or purchases.</li>
+<li>A support contact URL or email, and a marketing or support website.</li>
+</ul>
+<h3>Store assets</h3>
+<ul>
+<li>App icon at 1024 by 1024 for Apple and 512 by 512 for Google, no alpha channel, no rounded corners baked in.</li>
+<li>Screenshots for the required device sizes. Apple wants a 6.9 inch iPhone set, plus iPad if the app supports it. Google wants phone screenshots, plus tablet sets if you target tablets.</li>
+<li>A feature graphic at 1024 by 500 for Google Play.</li>
+<li>Short and full descriptions, and a subtitle or promotional text where the store allows one. Avoid claims you cannot back up.</li>
+</ul>
+<h3>Tooling on your Mac</h3>
+<pre><code>flutter --version
+flutter doctor -v</code></pre>
+<p>You want green entries for Flutter, the Android toolchain, Xcode, and CocoaPods. Fix anything missing before continuing, and confirm the app runs cleanly on both a simulator and an emulator.</p>
+<pre><code>flutter clean
+flutter pub get
+flutter analyze
+flutter test</code></pre>
+<div class="callout warning">
+<strong>Decide your version now.</strong> The first public release is usually <code>1.0.0+1</code> in <code>pubspec.yaml</code>. The part before the plus is the user-facing version. The number after the plus is the build number. Every upload to either store needs a higher build number than the last, even for a rejected build you resubmit.
+</div>
+</section>
+
+<section class="content-section" id="a1-identifiers"><span class="part-label">Part A · Apple App Store</span><h2>A1. Register the App ID and capabilities<a class="anchor" href="#a1-identifiers">#</a></h2>
+<p>Register the identifier and turn on the capabilities the app uses. These must match what the app declares, or the upload fails.</p>
+<ol class="steps">
+<li>Open <a href="https://developer.apple.com/account/resources/identifiers/list">Certificates, Identifiers and Profiles</a> and create a new App ID. Choose Explicit and enter your bundle identifier, for example <code>com.example.yourapp</code>.</li>
+<li>Enable only the capabilities the app needs, for example Push Notifications, Sign in with Apple, Background Modes, Associated Domains, or HealthKit. In-App Purchase is on for every App ID by default.</li>
+<li>Register at least one device UDID if you plan to run release builds on hardware before TestFlight. TestFlight itself does not need this.</li>
+<li>Let Xcode manage certificates and profiles automatically. Manual certificates are only worth it once you move to CI.</li>
+</ol>
+<div class="callout">
+<strong>Match the app record.</strong> Whatever you enable here has to match the entitlements in the Xcode project and the App Privacy answers later. A capability that is on in the App ID but missing from the project, or the reverse, is rejected at upload or review.
+</div>
+</section>
+
+<section class="content-section" id="a2-xcode"><h2>A2. Configure the Xcode project<a class="anchor" href="#a2-xcode">#</a></h2>
+<p>Open the workspace, not the project file. The workspace includes the CocoaPods dependencies that Flutter plugins rely on.</p>
+<pre><code>open ios/Runner.xcworkspace</code></pre>
+<h3>Signing and identity</h3>
+<p>Select the Runner target, then Signing and Capabilities.</p>
+<ul>
+<li>Turn on Automatically manage signing.</li>
+<li>Select your team.</li>
+<li>Confirm the bundle identifier matches the App ID you registered.</li>
+<li>Confirm the capabilities you enabled in A1 appear here. Add any that are missing and remove any you do not use.</li>
+<li>Under Deployment, set the minimum iOS version. Check the floor your plugins require before lowering it.</li>
+</ul>
+<h3>Privacy purpose strings</h3>
+<p>Apple rejects apps that request device access without a clear reason. Add a plain-language usage string to <code>ios/Runner/Info.plist</code> for every permission the app requests. Write them from the user's point of view, and say what the app does with the data.</p>
+<pre><code>&lt;key&gt;NSCameraUsageDescription&lt;/key&gt;
+&lt;string&gt;Take photos to attach to your entries. Photos stay
+on your device unless you choose to share them.&lt;/string&gt;
+
+&lt;key&gt;NSPhotoLibraryUsageDescription&lt;/key&gt;
+&lt;string&gt;Pick existing photos to attach to your entries.&lt;/string&gt;
+
+&lt;key&gt;NSLocationWhenInUseUsageDescription&lt;/key&gt;
+&lt;string&gt;Show nearby results while you are using the app.&lt;/string&gt;</code></pre>
+<p>Common keys include <code>NSCameraUsageDescription</code>, <code>NSPhotoLibraryUsageDescription</code>, <code>NSMicrophoneUsageDescription</code>, <code>NSLocationWhenInUseUsageDescription</code>, <code>NSContactsUsageDescription</code>, <code>NSHealthShareUsageDescription</code>, and <code>NSHealthUpdateUsageDescription</code>. A missing key terminates the app at the moment it asks, which reviewers will hit.</p>
+<div class="callout warning">
+<strong>Request in context.</strong> Ask for each permission when the related feature is used, not through one blanket request at launch. Reviewers test this, and a wall of prompts on first open is a common rejection reason.
+</div>
+<h3>Privacy manifest</h3>
+<p>Apple requires a <code>PrivacyInfo.xcprivacy</code> file that lists the data your app collects and the reasons for any required-reason APIs it calls. Most Flutter plugins ship their own. Add one to the Runner target for anything the app itself collects.</p>
+<h3>Icons and version</h3>
+<p>Set the app icons in <code>Assets.xcassets</code> inside the Runner folder. Confirm the version in <code>pubspec.yaml</code> reads <code>1.0.0+1</code>. Flutter maps the name to <code>CFBundleShortVersionString</code> and the build number to <code>CFBundleVersion</code>.</p>
+<p class="source">References: <a href="https://docs.flutter.dev/deployment/ios">Flutter iOS deployment</a> and <a href="https://developer.apple.com/documentation/bundleresources/privacy-manifest-files">Apple privacy manifest files</a>.</p>
+</section>
+
+<section class="content-section" id="a3-storekit"><h2>A3. Create the app record and in-app purchases<a class="anchor" href="#a3-storekit">#</a></h2>
+<p>The app record must exist before you can upload a build. Create it now, then add products if the app sells anything.</p>
+<ol class="steps">
+<li>In <a href="https://appstoreconnect.apple.com/">App Store Connect</a>, open Apps, click the plus, and choose New App. Select iOS, set the name, primary language, bundle ID, and a SKU of your choosing, then create.</li>
+<li>Skip the rest of this section if the app is free with no purchases, or is sold at a one-time price on the store.</li>
+<li>Open In-App Purchases or Subscriptions, depending on your model. For subscriptions, create a subscription group, then add each plan inside it, for example a monthly and an annual.</li>
+<li>Set prices per plan. Add an introductory offer if you want a free trial or a discounted first period.</li>
+<li>Add a localized display name, description, and a review screenshot for each product. Apple will not approve a product without them.</li>
+<li>Validate purchases on your backend or with StoreKit 2 on device, and store the entitlement in a platform-independent form so a user who buys on iOS is recognized on Android too.</li>
+<li>Create a Sandbox Apple ID under Users and Access and test the full purchase and restore flow before you submit.</li>
+</ol>
+<div class="callout">
+<strong>First-release products are reviewed with the app.</strong> Apple reviews new in-app purchases alongside the first build that uses them, so the products must be complete and attached to the version when you submit. Mirror the same plan structure and prices on Google Play so entitlement logic and support answers stay the same on both platforms.
+</div>
+<p class="source">Reference: <a href="https://developer.apple.com/storekit/">Apple StoreKit</a>.</p>
+</section>
+
+<section class="content-section" id="a4-build"><h2>A4. Build the IPA<a class="anchor" href="#a4-build">#</a></h2>
+<p>Build a signed release archive from the command line.</p>
+<pre><code>flutter clean
+flutter pub get
+flutter build ipa --build-name=1.0.0 --build-number=1</code></pre>
+<p>To protect the Dart code, add obfuscation.</p>
+<pre><code>flutter build ipa --obfuscate --split-debug-info=build/ios/symbols \
+  --build-name=1.0.0 --build-number=1</code></pre>
+<p>This produces an archive under <code>build/ios/archive/</code> and an <code>.ipa</code> under <code>build/ios/ipa/</code>. Keep the symbols folder. You need it to read crash reports later.</p>
+<div class="callout warning">
+<strong>Save your symbols.</strong> If you obfuscate, store the <code>build/ios/symbols</code> output somewhere safe for every release. Without it, crash logs from that build are unreadable.
+</div>
+</section>
+
+<section class="content-section" id="a5-upload"><h2>A5. Upload the build and test on TestFlight<a class="anchor" href="#a5-upload">#</a></h2>
+<ol class="steps">
+<li>Install <a href="https://apps.apple.com/us/app/transporter/id1450874784">Apple Transporter</a> from the Mac App Store and sign in with the Apple ID on your developer team.</li>
+<li>Drag the <code>.ipa</code> from <code>build/ios/ipa/</code> into Transporter and deliver it. You can also open the archive in Xcode and use Validate App, then Distribute App, which catches signing and entitlement problems before delivery.</li>
+<li>Wait for the processing email, usually under 30 minutes. Apple runs an automated pass first and emails you about missing purpose strings or export compliance.</li>
+<li>Answer the export compliance question. Most apps that only use HTTPS qualify for the exemption. Setting <code>ITSAppUsesNonExemptEncryption</code> to false in <code>Info.plist</code> stops the question repeating on every build.</li>
+<li>Open the TestFlight tab, add the build to Internal Testing, and invite your team. Internal testers do not need a separate Apple review.</li>
+<li>Run the flows reviewers probe on a real device: every permission prompt, sign-in and sign-out, purchase in sandbox, restore purchases, and account deletion.</li>
+</ol>
+<div class="callout">
+<strong>External beta.</strong> To reach testers outside your team, add an External Testing group in TestFlight. External groups need a light Apple review of the first build, which is quick compared to full App Store review, and can hold up to 10,000 testers.
+</div>
+</section>
+
+<section class="content-section" id="a6-listing"><h2>A6. Store listing, App Privacy, and age rating<a class="anchor" href="#a6-listing">#</a></h2>
+<p>Fill in the App Store product page and the privacy and rating sections.</p>
+<h3>App Privacy labels</h3>
+<p>In the App Privacy section, declare every type of data the app collects, whether it is linked to the user, and whether it is used for tracking. Count data your third-party SDKs collect too, such as analytics and crash reporting. If the app tracks users across other companies' apps or sites, it must show the App Tracking Transparency prompt. If it does not, say so and keep the answers consistent.</p>
+<h3>Age rating</h3>
+<p>Answer the age-rating questionnaire honestly. It drives the rating shown on the listing and which regions can see the app. If the app is for adults only, set the minimum age in availability where offered.</p>
+<h3>Required URLs and account deletion</h3>
+<ul>
+<li>Enter the privacy policy URL and a support URL.</li>
+<li>If the app lets users create an account, it must also let them delete it inside the app. Confirm the flow works and is easy to find, because Apple checks it.</li>
+<li>Complete Pricing and Availability, including which countries to launch in.</li>
+</ul>
+<p class="source">References: <a href="https://developer.apple.com/app-store/app-privacy-details/">App privacy details</a> and <a href="https://developer.apple.com/support/offering-account-deletion-in-your-app/">Offering account deletion in your app</a>.</p>
+</section>
+
+<section class="content-section" id="a7-submit"><h2>A7. Submit for App Store review<a class="anchor" href="#a7-submit">#</a></h2>
+<ol class="steps">
+<li>Attach the processed build to the version.</li>
+<li>In App Review Information, add a demo account if the app needs sign-in, sandbox purchase steps so the reviewer can test paid features, and notes that explain anything unusual.</li>
+<li>Describe plainly what the app does and does not do. If it touches a regulated area such as health, finance, or gambling, state its boundaries up front.</li>
+<li>Choose manual or automatic release after approval. Manual release lets you line up the Android rollout on the same day.</li>
+<li>Submit for review.</li>
+</ol>
+<div class="callout warning">
+<strong>Plan for extra time.</strong> Most first submissions take one to three days, but a rejection and resubmission can add a week. Do not promise a hard ship date before the first approval.
+</div>
+<p class="source">Reference: <a href="https://developer.apple.com/app-store/review/guidelines/">Apple App Review Guidelines</a>.</p>
+</section>
+
+<section class="content-section" id="b1-signing"><span class="part-label">Part B · Google Play</span><h2>B1. Set up app signing<a class="anchor" href="#b1-signing">#</a></h2>
+<p>Google Play signs the app your users download. You sign your uploads with an upload key. Create that key once and keep it safe. Losing it means a support request to Google to reset it and a delay in shipping updates.</p>
+<ol class="steps">
+<li>Create an upload keystore.
+<pre><code>keytool -genkey -v -keystore ~/upload-keystore.jks \
+  -keyalg RSA -keysize 2048 -validity 10000 -alias upload</code></pre></li>
+<li>Create <code>android/key.properties</code>. Do not commit it.
+<pre><code>storePassword=your-store-password
+keyPassword=your-key-password
+keyAlias=upload
+storeFile=/Users/yourname/upload-keystore.jks</code></pre></li>
+<li>Wire the signing config into <code>android/app/build.gradle.kts</code>, loading the properties before the <code>android</code> block and referencing them in a release signing config.
+<pre><code>import java.util.Properties
+import java.io.FileInputStream
+
+val keystoreProperties = Properties()
+val keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
+
+android {
+    signingConfigs {
+        create("release") {
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
+            storeFile = keystoreProperties["storeFile"]?.let { file(it) }
+            storePassword = keystoreProperties["storePassword"] as String
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.getByName("release")
+        }
+    }
+}</code></pre></li>
+</ol>
+<div class="callout danger">
+<strong>Guard the keystore and passwords.</strong> Store <code>upload-keystore.jks</code> and <code>key.properties</code> outside the repository, in a password manager or secret store, and add both to <code>.gitignore</code>. Back them up in two places.
+</div>
+<p class="source">References: <a href="https://docs.flutter.dev/deployment/android">Flutter Android deployment</a> and <a href="https://support.google.com/googleplay/android-developer/answer/9842756">Play App Signing</a>.</p>
+</section>
+
+<section class="content-section" id="b2-android"><h2>B2. Configure the Android project<a class="anchor" href="#b2-android">#</a></h2>
+<h3>Application ID and SDK levels</h3>
+<p>In <code>android/app/build.gradle.kts</code>, confirm the identity and SDK levels.</p>
+<pre><code>applicationId = "com.example.yourapp"
+minSdk = 24
+compileSdk = 36
+targetSdk = 36</code></pre>
+<p>Google requires new apps and updates to target a recent API level, so keep <code>targetSdk</code> at the latest stable release. Set <code>minSdk</code> as low as your plugins allow and no lower than you will test. The application ID cannot change after the first upload.</p>
+<h3>Permissions</h3>
+<p>Declare in <code>AndroidManifest.xml</code> only the permissions tied to visible features. Google reviews every sensitive permission against a feature it can see, and some, such as SMS, call log, all-files access, and health data, need a declaration form and a written or video justification.</p>
+<pre><code>&lt;uses-permission android:name="android.permission.CAMERA"/&gt;
+&lt;uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/&gt;
+&lt;!-- add only the permissions the app actually uses --&gt;</code></pre>
+<div class="callout warning">
+<strong>Request only what you use.</strong> Extra permissions with no matching feature cause rejection. Keep the list tight and be ready to justify each one in the Data safety form.
+</div>
+<h3>Icon and version</h3>
+<p>Replace the launcher icons under <code>android/app/src/main/res/</code>, or generate them with the <code>flutter_launcher_icons</code> package. Flutter maps the build name in <code>pubspec.yaml</code> to <code>versionName</code> and the build number to <code>versionCode</code>.</p>
+<p class="source">Reference: <a href="https://support.google.com/googleplay/android-developer/answer/11926878">Play target API level requirement</a>.</p>
+</section>
+
+<section class="content-section" id="b3-build"><h2>B3. Build the app bundle<a class="anchor" href="#b3-build">#</a></h2>
+<p>Build a signed Android App Bundle. Google Play requires bundles for new apps.</p>
+<pre><code>flutter clean
+flutter pub get
+flutter build appbundle --build-name=1.0.0 --build-number=1</code></pre>
+<p>With obfuscation:</p>
+<pre><code>flutter build appbundle --obfuscate --split-debug-info=build/android/symbols \
+  --build-name=1.0.0 --build-number=1</code></pre>
+<p>The bundle lands at <code>build/app/outputs/bundle/release/app-release.aab</code>. Every upload needs a higher <code>versionCode</code> than the last. Keep the symbols folder for the same reason as on iOS.</p>
+</section>
+
+<section class="content-section" id="b4-console"><h2>B4. Create the app and run internal testing<a class="anchor" href="#b4-console">#</a></h2>
+<ol class="steps">
+<li>In <a href="https://play.google.com/console/">Play Console</a>, choose Create app. Set the name, default language, app or game, and free or paid. A free app cannot be changed to paid later.</li>
+<li>Open Testing, then Internal testing. Create a release, upload <code>app-release.aab</code>, and accept Play App Signing when prompted. Google generates and holds the app signing key. You keep signing with your upload key.</li>
+<li>Add your team as internal testers with their Google accounts and share the opt-in link. Internal testing supports up to 100 testers and needs no review.</li>
+<li>Install through the link and run the flows reviewers probe: every permission prompt, sign-in, purchase, restore, and account deletion.</li>
+<li>When internal testing looks good, promote the same release to a Closed testing track for a wider beta.</li>
+</ol>
+<div class="callout warning">
+<strong>Check whether the 12-tester rule applies to you.</strong> Personal developer accounts created after November 13, 2023 must run a closed test with at least 12 testers opted in for 14 continuous days, then apply for production access, before they can publish. Organization accounts and older personal accounts are exempt. If the rule applies, start the closed test as early as possible because it is the longest fixed wait in the process.
+</div>
+<p class="source">Reference: <a href="https://support.google.com/googleplay/android-developer/answer/14151465">Play testing requirements for new personal accounts</a>.</p>
+</section>
+
+<section class="content-section" id="b5-billing"><h2>B5. Set up in-app purchases<a class="anchor" href="#b5-billing">#</a></h2>
+<p>Skip this if the app sells nothing. Play Console only lets you create products after a bundle that includes the Play Billing library has been uploaded, which is why this comes after internal testing.</p>
+<ol class="steps">
+<li>Open Monetize with Play, then Products, then In-app products or Subscriptions.</li>
+<li>For subscriptions, create one subscription and add a base plan for each billing period, for example monthly and annual. Prices are set per base plan.</li>
+<li>Add an offer, such as a free trial or introductory price, on any plan that needs one.</li>
+<li>Match product identifiers and prices to the Apple products so entitlement logic stays the same on both platforms.</li>
+<li>Confirm your backend validates Play purchases and writes to the same entitlement record used on iOS.</li>
+<li>Add license-test accounts under Setup, then License testing, so test purchases are not charged. Then run the purchase and restore flow on a device installed from the internal testing link.</li>
+</ol>
+<p class="source">Reference: <a href="https://developer.android.com/google/play/billing">Google Play Billing</a>.</p>
+</section>
+
+<section class="content-section" id="b6-declarations"><h2>B6. Store listing and declarations<a class="anchor" href="#b6-declarations">#</a></h2>
+<p>Complete every item under App content before you request production. The Dashboard shows what is left.</p>
+<h3>Main store listing</h3>
+<p>Add the icon, feature graphic, screenshots, short description, and full description. Keep claims conservative and consistent with what the app does.</p>
+<h3>Data safety</h3>
+<p>Declare what the app collects, how it is used, whether it is shared, whether users can request deletion, and how it is secured. Include data collected by SDKs. Your answers must line up with the privacy policy and with the App Privacy labels you gave Apple.</p>
+<h3>Declarations every app completes</h3>
+<ul>
+<li>Privacy policy URL.</li>
+<li>Ads. Say whether the app shows ads.</li>
+<li>Content rating questionnaire, which produces the rating shown on the listing.</li>
+<li>Target audience and content. If the app targets children, extra Families policy rules apply.</li>
+<li>News, government, financial features, and health apps declarations. Every app answers them, even to say the category does not apply.</li>
+<li>Account deletion. If users can create an account, provide an in-app deletion path and a web URL for deletion requests.</li>
+</ul>
+<div class="callout">
+<strong>Sensitive permissions need their own form.</strong> If the manifest requests SMS, call log, all-files access, accessibility services, exact alarms, or health data, Play shows an additional declaration asking which feature needs it. Health apps also go through a data-type review before Health Connect access works. See the sensitive-data section below.
+</div>
+<p class="source">Reference: <a href="https://support.google.com/googleplay/android-developer/answer/10787469">Data safety form</a>.</p>
+</section>
+
+<section class="content-section" id="b7-production"><h2>B7. Roll out to production<a class="anchor" href="#b7-production">#</a></h2>
+<ol class="steps">
+<li>Confirm every section under App content shows complete and the Dashboard has no open tasks.</li>
+<li>If the 12-tester rule applied, apply for production access after the 14 days and wait for approval.</li>
+<li>Open Production, create a release, and promote the tested bundle from a testing track rather than uploading a fresh untested build.</li>
+<li>Choose the countries to release in, then use a staged rollout. Start at a small percentage so you can watch crash-free rate on real devices before reaching everyone.</li>
+<li>Send for review. Google says up to seven days for new apps, and sensitive categories can take longer.</li>
+<li>Once live, raise the rollout percentage in steps, and halt the rollout from the console if a crash spike appears.</li>
+</ol>
+</section>
+
+<section class="content-section" id="sensitive"><span class="part-label">Wrap Up</span><h2>Extra work for sensitive-data apps<a class="anchor" href="#sensitive">#</a></h2>
+<p>Apps that touch health, finance, children, or other regulated areas get a stricter review on both stores. The underlying commitments are the same in both consoles, so get them right once. Health apps are the most common case and carry the most specific rules.</p>
+<table>
+<thead><tr><th>Requirement</th><th>What reviewers check</th></tr></thead>
+<tbody>
+<tr><td>No unsupported claims</td><td>App and listing describe what the app does without promising medical, financial, or legal outcomes. Health apps must not read as diagnosis, dosing, or treatment advice.</td></tr>
+<tr><td>Purpose strings and scoped permissions</td><td>Every sensitive permission maps to a visible feature and explains itself in plain language. Health apps declare only the data types they use.</td></tr>
+<tr><td>Privacy policy live and consistent</td><td>Public URL, no sale of sensitive data, no sensitive data for ads, matches the App Privacy and Data safety answers.</td></tr>
+<tr><td>In-app account deletion</td><td>Reachable inside the app, ideally offers an export first, confirms completion.</td></tr>
+<tr><td>Analytics exclude sensitive values</td><td>No health readings, balances, or personal notes in analytics events.</td></tr>
+<tr><td>Organization account where required</td><td>Some health distributions on Play require an organization account. Check the policy for your category before you build.</td></tr>
+</tbody>
+</table>
+<h3>Health apps specifically</h3>
+<ul>
+<li>Apple: enable HealthKit on the App ID and in Xcode, add <code>NSHealthShareUsageDescription</code> and <code>NSHealthUpdateUsageDescription</code>, and state in review notes that the app is a wellness or recordkeeping tool.</li>
+<li>Google: Health Connect requires Android 9 or newer, so set <code>minSdk 28</code>. Declare each Health Connect data type in the manifest, complete the Health apps declaration, and pass the Health Connect data-type review before access works. The Play privacy-policy URL must match the one Health Connect shows.</li>
+<li>Both: some US states have consumer-health privacy laws, such as the Washington My Health My Data Act, that require a separate consumer-health privacy notice.</li>
+</ul>
+<div class="callout danger">
+<strong>The fastest way to get rejected.</strong> Wording that reads as professional advice, a permission with no matching feature, or a privacy answer that contradicts your policy. Sweep the app and both listings for these before you submit.
+</div>
+<p class="source">References: <a href="https://developer.apple.com/documentation/healthkit/setting-up-healthkit">Setting up HealthKit</a>, <a href="https://support.google.com/googleplay/android-developer/answer/14738291">Health apps declaration form</a>, <a href="https://developer.android.com/health-and-fitness/health-connect/publish">Publish a Health Connect app</a>, and <a href="https://support.google.com/googleplay/android-developer/answer/13996367">Google Play health apps policy</a>.</p>
+</section>
+
+<section class="content-section" id="timeline"><h2>Timeline and updates<a class="anchor" href="#timeline">#</a></h2>
+<p>Rough sequence for a first release with accounts already in place. Testing and store review are the long poles, so start uploading builds early.</p>
+<table>
+<thead><tr><th>Phase</th><th>Typical duration</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Project config and first builds</td><td>1 to 3 days</td><td>Signing, capabilities, purpose strings, products.</td></tr>
+<tr><td>Internal and closed testing</td><td>1 to 3 weeks</td><td>14 days minimum if the Play 12-tester rule applies to your account.</td></tr>
+<tr><td>Listings and declarations</td><td>1 to 2 days</td><td>Faster if assets and policy pages were prepared up front.</td></tr>
+<tr><td>Store review, first submission</td><td>Several days to a few weeks</td><td>Sensitive categories can take longer. Keep a two to four week buffer before any public launch date.</td></tr>
+</tbody>
+</table>
+<h3>Shipping updates later</h3>
+<p>For each new release, bump the version in <code>pubspec.yaml</code>, rebuild both artifacts, upload, test on a track, then promote. The one-time work in this guide, signing keys, capabilities, products, and declarations, does not repeat, though both stores ask you to reconfirm the privacy forms when your data practices change. Once the manual flow is steady, a tool like Fastlane or Codemagic can automate the build and upload steps.</p>
+</section>
+
+<section class="content-section" id="checklist"><h2>Master submission checklist<a class="anchor" href="#checklist">#</a></h2>
+<h3>Shared, do once</h3>
+<ul class="checklist">
+<li>Apple Developer Program and Play Console accounts active, with paid agreements and payment profiles if selling in-app</li>
+<li>Application identifier chosen and identical on both platforms</li>
+<li>Privacy policy and terms live at public URLs</li>
+<li>Support URL and marketing site ready</li>
+<li>Icon, screenshots, feature graphic, and descriptions prepared</li>
+<li>In-app account deletion confirmed working if the app has accounts</li>
+<li>Version set to 1.0.0+1 and a plan for bumping build numbers</li>
+</ul>
+<h3>Apple App Store</h3>
+<ul class="checklist">
+<li>App ID registered with only the capabilities the app uses</li>
+<li>Xcode signing, capabilities, purpose strings, and privacy manifest set</li>
+<li>App record created and in-app products configured, if any</li>
+<li>IPA built with symbols saved, uploaded via Transporter, tested on TestFlight</li>
+<li>App Privacy labels, age rating, and URLs complete</li>
+<li>Review notes include demo account and purchase test steps</li>
+<li>Submitted for review</li>
+</ul>
+<h3>Google Play</h3>
+<ul class="checklist">
+<li>Upload keystore created, key.properties and Gradle signing configured, keystore backed up</li>
+<li>applicationId, SDK levels, and scoped permissions set</li>
+<li>App bundle built with symbols saved</li>
+<li>App created, Play App Signing accepted, internal testing run on real devices</li>
+<li>In-app products configured and test purchases made, if any</li>
+<li>Data safety, content rating, target audience, ads, and category declarations complete</li>
+<li>Closed test completed if the 12-tester rule applies</li>
+<li>Promoted to production with a staged rollout and sent for review</li>
+</ul>
+</section>
+
+</article>
+</main>
+<a aria-label="Back to top" class="back-top" href="#top">&#8593;</a>
+<footer class="footer">Multi-Platform Deployment Guide · Apple App Store and Google Play · Manual release path</footer>
+</body>
+</html>
