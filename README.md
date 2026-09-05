@@ -73,11 +73,15 @@ hidden.
 
 ### Calculator
 
-Opened from **Calc** in the menu. The calculator appears to the left of the logo on
-desktop and as a centered overlay on narrow screens. It supports addition,
-subtraction, multiplication, division, percentages, sign changes, decimals, clearing,
-and keyboard input. Division by zero reports an error without executing arbitrary
-expressions or using `eval`.
+Opened from **Calc**, the final item in the landing-page menu. The calculator is a
+non-modal dialog kept outside the document's main layout: while closed it is not
+rendered and cannot move or resize the logo, navigation, footer, or other content. It
+appears to the left of the logo on desktop and as a centered overlay on narrow screens.
+
+The calculator supports addition, subtraction, multiplication, division, percentages,
+sign changes, decimals, clearing, and keyboard input. **Calc** toggles it, the close
+button or Escape dismisses it, and focus returns to the menu control. Division by zero
+reports an error without executing arbitrary expressions or using `eval`.
 
 ## PAWS manual search
 
