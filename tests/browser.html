@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Browser regression tests</title>
+<h1>Browser regression tests</h1>
+<p>Serve the repository on localhost and run these checks in a dedicated tab.
+They exercise real dialogs, focus, DOM search, and a muted timer. Keyboard events
+are synthetic; native Tab/Escape behavior should also be checked manually.</p>
+<button id="run" type="button">Run tests</button>
+<pre id="results" aria-live="polite">Ready</pre>
+<iframe id="app" title="Application under test" width="1000" height="700"></iframe>
+<script src="browser.js"></script>
+</html>

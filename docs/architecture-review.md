@@ -36,7 +36,7 @@ Daylight and alarm communicate indirectly through the logo DOM element.
 
 ## Critical problem areas
 
-1. **Fixed: invalid alarm persistence.** `decode` validates record shape,
+1. **Fixed: invalid alarm persistence.** `alarm-state.js` decodes and validates record shape,
    enum values, finite nonnegative durations and valid timestamp range,
    boolean sound preference, clock syntax and state/mode consistency before
    accepting any fields. Malformed or incomplete records restore the default
@@ -47,7 +47,8 @@ Daylight and alarm communicate indirectly through the logo DOM element.
    Presets replace a running, paused or ringing timer with the selected idle
    duration: deadline cleared, ticker and beeper stopped, overlay hidden.
    This completes the existing preset intent without leaving orphan effects.
-   Input parsing and UI event handlers remain in the browser controller.
+   Pure transitions now live in `alarm-state.js`; input parsing, UI events,
+   storage, scheduling, audio and rendering remain in the browser controller.
 3. **Fixed: missing alarm regression coverage.** `tests/alarm.test.cjs` runs
    the production script against controlled time, storage, scheduling and DOM
    boundaries. It exercises UI events and checks persisted state, display
@@ -75,31 +76,73 @@ Daylight and alarm communicate indirectly through the logo DOM element.
 
 ## Performance and scalability risks
 
-- Manual search scans all cached card text and traverses matching text nodes
-  on every processed query. Unwrapping every highlight and normalizing its
-  parent creates further DOM work, especially for common queries. Animation
-  frames coalesce input but do not move work off the main thread. Measure
-  long-query sessions on an expanded manual before choosing chunked
-  highlighting or a search index; an index alone will not reduce DOM costs.
-- The manual embeds a base64 hero image, tying its transfer and caching to
-  the HTML. Externalizing it would permit independent caching but remove
-  the manual's existing single-file portability, so it was left intact.
-- The landing page preloads both possible logos. That avoids late discovery
-  after daylight selection but may transfer an unused image. Compare cold
-  cache traces before changing this intentional tradeoff.
-- Alarm rendering updates all controls each second while visible, including
-  when its dialog is closed. Separate countdown updates from configuration
-  rendering if profiling shows meaningful cost; currently the DOM is small.
-- Each tab runs and persists its own alarm state. There is no storage-event
-  synchronization or shared ownership, so multiple tabs can ring separately.
-  Single-owner coordination would change behavior and needs a product choice.
-- Browser timers are not a reliable delivery mechanism while a browser is
-  closed or suspended. Absolute deadlines support recovery, not background
-  execution guarantees. Reliable out-of-browser notifications require a
-  separate capability, beyond a behavior-preserving refactor.
-- Serving more readers primarily stresses static delivery, not application
-  compute. Hosting headers and deployed traces must be inspected separately;
-  no claims about live latency, compression, or cache hit rates are made here.
+- **Mitigated: manual search blocks input.** Cleanup and highlighting run in
+  cancellable animation-frame batches (at most 12 cards, yielding after a
+  6 ms budget check). New input cancels the queued batch; the newest query
+  starts with cleanup. Identical completed queries do no work. Each card owns
+  its highlight references, avoiding a document-wide mark query, and affected
+  parents normalize once per cleanup instead of once per match. Matching and
+  DOM work still scale with content, and a single large card can exceed the
+  budget because yielding occurs between cards. Results arrive progressively;
+  chunking trades completion latency for responsiveness. A worker/index is
+  not justified by the current 66-card manual.
+- **Fixed: embedded hero payload.** The manual logo is a byte-identical
+  4,831-byte PNG in `assets/images/manual-logo-b2e93d1fd778.png`. This removes
+  6,466 bytes of base64 URL text from HTML and allows independent caching.
+  Its content hash supports future cache-safe replacements. The manual already
+  required a companion script; distribute the image with it as well.
+- **Fixed: unused logo preload.** `daylight-selection.js` runs in the head,
+  computes the same solar selection, and adds only the selected responsive
+  image preload. `daylight.js` applies it at the original DOM position and
+  retains minute/visibility updates. The no-JavaScript image is unchanged.
+  Selection now adds a small script dependency before image discovery; savings
+  are in transferred image bytes, not a guaranteed LCP improvement.
+- **Fixed: redundant alarm rendering.** State transitions render controls;
+  periodic/visibility updates refresh only status text and an open dialog's
+  readout. Unchanged text is not assigned again. Opening the dialog explicitly
+  refreshes it. Deadline checking continues while hidden, preserving alarms.
+- **Retained by user choice: independent tabs.** Each tab keeps its own live
+  alarm. Multiple tabs may ring separately and writes to the existing shared
+  storage key remain last-writer-wins. Cross-tab ownership/synchronization was
+  explicitly declined, so this is documented behavior, not an outstanding fix.
+- **Platform limit: closed/suspended browsers.** Absolute deadlines and
+  visibility recovery remain in place and tested. A closed browser cannot run
+  these scripts; dependable background delivery would require another service
+  and a notification permission flow. No background-delivery guarantee is made.
+- **Verified hosting mitigation.** A read-only production header check on
+  2026-09-06 UTC returned GitHub.com/Fastly delivery, `Cache-Control: max-age=600`,
+  an ETag and `Vary: Accept-Encoding`. Requesting gzip/br returned gzip HTML
+  (11,338 bytes for the currently deployed 45,184-byte landing page).
+  Compression and edge delivery already exist. No hosting migration, DNS
+  change or live deployment was made. Longer asset cache lifetimes require
+  hosting configuration outside this checkout and versioned asset URLs.
+
+### Local measurements
+
+A Chrome comparison cloned each of the 66 cards nine additional times into a
+same-origin iframe, then ran a `dog` query against the committed controller
+and the new controller. `requestAnimationFrame` callbacks were wrapped with
+`performance.now()` measurements; each run settled for 4.5 seconds.
+
+| 660-card search | Before | After |
+| --- | ---: | ---: |
+| Longest JavaScript callback | 262.7 ms | 19.9 ms |
+| Total measured callback work | 262.7 ms | 233.8 ms |
+| Callback count | 1 | 119 |
+| Produced highlights | 5,280 | 5,280 |
+
+These are single local samples, not statistical benchmarks or INP measurements.
+They exclude layout/paint cost and demonstrate reduced uninterrupted work, not
+constant-time search. Actual queries on the manual preserved every card's text
+through `dog`, `training`, and clear, ending with zero search marks.
+
+On a local HTTP desktop night-theme load, image requests fell from 68,402 bytes
+(two logos) to 23,472 bytes (selected logo), saving 44,930 bytes. Final before/after
+trace samples showed LCP 1,764/1,879 ms and CLS 0.00/0.00 without throttling. This
+small sample does not demonstrate an LCP improvement; the image-byte saving is
+verified, and slow-network image discovery remains a deployment check.
+A real-browser alarm test observed zero mutations inside the closed dialog
+while its badge counted down; reopening immediately showed the current value.
 
 ## Implemented refactor
 
@@ -110,21 +153,60 @@ and script caching. No framework, package install, state-schema migration,
 style change, or algorithm rewrite was introduced.
 
 The external feature scripts and shared time utility across the two interactive pages are a
-cold-load tradeoff. They remain parser-blocking to preserve execution order
-relative to the original markup. Actual latency depends on hosting and cache
+cold-load tradeoff. They remain parser-blocking to preserve execution order;
+solar selection now runs in the head, while logo painting stays after its DOM. Actual latency depends on hosting and cache
 behavior. Do not add `async` or `defer` without checking daylight first paint,
 dialog initialization, and restored alarm behavior. HTML and scripts must be
 deployed together; extracted pages now depend on their companion files.
 
-## Next refactoring sequence
+## Refactoring sequence — completed
 
-1. Extend behavioral coverage to calculator keyboard and focus interactions.
-2. If the alarm grows further, extract pure transitions from the browser
-   controller; persistence decoding and effect reconciliation are now separated.
-3. Add real-browser interaction coverage alongside the controlled alarm suite.
-4. Profile realistic larger manual content. Optimize the
-   measured search/highlight cost while preserving tab and search interaction.
-5. Measure deployed cold/warm loads before changing preload or caching policy.
+1. **Calculator coverage:** `tests/calculator.test.cjs` covers keyboard arithmetic,
+   decimal aliases, editing, percent/sign operations, division-by-zero recovery,
+   digit limits, operation chaining/replacement, editable-input exclusions,
+   delegated buttons, opening/closing, and focus return. Native Enter, Tab and
+   Escape were also exercised in Chrome: launcher → close button → AC button →
+   launcher, with the expected open/closed state.
+2. **Pure alarm transitions:** `alarm-state.js` owns defaults, decoding and
+   immutable state transitions. Start/stop take explicit timestamps; the module
+   has no DOM, storage, audio, scheduler or implicit clock dependency. The
+   controller validates UI input, gates unavailable actions and reconciles
+   effects after transitions. Preference edits preserve active effects. The
+   existing storage key/schema, independent tabs and recovery behavior remain.
+   `tests/alarm-state.test.cjs` tests frozen inputs and time-dependent transitions
+   alongside the existing controller regression suite.
+3. **Repeatable browser coverage:** serve the repository and open
+   `tests/browser.html` on localhost. Its 15 checks use real pages, native
+   dialogs and DOM, a muted timer, reload recovery, search replacement/clearing,
+   and tab switching. It restores the prior local alarm record after running.
+   Keyboard dispatch in the harness is synthetic; separate trusted-key checks
+   in Chrome cover native focus navigation. All 15 harness checks passed.
+4. **Larger-manual profiling:** completed in the performance pass above. The
+   660-card fixture demonstrated shorter uninterrupted work with equivalent
+   highlights. Cancellable batches and parent-level cleanup address the measured
+   cost; a worker/index remains unnecessary for current content. No additional
+   optimization was made without new evidence.
+5. **Deployed cold/warm baseline:** measured `https://ryost.us/` in an isolated
+   Chrome context on 2026-09-06 UTC with no CPU/network throttling. Cold means
+   first navigation in that context; warm means a second navigation in the same
+   context. Buffered PerformanceObservers recorded LCP and CLS, and Navigation/
+   Resource Timing recorded transfers; readings settled for two seconds.
+
+   | Measurement | Cold | Warm |
+   | --- | ---: | ---: |
+   | TTFB | 379.6 ms | 1.6 ms |
+   | FCP / LCP | 824 / 824 ms | 96 / 96 ms |
+   | Observed CLS | 0 | 0 |
+   | DOMContentLoaded | 969.1 ms | 54.2 ms |
+   | Document transfer | 11,638 bytes | 0 bytes |
+   | Resource transfer | 73,284 bytes | 0 bytes |
+
+   Transfer sizes include response overhead. Warm transfers were zero, with
+   image body sizes still present in Resource Timing, consistent with browser
+   cache reuse. Cold loaded both logos, confirming that this is the current
+   deployed version, not the pending refactors. These single samples establish
+   a baseline, not field percentiles or proof of a deployed improvement. No
+   further preload/cache changes or deployment were made in this sequence.
 
 ## Validation and limits
 
@@ -135,4 +217,8 @@ hidden-tab catch-up, ringing timeout, unavailable storage/audio and invalid inpu
 The suite also checks shared formatting, script dependency order, manual state
 isolation, tab navigation, search filtering and clearing. All scripts pass syntax checks. These controlled browser-boundary tests do not
 verify native dialog behavior, actual audio output, or browser throttling.
-No real-browser interaction suite or production performance trace was run.
+The Node suite passes 20 tests; the local browser harness passes 15 checks.
+Local Chrome search, logo loading, alarm interactions, trusted calculator focus
+navigation and landing-page traces were exercised. A deployed cold/warm baseline
+was also recorded above. Native audio output, true browser suspension, other
+browser engines and production performance after deployment remain unverified.

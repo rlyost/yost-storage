@@ -5,7 +5,6 @@
   // throttled background tab or a sleeping laptop can't drift the count.
   var KEY = "handlerpath.alarm";
   var RING_MAX_MS = 300000;   // stop flashing after 5 min if nobody's home
-  var CATCHUP_MS = 300000;    // a deadline missed while away still rings if recent
 
   var $ = function (id) { return document.getElementById(id); };
   var dlg = $("alarm-dialog");
@@ -19,15 +18,7 @@
   var tabs = { timer: $("mode-timer"), alarm: $("mode-alarm") };
   var btn = { set: $("btn-set"), stop: $("btn-stop"), reset: $("btn-reset"), off: $("btn-off") };
 
-  var st = {
-    mode: "timer",
-    state: "idle",
-    durationMs: 300000,  // what Reset returns the timer to
-    remainingMs: 300000, // banked time while paused or idle
-    deadline: 0,         // epoch ms the timer/alarm fires
-    alarmTime: "",       // "HH:MM" for alarm mode
-    sound: true
-  };
+  var st = HandlerPathAlarm.defaults();
 
   var ticker = null;
   var beeper = null;
@@ -40,38 +31,10 @@
     try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {}
   }
 
-  // Decode atomically: malformed or incomplete records fall back to defaults.
-  // Unknown fields are ignored; the existing storage key/schema stays compatible.
-  function decode(raw, defaults, now) {
-    var v;
-    try { v = JSON.parse(raw); } catch (e) { return defaults; }
-    function duration(n) {
-      return Number.isFinite(n) && n >= 0 && n <= 8640000000000000;
-    }
-    if (!v || typeof v !== "object" || Array.isArray(v) ||
-        !["timer", "alarm"].includes(v.mode) ||
-        !["idle", "running", "paused", "ringing"].includes(v.state) ||
-        !duration(v.durationMs) || !duration(v.remainingMs) ||
-        !duration(v.deadline) || typeof v.sound !== "boolean" ||
-        typeof v.alarmTime !== "string" ||
-        (v.alarmTime !== "" && !/^([01]\d|2[0-3]):[0-5]\d$/.test(v.alarmTime)) ||
-        (v.state === "paused" && v.mode !== "timer") ||
-        (v.state === "running" && (v.deadline === 0 ||
-          (v.mode === "alarm" && v.alarmTime === "")))) return defaults;
-    var next = {};
-    Object.keys(defaults).forEach(function (key) { next[key] = v[key]; });
-    if (next.state === "ringing") next.state = "idle";
-    if (next.state === "running" && now >= next.deadline) {
-      next.state = now - next.deadline < CATCHUP_MS ? "ringing" : "idle";
-    }
-    if (next.state !== "running") next.deadline = 0;
-    return next;
-  }
-
   function load() {
     var raw = null;
     try { raw = localStorage.getItem(KEY); } catch (e) {}
-    st = decode(raw, st, Date.now());
+    st = HandlerPathAlarm.decode(raw, st, Date.now());
   }
 
   /* ---- formatting ------------------------------------------------- */
@@ -157,6 +120,20 @@
     fields.timer.hidden = st.mode !== "timer";
     fields.alarm.hidden = st.mode !== "alarm";
 
+    btn.set.disabled = st.state === "running" || st.state === "ringing";
+    btn.set.textContent = st.state === "paused" ? "Resume" : "Set";
+    btn.stop.disabled = st.state !== "running";
+    btn.reset.disabled = st.state === "idle" && st.remainingMs === st.durationMs;
+    btn.off.disabled = st.state !== "ringing";
+    renderStatus(true);
+  }
+
+  function setText(element, text) {
+    if(element.textContent !== text) element.textContent = text;
+  }
+
+  // Periodic updates touch only the badge and an open dialog's readout.
+  function renderStatus(force) {
     var main = "\u2014", note = "Not set", badge = "";
 
     if (st.state === "running") {
@@ -173,17 +150,14 @@
       badge = "ALARM RINGING";
     }
 
-    big.textContent = main;
-    sub.textContent = note;
+    if(force || dlg.open){
+      setText(big, main);
+      setText(sub, note);
+    }
 
     statusEl.hidden = !badge;
-    statusEl.textContent = badge;
+    setText(statusEl, badge);
 
-    btn.set.disabled = st.state === "running" || st.state === "ringing";
-    btn.set.textContent = st.state === "paused" ? "Resume" : "Set";
-    btn.stop.disabled = st.state !== "running";
-    btn.reset.disabled = st.state === "idle" && st.remainingMs === st.durationMs;
-    btn.off.disabled = st.state !== "ringing";
   }
 
   /* ---- state machine ---------------------------------------------- */
@@ -193,7 +167,7 @@
     ticker = setInterval(function () {
       if (st.state !== "running") return;
       if (Date.now() >= st.deadline) fire();
-      else if (!document.hidden) render();
+      else if (!document.hidden) renderStatus(false);
     }, 1000);
   }
 
@@ -208,47 +182,36 @@
     } else {
       ms = readFields();
       if (!Number.isFinite(ms) || ms <= 0 || !Number.isFinite(new Date(Date.now() + ms).getTime())) { sub.textContent = "Enter a time first"; return; }
-      if (st.mode === "timer") st.durationMs = ms;
-      else st.alarmTime = $("a-time").value;
     }
-    st.remainingMs = ms;
-    st.deadline = Date.now() + ms;
     audio();                                // unlock inside this click
-    commit("running");
+    commit(HandlerPathAlarm.transition(st, { type: "start", durationMs: ms, alarmTime: $("a-time").value }, Date.now()));
     dlg.close();   // armed - get the card out of the way
   }
 
   function stop() {
     if (st.state !== "running") return;
-    st.remainingMs = Math.max(0, st.deadline - Date.now());
-    // A wall-clock alarm has nothing to resume into, so Stop disarms it.
-    var nextState = st.mode === "timer" ? "paused" : "idle";
-    if (nextState === "idle") st.remainingMs = st.durationMs;
-    commit(nextState);
+    commit(HandlerPathAlarm.transition(st, { type: "stop" }, Date.now()));
   }
 
   function reset() {
-    st.remainingMs = st.durationMs;
     if (st.mode === "timer") writeTimerFields(st.durationMs);
-    commit("idle");
+    commit(HandlerPathAlarm.transition(st, { type: "reset" }));
   }
 
   // Every transition owns cleanup, scheduling, persistence and rendering.
   // Presets replace the active timer with an idle duration, including while ringing.
-  function commit(state) {
+  function commit(next) {
     stopTicking();
     silence();
-    st.state = state;
-    if (state !== "running") st.deadline = 0;
-    if (state === "ringing") st.remainingMs = 0;
+    st = next;
     save();
-    if (state === "running") startTicking();
-    if (state === "ringing") startRinging();
+    if (st.state === "running") startTicking();
+    if (st.state === "ringing") startRinging();
     render();
   }
 
   function fire() {
-    commit("ringing");
+    commit(HandlerPathAlarm.transition(st, { type: "fire" }));
   }
 
   function startRinging() {
@@ -271,8 +234,7 @@
   }
 
   function turnOff() {
-    st.remainingMs = st.durationMs;
-    commit("idle");
+    commit(HandlerPathAlarm.transition(st, { type: "off" }));
   }
 
   /* ---- wiring ----------------------------------------------------- */
@@ -286,8 +248,8 @@
   Object.keys(tabs).forEach(function (m) {
     tabs[m].addEventListener("click", function () {
       if (st.state === "running" || st.state === "ringing") return;
-      st.mode = m;
-      reset();
+      commit(HandlerPathAlarm.transition(st, { type: "mode", mode: m }));
+      if (st.mode === "timer") writeTimerFields(st.durationMs);
     });
   });
 
@@ -296,8 +258,7 @@
     function (b) {
       b.addEventListener("click", function () {
         writeTimerFields(+b.dataset.secs * 1000);
-        st.durationMs = st.remainingMs = +b.dataset.secs * 1000;
-        commit("idle");
+        commit(HandlerPathAlarm.transition(st, { type: "preset", durationMs: +b.dataset.secs * 1000 }));
       });
     }
   );
@@ -309,12 +270,12 @@
   $("alarm-off").addEventListener("click", turnOff);
 
   $("a-time").addEventListener("change", function () {
-    st.alarmTime = $("a-time").value;
+    st = HandlerPathAlarm.transition(st, { type: "alarmTime", alarmTime: $("a-time").value });
     save();
   });
 
   soundBox.addEventListener("change", function () {
-    st.sound = soundBox.checked;
+    st = HandlerPathAlarm.transition(st, { type: "sound", sound: soundBox.checked });
     save();
   });
 
@@ -327,12 +288,12 @@
   document.addEventListener("visibilitychange", function () {
     if (document.hidden || st.state !== "running") return;
     if (Date.now() >= st.deadline) fire();
-    else render();
+    else renderStatus(false);
   });
 
   load();
   soundBox.checked = st.sound;
   if (st.mode === "alarm") $("a-time").value = st.alarmTime;
   writeTimerFields(st.mode === "timer" ? (st.remainingMs || st.durationMs) : st.durationMs);
-  commit(st.state); // Persist normalized recovery state and reconcile its effects.
+  commit(st); // Persist normalized recovery state and reconcile its effects.
 })();

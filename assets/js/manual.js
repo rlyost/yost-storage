@@ -32,7 +32,8 @@
     return {
       element: card,
       session: card.closest('.session'),
-      searchText: card.textContent.toLocaleLowerCase()
+      searchText: card.textContent.toLocaleLowerCase(),
+      marks: []
     };
   });
 
@@ -41,18 +42,21 @@
     if(card.session) card.session.classList.toggle('hidden', hidden);
   }
 
-  function clearMarks(){
-    document.querySelectorAll('mark[data-search]').forEach(function(mark){
-      var parent = mark.parentNode;
+  function clearCard(card){
+    // Normalize once per affected parent, not once for every individual match.
+    var parents = new Set();
+    card.marks.forEach(function(mark){
+      parents.add(mark.parentNode);
       mark.replaceWith(document.createTextNode(mark.textContent));
-      parent.normalize();
     });
-    cards.forEach(function(c){
-      setHidden(c, false);
-    });
+    card.marks = [];
+    parents.forEach(function(parent){ parent.normalize(); });
+    setHidden(card, false);
   }
 
   var searchFrame = 0;
+  var completedTerm = '';
+  var searching = false;
   q.addEventListener('input', function(){
     cancelAnimationFrame(searchFrame);
     searchFrame = requestAnimationFrame(search);
@@ -60,11 +64,36 @@
 
   function search(){
     var term = q.value.trim();
-    clearMarks();
-    if(term.length < 2) return;
+    if(!searching && term === completedTerm) return;
+    searching = true;
     var re = new RegExp('(' + term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')','gi');
     var needle = term.toLocaleLowerCase();
-    cards.forEach(function(c){
+    var cursor = 0;
+    var clearing = true;
+
+    // Bound work per frame. A newer input cancels the queued slice and starts
+    // cleanup again, so stale queries cannot finish painting over new results.
+    function step(){
+      var started = performance.now();
+      var count = 0;
+      while(cursor < cards.length){
+        var card = cards[cursor++];
+        if(clearing) clearCard(card);
+        else highlight(card);
+        if(++count >= 12 || performance.now() - started >= 6) break;
+      }
+      if(cursor === cards.length && clearing && term.length >= 2){
+        clearing = false;
+        cursor = 0;
+      }
+      if(cursor < cards.length) searchFrame = requestAnimationFrame(step);
+      else {
+        searching = false;
+        completedTerm = term;
+      }
+    }
+
+    function highlight(c){
       var hit = c.searchText.indexOf(needle) !== -1;
       if(!hit){
         setHidden(c, true);
@@ -84,6 +113,7 @@
           fragment.append(document.createTextNode(node.nodeValue.slice(last, offset)));
           var mark = document.createElement('mark');
           mark.dataset.search = '';
+          c.marks.push(mark);
           mark.textContent = match;
           fragment.append(mark);
           last = offset + match.length;
@@ -92,6 +122,7 @@
         fragment.append(document.createTextNode(node.nodeValue.slice(last)));
         node.replaceWith(fragment);
       });
-    });
+    }
+    step();
   }
 })();

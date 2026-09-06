@@ -36,7 +36,7 @@ regains focus.
 
 Latitude is inferred from the IANA time zone and longitude from the standard-time UTC
 offset (DST excluded, since that tracks longitude better). To pin the whole site to one
-location's sun instead, set `LAT` and `LON` to fixed numbers near the top of `assets/js/daylight.js`.
+location's sun instead, set `LAT` and `LON` to fixed numbers near the top of `assets/js/daylight-selection.js`.
 
 ### Clock
 
@@ -86,7 +86,7 @@ reports an error without executing arbitrary expressions or using `eval`.
 ## PAWS manual search
 
 Search is performed locally across all manual cards. Each card's normalized text is
-cached once, input work is coalesced to the next animation frame, and matching text is
+cached once, input work is coalesced and split into cancellable animation-frame batches, and matching text is
 highlighted with DOM nodes rather than injected HTML. Clearing a query unwraps the
 highlights without rebuilding card contents, preserving listeners and avoiding retained
 copies of every card's markup.
@@ -139,13 +139,13 @@ All pages carry a viewport meta tag and are laid out fluidly.
 | `HandlerPath_Gators.webp`, `gitlabrador.webp`, `favicon.png` | retained source assets |
 | `gitlabrador.jpg` | currently unreferenced |
 
-The PAWS manual embeds its own hero logo as an inline base64 PNG and has no external
-image dependencies.
+The PAWS manual loads its hero from the versioned PNG in `assets/images`.
+Distribute that directory together with the HTML and scripts.
 
 ## Performance
 
-- Both possible above-the-fold logos are preloaded so the JavaScript daylight decision
-  does not delay image discovery.
+- Solar selection runs in the head and preloads only the selected responsive logo.
+  The other logo is fetched only if the daylight state changes.
 - Responsive `srcset` candidates prevent small screens from decoding oversized images.
 - The production favicon is 64 × 64 and approximately 4 KB; the original source is
   retained for future asset generation.
@@ -182,8 +182,9 @@ until all pages reference the new version.
 
 Browser behavior lives in `assets/js/`: `daylight.js`, `clock.js`,
 `calculator.js`, `alarm.js`, and `manual.js`. The clock and alarm share
-`time.js`, which must load before either consumer. Each feature script is loaded at its
-original position in its page, after the elements it uses. They are classic
+`time.js`, which must load before either consumer. `alarm-state.js` supplies
+pure transitions and decoding and must load before `alarm.js`. `daylight-selection.js` runs in the head to preload the selected image; the other
+feature scripts load after the elements they use. They are classic
 scripts so opening the site directly from disk continues to work. Deploy the
 `assets` directory together with the HTML. Styling stays within each page.
 
@@ -206,3 +207,20 @@ static card content and is unaffected by highlight markup. If dynamic card
 editing is introduced, rebuild that metadata before the next search. Page
 styles and visibility listeners remain local to their distinct page/feature
 behaviors.
+
+Alarm ticks update the status badge and an open dialog's countdown, leaving
+configuration controls alone until state changes. Alarms remain independent
+across tabs. Browser closure/suspension can delay delivery; absolute deadlines
+allow catch-up when execution resumes, not guaranteed background notifications.
+
+See the architecture review for local performance measurements and verified
+production compression/cache headers. Those checks do not predict deployed
+Core Web Vitals after these changes.
+
+For repeatable real-browser checks, serve this directory with
+`python3 -m http.server 8000`, then open
+<http://localhost:8000/tests/browser.html> and choose **Run tests**. Use a
+separate local preview tab; the harness runs a muted timer and restores the
+previous local alarm record when finished. It reports 15 checks for dialogs,
+focus, calculator input, alarm reload/ringing, and manual search/tab behavior.
+The Node suite includes calculator behavior and pure alarm-state tests.

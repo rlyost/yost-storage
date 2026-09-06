@@ -2,7 +2,7 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const vm = require('node:vm');
 const fs = require('node:fs');
-const source = ['time', 'alarm'].map(name =>
+const source = ['time', 'alarm-state', 'alarm'].map(name =>
   fs.readFileSync('assets/js/' + name + '.js', 'utf8')).join('\n');
 const initial = { mode: 'timer', state: 'idle', durationMs: 300000,
   remainingMs: 300000, deadline: 0, alarmTime: '', sound: true };
@@ -19,7 +19,7 @@ function app(options = {}) {
     return { value: '', hidden: true, open: false, dataset: {}, textContent: '',
       addEventListener(name, fn) { listeners[name] = fn; },
       emit(name, event = {}) { listeners[name]?.(event); },
-      setAttribute() {}, close() { this.open = false; },
+      setAttribute() { this.attributeWrites = (this.attributeWrites || 0) + 1; }, close() { this.open = false; },
       showModal() { this.open = true; } };
   }
   const elements = {};
@@ -146,4 +146,18 @@ test('unavailable storage and audio do not prevent timer operation', async () =>
 test('invalid timer inputs cannot create an unfinishable deadline', () => {
   const a = app(); a.timer(Infinity);
   assert.equal(a.state().state, 'idle'); assert.equal(a.intervals.size, 0);
+});
+
+test('countdown ticks skip configuration and closed-dialog writes', () => {
+  const a = app(); a.timer(60);
+  const writes = a.elements['mode-timer'].attributeWrites;
+  const display = a.elements['alarm-big'].textContent;
+  a.advance(1000); a.tick();
+  assert.equal(a.elements['mode-timer'].attributeWrites, writes);
+  assert.equal(a.elements['alarm-big'].textContent, display);
+  assert.match(a.elements['alarm-status'].textContent, /0:59/);
+  a.click('alarm-link');
+  assert.equal(a.elements['alarm-big'].textContent, '0:59');
+  a.advance(1000); a.tick();
+  assert.equal(a.elements['alarm-big'].textContent, '0:58');
 });
