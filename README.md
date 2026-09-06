@@ -36,7 +36,7 @@ regains focus.
 
 Latitude is inferred from the IANA time zone and longitude from the standard-time UTC
 offset (DST excluded, since that tracks longitude better). To pin the whole site to one
-location's sun instead, set `LAT` and `LON` to fixed numbers near the top of the script.
+location's sun instead, set `LAT` and `LON` to fixed numbers near the top of `assets/js/daylight.js`.
 
 ### Clock
 
@@ -177,3 +177,32 @@ For high-traffic deployment, serve HTML with Brotli compression and a short reva
 window. Serve versioned images with a long-lived immutable cache policy through a global
 CDN. When replacing an asset in place, change its filename or shorten its cache lifetime
 until all pages reference the new version.
+
+## Code organization
+
+Browser behavior lives in `assets/js/`: `daylight.js`, `clock.js`,
+`calculator.js`, `alarm.js`, and `manual.js`. The clock and alarm share
+`time.js`, which must load before either consumer. Each feature script is loaded at its
+original position in its page, after the elements it uses. They are classic
+scripts so opening the site directly from disk continues to work. Deploy the
+`assets` directory together with the HTML. Styling stays within each page.
+
+See [the architecture review](docs/architecture-review.md) for data flows,
+prioritized risks, and the next refactoring steps.
+
+## Regression tests
+
+Run `node --test tests/*.test.cjs` from this directory (Node.js required
+only for tests). No packages or build step are needed. Tests use controlled
+browser boundaries; native dialog and audio behavior still need browser checks.
+
+Malformed saved alarm records now fall back atomically to the default idle
+five-minute timer. Valid saved records keep the existing format. Selecting a
+preset cancels the current countdown or ringing and leaves its duration ready
+for Set.
+
+The manual controller owns its search metadata privately. Its index represents
+static card content and is unaffected by highlight markup. If dynamic card
+editing is introduced, rebuild that metadata before the next search. Page
+styles and visibility listeners remain local to their distinct page/feature
+behaviors.
