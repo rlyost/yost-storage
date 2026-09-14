@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>High Protein Crockpot / Easy Recipes</title>
+<style>
+:root{--bg:#fbf9f6;--panel:#fff;--ink:#1f1d1a;--muted:#6b655c;--line:#e4ded4;--accent:#a8431f;--accent-soft:#fdf1ea;--chip:#f4efe7}
+@media (prefers-color-scheme:dark){:root{--bg:#16150f;--panel:#1f1e18;--ink:#ece7dd;--muted:#a09a8e;--line:#33302a;--accent:#e8834f;--accent-soft:#2a2018;--chip:#272520}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+header.top{position:sticky;top:0;z-index:10;background:var(--panel);border-bottom:1px solid var(--line);padding:14px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+header.top h1{font-size:18px;margin:0;letter-spacing:-.01em}
+header.top .count{color:var(--muted);font-size:13px}
+#search{flex:1 1 220px;max-width:340px;padding:9px 12px;font-size:14px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+#search:focus{outline:2px solid var(--accent);outline-offset:1px}
+.wrap{display:grid;grid-template-columns:290px minmax(0,1fr);gap:32px;max-width:1180px;margin:0 auto;padding:28px 20px 80px}
+nav{position:sticky;top:76px;align-self:start;max-height:calc(100vh - 100px);overflow-y:auto;font-size:14px}
+nav ul{list-style:none;margin:0;padding:0}
+nav a{color:var(--muted);text-decoration:none;display:block;padding:3px 8px;border-radius:6px}
+nav a:hover{background:var(--accent-soft);color:var(--accent)}
+nav .nav-sec{margin-top:20px}
+nav .nav-sec a{color:var(--ink);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:12px}
+nav .nav-grp{margin-top:10px}
+nav .nav-grp a{color:var(--accent);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+nav li:not(.nav-sec):not(.nav-grp) a{padding-left:16px}
+h2.section{font-size:13px;text-transform:uppercase;letter-spacing:.14em;color:var(--accent);margin:44px 0 4px;padding-bottom:8px;border-bottom:2px solid var(--accent)}
+h3.group{font-size:15px;margin:30px 0 2px;display:flex;align-items:center;gap:9px;letter-spacing:-.01em}
+h3.group span{font-size:11px;font-weight:600;color:var(--muted);background:var(--chip);border-radius:999px;padding:1px 8px}
+article.recipe{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 26px;margin:12px 0}
+.rhead{display:flex;gap:16px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+article.recipe h2{font-size:21px;margin:0 0 2px;letter-spacing:-.015em;flex:1 1 240px}
+.print-btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--chip);color:var(--ink);font:inherit;font-size:13px;padding:7px 13px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.print-btn:hover{border-color:var(--accent);color:var(--accent)}
+.print-btn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.macros{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0 4px}
+.macros .m{background:var(--chip);border-radius:8px;padding:6px 11px;line-height:1.25;text-align:center;min-width:62px}
+.macros .m b{display:block;font-size:15px}
+.macros .m span{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.macros .serv{background:transparent;border:1px dashed var(--line)}
+.macros .src{font-size:11px;color:var(--muted)}
+article.recipe h3{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin:18px 0 6px}
+article.recipe p{margin:8px 0}
+article.recipe ul,article.recipe ol{margin:6px 0;padding-left:22px}
+article.recipe li{margin:3px 0}
+article.recipe ul{list-style:none;padding-left:0}
+article.recipe ul li{padding-left:18px;position:relative}
+article.recipe ul li::before{content:"";position:absolute;left:4px;top:11px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.hidden{display:none!important}
+#printarea{display:none}
+#printarea h1{font-size:20px;margin:0 0 4px}
+#printarea .sub{color:#555;font-size:12px;margin:0 0 16px}
+#printarea ul{list-style:none;padding:0;margin:0}
+#printarea li{padding:7px 0 7px 26px;border-bottom:1px solid #ddd;position:relative}
+#printarea li::before{content:"";position:absolute;left:2px;top:10px;width:12px;height:12px;border:1.5px solid #555;border-radius:2px}
+@media (max-width:860px){.wrap{grid-template-columns:1fr;gap:16px}nav{position:static;max-height:300px;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--panel)}}
+@media print{
+  header.top,nav,  .wrap{display:block;padding:0}
+  article.recipe{break-inside:avoid;border:none;padding:0;margin:0 0 20px;background:none}
+  .print-btn{display:none}
+  body.printing-list .wrap{display:none}
+  body.printing-list #printarea{display:block;color:#000}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>High Protein Crockpot / Easy Recipes</h1>
+  <input id="search" type="search" placeholder="Search recipes or ingredients..." autocomplete="off">
+  <span class="count" id="count">74 recipes</span>
+</header>
+<div class="wrap">
+  <nav><ul id="nav"><li class="nav-sec"><a href="#sec-dinner">Dinner</a></li><li class="nav-grp"><a href="#grp-dinner-bbq-pulled">BBQ &amp; pulled</a></li><li><a href="#crockpot-bbq-beef-roast">Crockpot BBQ Beef Roast</a></li><li><a href="#bbq-pulled-beef">BBQ Pulled Beef</a></li><li><a href="#bbq-pulled-pork">BBQ Pulled Pork</a></li><li><a href="#bbq-chicken-crockpot">🥘 BBQ Chicken Crockpot</a></li><li><a href="#bbq-drumsticks">BBQ Drumsticks</a></li><li class="nav-grp"><a href="#grp-dinner-beef-roasts-stews-steak">Beef roasts, stews &amp; steak</a></li><li><a href="#beef-roast-with-potatoes-and-carrots-crockpot">Beef Roast with Potatoes and Carrots Crockpot</a></li><li><a href="#beef-stew">Beef Stew</a></li><li><a href="#slow-cooker-mushroom-beef-tips">Slow Cooker Mushroom Beef Tips</a></li><li><a href="#crock-pot-mississippi-steak-bites">Crock Pot Mississippi Steak Bites</a></li><li><a href="#honey-garlic-shredded-beef">Honey Garlic Shredded Beef</a></li><li><a href="#barbacoa-beef">Barbacoa Beef</a></li><li><a href="#korean-beef">Korean Beef</a></li><li><a href="#mongolian-beef-slow-cooker">Mongolian Beef Slow Cooker</a></li><li class="nav-grp"><a href="#grp-dinner-ground-beef">Ground beef</a></li><li><a href="#beef-taco-meat-crockpot">Beef Taco Meat Crockpot</a></li><li><a href="#sloppy-joes">Sloppy Joes</a></li><li><a href="#crockpot-creamy-potato-hamburger-soup">Crockpot Creamy Potato Hamburger Soup</a></li><li><a href="#easy-beef-cabbage-soup-one-pot">Easy Beef Cabbage Soup (One Pot)</a></li><li><a href="#eggroll-in-a-bowl-skillet-high-protein">Eggroll-in-a-Bowl Skillet High Protein</a></li><li class="nav-grp"><a href="#grp-dinner-beef-potato-cheesesteak-bakes">Beef &amp; potato / cheesesteak bakes</a></li><li><a href="#cheesy-beef-potato-pockets-high-protein">Cheesy Beef Potato Pockets! 🔥🧀🥩🥔 High Protein</a></li><li><a href="#beef-potato-au-gratin-slow-cooker">Beef &amp; Potato Au Gratin Slow Cooker</a></li><li><a href="#french-onion-beef-rice-casserole-high-protein">French Onion Beef &amp; Rice Casserole High Protein</a></li><li><a href="#philly-cheesesteak-casserole-cheesy-cozy-comfort-food-made-easy">Philly Cheesesteak Casserole – Cheesy, Cozy, Comfort Food Made Easy 🧀🥩🌶️</a></li><li><a href="#philly-cheesesteak-chicken">Philly Cheesesteak Chicken</a></li><li class="nav-grp"><a href="#grp-dinner-pasta-italian">Pasta &amp; Italian</a></li><li><a href="#cheesy-ziti">Cheesy Ziti</a></li><li><a href="#ultimate-meat-lover-s-pizza-pasta-bake-protein-pasta-cottage-cheese">Ultimate Meat Lover&#x27;s Pizza Pasta Bake (Protein Pasta + Cottage Cheese)</a></li><li><a href="#chicken-pasta-the-one-i-always-rave-about-high-protein">Chicken Pasta (the one I always rave about) High-Protein</a></li><li><a href="#italian-marinara-chicken">Italian Marinara Chicken</a></li><li><a href="#chicken-pesto-bake">Chicken Pesto Bake 🤤</a></li><li><a href="#tuscan-chicken-orzo">✨ Tuscan Chicken Orzo ✨</a></li><li><a href="#creamy-tuscan-chicken">Creamy Tuscan Chicken</a></li><li><a href="#creamy-tuscan-chicken-rice-10-servings">Creamy Tuscan Chicken &amp; Rice (10 Servings)</a></li><li class="nav-grp"><a href="#grp-dinner-creamy-ranch-chicken">Creamy &amp; ranch chicken</a></li><li><a href="#creamy-chicken">Creamy Chicken</a></li><li><a href="#mississippi-style-shredded-chicken-lightened">Mississippi-Style Shredded Chicken (Lightened)</a></li><li><a href="#crockpot-angel-chicken">Crockpot Angel Chicken</a></li><li><a href="#creamy-lemon-herb-chicken">Creamy Lemon Herb Chicken</a></li><li class="nav-grp"><a href="#grp-dinner-buffalo">Buffalo</a></li><li><a href="#buffalo-chicken-chili">Buffalo Chicken Chili</a></li><li><a href="#shredded-buffalo-chicken">Shredded Buffalo Chicken</a></li><li><a href="#crispy-boneless-buffalo-wings">Crispy Boneless Buffalo Wings 🤤🙌🔥</a></li><li><a href="#chicken-wings">Chicken Wings</a></li><li class="nav-grp"><a href="#grp-dinner-tex-mex-chicken">Tex-Mex chicken</a></li><li><a href="#salsa-chicken">Salsa Chicken</a></li><li><a href="#salsa-verde-chicken">Salsa Verde Chicken</a></li><li><a href="#creamy-taco-chicken">Creamy Taco Chicken</a></li><li><a href="#chicken-tacos">Chicken Tacos</a></li><li><a href="#santa-fe-chicken">Santa Fe Chicken</a></li><li><a href="#cream-cheese-chicken-chili">Cream Cheese Chicken Chili</a></li><li class="nav-grp"><a href="#grp-dinner-asian-global-chicken">Asian &amp; global chicken</a></li><li><a href="#sesame-ginger-chicken">Sesame Ginger Chicken</a></li><li><a href="#ginger-soy-chicken">Ginger-Soy Chicken</a></li><li><a href="#honey-teriyaki-chicken-rice-bowls">Honey Teriyaki Chicken &amp; Rice Bowls</a></li><li><a href="#honey-garlic-chicken">Honey Garlic Chicken</a></li><li><a href="#crispy-honey-sesame-popcorn-chicken-high-protein">Crispy Honey Sesame Popcorn Chicken🍗🍯 High Protein</a></li><li><a href="#miso-chicken-slow-cooker">Miso Chicken 🐔 Slow Cooker</a></li><li><a href="#butter-chicken">Butter Chicken</a></li><li class="nav-grp"><a href="#grp-dinner-simple-chicken-sides">Simple chicken &amp; sides</a></li><li><a href="#chicken-and-potatoes">Chicken and Potatoes</a></li><li><a href="#cottage-cheese-crusted-chicken-cutlets-crispy-protein-packed-delight">Cottage Cheese Crusted Chicken Cutlets 🍗🧀 – Crispy, Protein-Packed Delight</a></li><li><a href="#chicken-cheese-sticks">Chicken Cheese Sticks</a></li><li><a href="#tuna-burritos">Tuna Burritos</a></li><li class="nav-grp"><a href="#grp-dinner-crusts-breads-bases">Crusts, breads &amp; bases</a></li><li><a href="#pizza-crust-cottage-cheese">Pizza Crust (Cottage Cheese)</a></li><li><a href="#pizza-crust-chicken-or-turkey-with-176g-protein">Pizza Crust (Chicken or Turkey) WITH 176G PROTEIN</a></li><li><a href="#tortilla-quiche-recipe-high-protein">Tortilla Quiche Recipe High Protein</a></li><li><a href="#2-ingredient-fitness-bread-soft-cheesy-full-of-protein">🥖🧀 2-Ingredient Fitness Bread – Soft, Cheesy &amp; Full of Protein</a></li><li><a href="#quick-cottage-cheese-garlic-naan-soft-flavorful-protein-packed">Quick Cottage Cheese Garlic Naan – Soft, Flavorful &amp; Protein-Packed</a></li><li class="nav-sec"><a href="#sec-breakfast">Breakfast</a></li><li class="nav-grp"><a href="#grp-breakfast-eggs">Eggs</a></li><li><a href="#egg-loaf-french-toast-low-carb-breakfast-magic-high-protein">Egg Loaf (French Toast - Low-Carb Breakfast Magic) High-Protein</a></li><li><a href="#breakfast-bowls">Breakfast Bowls 🍳🧀</a></li><li><a href="#breakfast-burritos">Breakfast Burritos</a></li><li class="nav-grp"><a href="#grp-breakfast-pancakes-biscuits">Pancakes &amp; biscuits</a></li><li><a href="#cottage-cheese-pancakes-high-protein">Cottage Cheese Pancakes 🥞 High-Protein</a></li><li><a href="#golden-cheese-pancakes-easy-delicious-and-protein-packed">Golden Cheese Pancakes 🥞🧀 – Easy, Delicious, and Protein-Packed</a></li><li><a href="#cottage-cheese-breakfast-biscuit-fluffy-savory-low-carb-high-protein">Cottage Cheese Breakfast Biscuit 🥐💪 – Fluffy, Savory &amp; Low-Carb High-Protein</a></li><li class="nav-sec"><a href="#sec-dessert">Dessert</a></li><li class="nav-grp"><a href="#grp-dessert-cheesecake">Cheesecake</a></li><li><a href="#blueberry-cheesecake-bake-high-protein">Blueberry Cheesecake Bake High Protein</a></li><li><a href="#lemon-cheesecake-bowl-low-cal-high-protein">Lemon Cheesecake Bowl 🍋🍰 Low Cal High Protein</a></li><li><a href="#cheesecake-2-ingredient">Cheesecake 2-Ingredient</a></li><li class="nav-grp"><a href="#grp-dessert-bowls-pudding">Bowls &amp; pudding</a></li><li><a href="#chocolate-pudding">Chocolate Pudding</a></li><li><a href="#protein-dessert-sex-bowl">Protein Dessert Sex Bowl</a></li><li class="nav-grp"><a href="#grp-dessert-cake-cookie-dough">Cake &amp; cookie dough</a></li><li><a href="#protein-cake">Protein Cake🔥🔥</a></li><li><a href="#protein-cookie-dough">Protein Cookie Dough</a></li></ul></nav>
+  <main id="main">
+<h2 class="section" id="sec-dinner">Dinner</h2>
+<h3 class="group" id="grp-dinner-bbq-pulled">BBQ &amp; pulled <span>5</span></h3>
+<article class="recipe" id="crockpot-bbq-beef-roast" data-title="crockpot bbq beef roast"><div class="rhead"><h2>Crockpot BBQ Beef Roast</h2><button class="print-btn" data-key="crockpot-bbq-beef-roast" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>560</b><span>cal</span></div><div class="m"><b>34g</b><span>protein</span></div><div class="m"><b>38g</b><span>fat</span></div><div class="m"><b>20g</b><span>carbs</span></div><div class="m serv"><b>8</b><span>servings</span></div><span class="src">estimated</span></div><p>Serves 6 to 8</p>
+<h3>Ingredients</h3>
+<ul><li>3 to 4 pound chuck roast</li><li>1 large onion, sliced</li><li>1 cup barbecue sauce</li><li>½ cup beef broth</li><li>2 tablespoons Worcestershire sauce</li><li>2 tablespoons brown sugar</li><li>1 tablespoon apple cider vinegar</li><li>1 teaspoon garlic powder</li><li>1 teaspoon smoked paprika</li><li>1 teaspoon salt</li><li>½ teaspoon black pepper</li></ul>
+<h3>Instructions</h3>
+<ol><li>Place the sliced onion in the crockpot.</li><li>Season the roast with salt, pepper, garlic powder, and smoked paprika. Place it over the onion.</li><li>Mix the barbecue sauce, beef broth, Worcestershire sauce, brown sugar, and vinegar. Pour it over the roast.</li><li>Cook on LOW for 8 to 10 hours or HIGH for 5 to 6 hours. The beef is ready when it pulls apart easily with a fork.</li><li>Remove the roast and shred it. Discard large pieces of fat.</li><li>Return the beef to the crockpot. Stir it into the sauce and cook for another 15 minutes.</li></ol>
+<p>Serve on toasted hamburger buns, baked potatoes, rice, or mashed potatoes. Add coleslaw and pickles for sandwiches.</p></article>
+<article class="recipe" id="bbq-pulled-beef" data-title="bbq pulled beef"><div class="rhead"><h2>BBQ Pulled Beef</h2><button class="print-btn" data-key="bbq-pulled-beef" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>430</b><span>cal</span></div><div class="m"><b>31g</b><span>protein</span></div><div class="m"><b>27g</b><span>fat</span></div><div class="m"><b>17g</b><span>carbs</span></div><div class="m serv"><b>8</b><span>servings</span></div><span class="src">estimated</span></div><p>Serves 8</p>
+<h3>Ingredients</h3>
+<ul><li>3 lb beef chuck roast</li><li>1 cup BBQ sauce</li><li>1/2 cup beef broth</li><li>1 tbsp brown sugar</li><li>1 tsp smoked paprika</li><li>1 tsp garlic powder</li><li>1 tsp onion powder</li><li>Salt and pepper</li></ul>
+<h3>Steps</h3>
+<ol><li>Add everything to the crockpot.</li><li>Cover and cook.</li><li>Shred the beef, stir it back into the sauce and serve.</li></ol>
+<h3>Cook Time</h3>
+<p>Low 8 hours or High 4 to 5 hours</p></article>
+<article class="recipe" id="bbq-pulled-pork" data-title="bbq pulled pork"><div class="rhead"><h2>BBQ Pulled Pork</h2><button class="print-btn" data-key="bbq-pulled-pork" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>415</b><span>cal</span></div><div class="m"><b>30g</b><span>protein</span></div><div class="m"><b>26g</b><span>fat</span></div><div class="m"><b>15g</b><span>carbs</span></div><div class="m serv"><b>8</b><span>servings</span></div><span class="src">estimated</span></div><p>Serves 8 to 10</p>
+<h3>Ingredients</h3>
+<ul><li>3 lb pork shoulder</li><li>1 cup BBQ sauce</li><li>1/2 cup apple cider vinegar</li></ul>
+<h3>Steps</h3>
+<ol><li>Place pork shoulder in the crockpot.</li><li>Pour BBQ sauce and apple cider vinegar over the top.</li><li>Cover and cook.</li><li>Shred with two forks and stir back into the juices.</li></ol>
+<h3>Cook Time</h3>
+<p>Low 8 hours</p></article>
+<article class="recipe" id="bbq-chicken-crockpot" data-title="🥘 bbq chicken crockpot"><div class="rhead"><h2>🥘 BBQ Chicken Crockpot</h2><button class="print-btn" data-key="bbq-chicken-crockpot" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>195</b><span>cal</span></div><div class="m"><b>34g</b><span>protein</span></div><div class="m"><b>4g</b><span>fat</span></div><div class="m"><b>3g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">estimated</span></div><p>Makes 6 servings (1 serving = \~150 g chicken)</p>
+<h3>Ingredients</h3>
+<ul><li>2 lb boneless, skinless chicken breast</li><li>1 cup low-sugar BBQ sauce (G Hughes)</li><li>1 tbsp apple cider vinegar</li><li>1 tsp garlic powder</li></ul>
+<h3>How to make it</h3>
+<p>1️⃣ Add everything to the crockpot</p>
+<p>2️⃣ Cook on low 5–6 hours until chicken shreds</p>
+<p>3️⃣ Shred + stir into the sauce</p>
+<p>4️⃣ Serve in wraps, bowls, burritos, sliders, or over rice</p></article>
+<article class="recipe" id="bbq-drumsticks" data-title="bbq drumsticks"><div class="rhead"><h2>BBQ Drumsticks</h2><button class="print-btn" data-key="bbq-drumsticks" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>370</b><span>cal</span></div><div class="m"><b>28g</b><span>protein</span></div><div class="m"><b>14g</b><span>fat</span></div><div class="m"><b>27g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">estimated</span></div><p>Serves 6</p>
+<h3>Ingredients</h3>
+<ul><li>12 chicken drumsticks</li><li>1 cup BBQ sauce</li><li>1/2 cup ketchup</li><li>1 tbsp honey</li><li>1 tsp garlic powder</li></ul>
+<h3>Steps</h3>
+<ol><li>Coat the drumsticks with the BBQ sauce, ketchup, honey and garlic powder.</li><li>Add to the crockpot.</li><li>Cover and cook.</li></ol>
+<h3>Cook Time</h3>
+<p>Low 5 to 6 hours or High 3 hours</p></article>
+<h3 class="group" id="grp-dinner-beef-roasts-stews-steak">Beef roasts, stews &amp; steak <span>8</span></h3>
+<article class="recipe" id="beef-roast-with-potatoes-and-carrots-crockpot" data-title="beef roast with potatoes and carrots crockpot"><div class="rhead"><h2>Beef Roast with Potatoes and Carrots Crockpot</h2><button class="print-btn" data-key="beef-roast-with-potatoes-and-carrots-crockpot" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>580</b><span>cal</span></div><div class="m"><b>36g</b><span>protein</span></div><div class="m"><b>41g</b><span>fat</span></div><div class="m"><b>16g</b><span>carbs</span></div><div class="m serv"><b>8</b><span>servings</span></div><span class="src">estimated</span></div><p>Here is a direct, reliable crockpot beef roast with potatoes and carrots.</p>
+<h3>Ingredients</h3>
+<ul><li>3 to 4 lb beef chuck roast</li><li>1 lb baby potatoes or 4 large potatoes cut into chunks</li><li>4 to 5 carrots sliced thick</li><li>1 onion sliced</li><li>3 cloves garlic minced</li><li>1 cup beef broth</li><li>2 tbsp olive oil</li><li>2 tsp salt</li><li>1 tsp black pepper</li><li>1 tsp paprika</li><li>1 tsp dried thyme or rosemary</li></ul>
+<h3>Optional</h3>
+<ul><li>1 tbsp Worcestershire sauce</li><li>2 tbsp tomato paste</li></ul>
+<h3>Steps</h3>
+<ol><li>Heat a skillet over medium high heat. Add oil.</li><li>Season roast on all sides with salt pepper paprika.</li><li>Sear roast 2 to 3 minutes per side until browned.</li><li>Place potatoes, carrots and onion in a crockpot.</li><li>Set roast on top of vegetables.</li><li>Add garlic broth and optional Worcestershire or tomato paste.</li><li>Cover and cook.</li></ol>
+<h3>Cook Time</h3>
+<ul><li>Low 8 hours for tender pull apart beef</li><li>High 4 to 5 hours if needed faster</li></ul>
+<h3>Finish</h3>
+<ul><li>Taste and adjust salt.</li><li>Slice or shred beef.</li><li>Serve with vegetables and broth as gravy.</li></ul>
+<p>If you want thicker gravy or added mushrooms or different seasoning profile, say so and I will adjust the recipe.</p></article>
+<article class="recipe" id="beef-stew" data-title="beef stew"><div class="rhead"><h2>Beef Stew</h2><button class="print-btn" data-key="beef-stew" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>440</b><span>cal</span></div><div class="m"><b>31g</b><span>protein</span></div><div class="m"><b>24g</b><span>fat</span></div><div class="m"><b>26g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">estimated</span></div><p>Serves 6</p>
+<h3>Ingredients</h3>
+<ul><li>2 lb chuck roast, cubed</li><li>Carrots, sliced</li><li>Potatoes, cubed</li><li>1 onion, chopped</li><li>2 cups beef broth</li><li>2 tbsp tomato paste</li></ul>
+<h3>Steps</h3>
+<ol><li>Add cubed chuck roast, carrots, potatoes and onion to the crockpot.</li><li>Whisk tomato paste into the beef broth and pour over everything.</li><li>Cover and cook.</li><li>Stir before serving and adjust salt.</li></ol>
+<h3>Cook Time</h3>
+<p>Low 8 hours</p></article>
+<article class="recipe" id="slow-cooker-mushroom-beef-tips" data-title="slow cooker mushroom beef tips"><div class="rhead"><h2>Slow Cooker Mushroom Beef Tips</h2><button class="print-btn" data-key="slow-cooker-mushroom-beef-tips" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>395</b><span>cal</span></div><div class="m"><b>31g</b><span>protein</span></div><div class="m"><b>26g</b><span>fat</span></div><div class="m"><b>8g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">estimated</span></div><p>Serves 6 | Prep 15 minutes | Cook 6 hours | Slow Cooker LOW</p>
+<h3>Ingredients</h3>
+<ul><li>2 lb beef stew meat</li><li>1 (8 oz) package mushrooms, sliced</li><li>1 onion, chopped</li><li>2 cloves garlic, minced</li><li>1 cup beef broth</li><li>1 (10.5 oz) can cream of mushroom soup</li><li>1 tbsp Worcestershire sauce</li><li>1 tsp salt</li><li>1/2 tsp black pepper</li></ul>
+<h3>Steps</h3>
+<ol><li>Place the beef stew meat, mushrooms, onion, garlic, beef broth, cream of mushroom soup, Worcestershire sauce, salt and black pepper in the slow cooker. Stir until combined.</li><li>Cover and cook on LOW about 6 hours, until the beef pulls apart easily with a fork.</li><li>Make sure the beef reaches at least 145F (63C) internally before serving.</li></ol>
+<h3>Cook Time</h3>
+<p>Low 6 hours</p></article>
+<article class="recipe" id="crock-pot-mississippi-steak-bites" data-title="crock pot mississippi steak bites"><div class="rhead"><h2>Crock Pot Mississippi Steak Bites</h2><button class="print-btn" data-key="crock-pot-mississippi-steak-bites" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>395</b><span>cal</span></div><div class="m"><b>32g</b><span>protein</span></div><div class="m"><b>27g</b><span>fat</span></div><div class="m"><b>5g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">estimated</span></div><p>Serves 6 | Prep 10 minutes | Cook 6 hours | Slow Cooker LOW</p>
+<h3>Ingredients</h3>
+<ul><li>2 lb sirloin steak, cut into bite-sized pieces</li><li>1 packet ranch seasoning mix</li><li>1 packet au jus gravy mix</li><li>1/2 cup unsalted butter</li><li>5 to 6 pepperoncini peppers</li><li>1/4 cup pepperoncini juice</li><li>1/2 tsp black pepper</li></ul>
+<h3>Steps</h3>
+<ol><li>Add the steak pieces to the slow cooker. Sprinkle the ranch seasoning, au jus gravy</li></ol></article>
+<article class="recipe" id="honey-garlic-shredded-beef" data-title="honey garlic shredded beef"><div class="rhead"><h2>Honey Garlic Shredded Beef</h2><button class="print-btn" data-key="honey-garlic-shredded-beef" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>370</b><span>cal</span></div><div class="m"><b>39g</b><span>protein</span></div><div class="m"><b>17g</b><span>fat</span></div><div class="m"><b>15g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">from the recipe</span></div><p>(Cook this one on LOW for 6 - 8 hours - it tastes better)</p>
+<h3>ingredients</h3>
+<ul><li>2 lb chuck roast (907 g)</li><li>½ cup low-sodium beef broth</li><li>¼ cup low-sodium soy sauce</li><li>¼ cup honey</li><li>2 tbsp minced garlic</li><li>1 tsp ground ginger</li><li>black pepper</li><li>How to cook:</li><li>Add everything to the crockpot (except dairy added at the end when noted).</li><li>Cook low 6–8 hours or high 3–4 hours.</li><li>Shred meat if needed, stir well, adjust seasoning, and portion for the week.</li><li>macros (per serving)</li><li>370 cal | 39 g protein | 15 g carbs | 17 g fat</li></ul></article>
+<article class="recipe" id="barbacoa-beef" data-title="barbacoa beef"><div class="rhead"><h2>Barbacoa Beef</h2><button class="print-btn" data-key="barbacoa-beef" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>365</b><span>cal</span></div><div class="m"><b>31g</b><span>protein</span></div><div class="m"><b>27g</b><span>fat</span></div><div class="m"><b>1g</b><span>carbs</span></div><div class="m serv"><b>8</b><span>servings</span></div><span class="src">estimated</span></div><p>Serves 8</p>
+<h3>Ingredients</h3>
+<ul><li>3 lb chuck roast</li><li>3 tbsp chipotle in adobo</li><li>1 tsp cumin</li><li>1 tsp oregano</li><li>1 cup broth</li></ul>
+<h3>Steps</h3>
+<ol><li>Place chuck roast in the crockpot.</li><li>Add chipotle in adobo, cumin, oregano and broth.</li><li>Cover and cook.</li><li>Shred the beef and stir it back into the cooking liquid. Serve with lime and cilantro.</li></ol>
+<h3>Cook Time</h3>
+<p>Low 8 hours</p></article>
+<article class="recipe" id="korean-beef" data-title="korean beef"><div class="rhead"><h2>Korean Beef</h2><button class="print-btn" data-key="korean-beef" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>405</b><span>cal</span></div><div class="m"><b>32g</b><span>protein</span></div><div class="m"><b>27g</b><span>fat</span></div><div class="m"><b>8g</b><span>carbs</span></div><div class="m serv"><b>8</b><span>servings</span></div><span class="src">estimated</span></div><p>Serves 8</p>
+<h3>Ingredients</h3>
+<ul><li>3 lb chuck roast</li><li>1/2 cup soy sauce</li><li>1/4 cup brown sugar</li><li>1 tbsp ginger</li><li>1 tbsp garlic</li><li>Sesame seeds for topping</li></ul>
+<h3>Steps</h3>
+<ol><li>Place chuck roast in the crockpot.</li><li>Mix soy sauce, brown sugar, ginger and garlic and pour over the beef.</li><li>Cover and cook.</li><li>Shred the beef, stir into the sauce and top with sesame seeds.</li></ol>
+<h3>Cook Time</h3>
+<p>Low 8 hours</p></article>
+<article class="recipe" id="mongolian-beef-slow-cooker" data-title="mongolian beef slow cooker"><div class="rhead"><h2>Mongolian Beef Slow Cooker</h2><button class="print-btn" data-key="mongolian-beef-slow-cooker" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>550</b><span>cal</span></div><div class="m"><b>51g</b><span>protein</span></div><div class="m"><b>16g</b><span>fat</span></div><div class="m"><b>46g</b><span>carbs</span></div><div class="m serv"><b>9</b><span>servings</span></div><span class="src">from the recipe</span></div><p>Yields: \~9 servings (≈ 552 cal each)</p>
+<p>Macros per serving: 552 cal | 46 g Carbs | 16 g Fat | 51 g Protein</p>
+<h3>🧂 Ingredients</h3>
+<ul><li>4 lb Top Round Beef — thinly sliced against the grain</li><li>2 Tbsp Corn Starch (added in the last hour)</li><li>1 cup Beef Bone Broth</li><li>1 cup Premium Light Soy Sauce</li><li>2 Tbsp Hoisin Sauce</li><li>2 Tbsp Sriracha Sauce</li><li>4 Tbsp Rice Vinegar</li><li>3 Cloves Garlic, minced</li><li>1 Red Bell Pepper, sliced</li><li>2 Whole Jalapeños, sliced (optional for heat)</li><li>2 Stevia Packets (or 1 Tbsp brown sugar equivalent)</li><li>400 g Minute White Rice (measure dry and prepare separately per package directions)</li><li>Green Onions &amp; Sesame Seeds for garnish</li></ul>
+<h3>👨🍳 Directions</h3>
+<p>Prep &amp; Sear (Optional): Lightly spray a pan and sear sliced beef 2–3 minutes per side to lock in flavor. This step is optional but adds a deeper, richer taste.</p>
+<p>Combine: Add beef, soy sauce, hoisin, sriracha, bone broth, vinegar, garlic, peppers, jalapeños, and stevia to the slow cooker. Stir to coat evenly.</p>
+<p>Cook: Cover and slow cook on LOW for 6 hours.</p>
+<p>Thicken Sauce: In the final hour, whisk 2 Tbsp corn starch with a few spoonfuls of broth, stir into the pot, and switch to HIGH for 1 hour until sauce thickens and beef is tender.</p>
+<p>Serve: Spoon over prepared rice.</p>
+<p>Garnish: Top with chopped green onions and a sprinkle of sesame seeds.</p></article>
+<h3 class="group" id="grp-dinner-ground-beef">Ground beef <span>5</span></h3>
+<article class="recipe" id="beef-taco-meat-crockpot" data-title="beef taco meat crockpot"><div class="rhead"><h2>Beef Taco Meat Crockpot</h2><button class="print-btn" data-key="beef-taco-meat-crockpot" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>210</b><span>cal</span></div><div class="m"><b>33g</b><span>protein</span></div><div class="m"><b>7g</b><span>fat</span></div><div class="m"><b>4g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">from the recipe</span></div><ul><li>cook meat prior and drain grease- cook this one on low for 2-3 hours!</li><li>2 lb 93/7 ground beef</li><li>1 cup tomato sauce</li><li>1 packet taco seasoning</li><li>½ cup water</li></ul>
+<p>Servings: 6</p>
+<p>Macros (approx): 33g P | 4g C | 7g F</p>
+<p>How to make:</p>
+<p>Add everything to the crockpot → cook LOW 6–7 hrs or HIGH 3–4 hrs → shred → stir in any Greek yogurt or cream cheese after cooking → portion for the week.</p></article>
+<article class="recipe" id="sloppy-joes" data-title="sloppy joes"><div class="rhead"><h2>Sloppy Joes</h2><button class="print-btn" data-key="sloppy-joes" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>365</b><span>cal</span></div><div class="m"><b>29g</b><span>protein</span></div><div class="m"><b>20g</b><span>fat</span></div><div class="m"><b>18g</b><span>carbs</span></div><div class="m serv"><b>8</b><span>servings</span></div><span class="src">estimated</span></div><p>Serves 8</p>
+<h3>Ingredients</h3>
+<ul><li>3 lb ground beef</li><li>1 onion, chopped</li><li>1/2 cup ketchup</li><li>1/2 cup brown sugar</li><li>1/3 cup mustard</li><li>1 tbsp soy sauce</li><li>1/2 tsp garlic powder</li></ul>
+<h3>Steps</h3>
+<ol><li>Brown the ground beef and onion in a skillet and drain.</li><li>Add everything to the crockpot.</li><li>Cover and cook.</li><li>Serve on buns.</li></ol>
+<h3>Cook Time</h3>
+<p>Low 3 to 4 hours</p></article>
+<article class="recipe" id="crockpot-creamy-potato-hamburger-soup" data-title="crockpot creamy potato hamburger soup"><div class="rhead"><h2>Crockpot Creamy Potato Hamburger Soup</h2><button class="print-btn" data-key="crockpot-creamy-potato-hamburger-soup" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>360</b><span>cal</span></div><div class="m"><b>17g</b><span>protein</span></div><div class="m"><b>22g</b><span>fat</span></div><div class="m"><b>21g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">from the recipe</span></div><p>A comforting and creamy crockpot soup filled with tender potatoes, seasoned ground beef, and flavorful vegetables. Perfect for a warm, hearty meal with minimal effort.</p>
+<h3>Ingredients</h3>
+<ul><li>1 lb ground beef</li><li>1 medium onion, diced</li><li>3 cloves garlic, minced</li><li>5 cups potatoes, peeled and diced</li><li>3 cups chicken broth</li><li>2 cups milk</li><li>1 cup heavy cream</li><li>1 cup shredded cheddar cheese</li><li>2 medium carrots, diced</li><li>2 celery stalks, diced</li><li>1 tsp salt</li><li>½ tsp black pepper</li><li>½ tsp smoked paprika</li><li>2 tbsp fresh parsley, chopped (optional, for garnish)</li></ul>
+<h3>Directions</h3>
+<p>In a skillet over medium heat, cook the ground beef until browned. Drain excess fat.</p>
+<p>Add the diced onion and garlic to the skillet. Cook for 2-3 minutes until fragrant. Transfer the mixture to the crockpot.</p>
+<p>Add potatoes, chicken broth, carrots, celery, salt, black pepper, and smoked paprika to the crockpot. Stir to combine.</p>
+<p>Cover and cook on low for 6-7 hours or high for 3-4 hours, until potatoes are tender.</p>
+<p>About 30 minutes before serving, stir in milk, heavy cream, and shredded cheddar cheese. Let cook until the cheese melts and the soup is creamy.</p>
+<p>Ladle soup into bowls, garnish with chopped parsley if desired, and serve hot.</p>
+<p>Prep Time: 20 minutes | Cooking Time: 6 hours (low) or 3 hours (high) | Total Time: 6 hours 20 minutes (low) or 3 hours 20 minutes (high)</p>
+<p>Kcal: 360 kcal | Servings: 6 servings</p></article>
+<article class="recipe" id="easy-beef-cabbage-soup-one-pot" data-title="easy beef cabbage soup (one pot)"><div class="rhead"><h2>Easy Beef Cabbage Soup (One Pot)</h2><button class="print-btn" data-key="easy-beef-cabbage-soup-one-pot" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>505</b><span>cal</span></div><div class="m"><b>34g</b><span>protein</span></div><div class="m"><b>30g</b><span>fat</span></div><div class="m"><b>24g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">estimated</span></div><p>Stella Drivas</p>
+<p>You got to make this beef cabbage soup because it&#x27;s low in calories, high in fiber and crazy delicious!</p>
+<ul><li>Servings:* 6 *Prep Time:* 15 minutes</li></ul>
+<p>mins*Cook Time:* 25 minutes</p>
+<p>mins*Total Time:* 40 minutes</p>
+<h3>Equipment</h3>
+<ul><li>▢large pot</li><li>▢cutting board</li><li>▢wooden spoon</li></ul>
+<h3>Ingredients</h3>
+<ul><li>▢3 tbs olive oil, divided</li><li>▢2 lb ground beef</li><li>▢1 tsp salt</li><li>▢1 tsp each paprika, garlic powder, onion powder + Italian herb blend</li><li>▢1 medium onion, diced</li><li>▢2 medium carrots, diced</li><li>▢3 large portabello caps</li><li>▢3 cloves garlic, minced</li><li>▢2 tbs tomato paste</li><li>▢1 tbs low sodium soy sauce</li><li>▢1 tbs Worcestershire sauce</li><li>▢2 tbs brown sugar</li><li>▢5 cups (0.35 kg) cabbage, chopped</li><li>▢28 oz (0.80 kg) crushed tomatoes</li><li>▢4 cups (1 l) low sodium beef broth</li><li>▢Top with: sour cream, olive oil, fresh parsley + freshly grated parmesan, (optional)</li></ul>
+<h3>Instructions</h3>
+<p>Heat 1 tbsp of olive oil in a large pot over medium-high heat. Once hot, add in the meat and let it stand and sear for at least 1 minute. Season with salt, paprika, garlic powder, onion powder, Italian herb blend. Use a wooden spoon to break up the meat until it is no longer pink.</p>
+<p>Next, add in the onion, carrots, mushrooms and remaining 2 tbs oil and sauté for 4-5 minutes. Stir in the garlic for 30 seconds. Add in the tomato paste and stir to coat all for 1 minute. Mix in soy sauce, Worcestershire and brown sugar. Lastly, add in the cabbage, tomatoes, beef broth, stir and bring to a boil. Cover the pot with the lid and simmer on low heat - cook for 25 minutes. Taste and adjust salt and sugar, if needed.</p>
+<p>RECOMMENDED: Serve with sour cream. fresh parsley, drizzle of olive oil, freshly grated parmesan, chili pepper flakes and squeeze of lemon if desired!</p>
+<h3>Notes</h3>
+<ol><li>If you don&#x27;t have ground beef, you can use ground pork, lamb, turkey or chicken.</li><li>Store leftovers in an airtight container in your fridge for up to 4 days.</li><li>You can also add 1/2 cup uncooked rice to this soup and add in extra 1 cup water (or broth). Add it in with the cabbage.</li><li>I used 1 small head of cabbage for the diced 5 cups of cabbage. Leave out the stem.</li><li>If you&#x27;re on a Gluten Free diet, make sure you use Tamari instead of Soy Sauce.</li><li>If you are Dairy Free, leave out the sour cream and grated parmesan OPTIONAL toppings.</li></ol>
+<ul><li>Calories:* 485kcal, *Carbohydrates:* 24g, *Protein:* 33g, *Fat:* 34g, *Saturated Fat:* 7g, *Polyunsaturated Fat:* 1g, *Monounsaturated Fat:* 12g, *Trans Fat:* 1g, *Cholesterol:* 54mg, *Sodium:* 1183mg, *Potassium:* 1350mg, *Fiber:* 6g, *Sugar:* 15g, *Vitamin A:* 3823IU, *Vitamin C:* 38mg, *Calcium:* 106mg, *Iron:* 4mg</li></ul></article>
+<article class="recipe" id="eggroll-in-a-bowl-skillet-high-protein" data-title="eggroll-in-a-bowl skillet high protein"><div class="rhead"><h2>Eggroll-in-a-Bowl Skillet High Protein</h2><button class="print-btn" data-key="eggroll-in-a-bowl-skillet-high-protein" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>260</b><span>cal</span></div><div class="m"><b>32g</b><span>protein</span></div><div class="m"><b>10g</b><span>fat</span></div><div class="m"><b>11g</b><span>carbs</span></div><div class="m serv"><b>4</b><span>servings</span></div><span class="src">from the recipe</span></div><p>Serves 4</p>
+<p>32g protein</p>
+<p>11g carbs</p>
+<p>10g fat</p>
+<p>5g fiber</p>
+<p>260 calories</p>
+<h3>Ingredients</h3>
+<ul><li>1 lb lean ground turkey</li><li>1 bag coleslaw mix</li><li>1 cup shredded carrots</li><li>½ cup diced onion</li><li>2–3 cloves garlic</li><li>2 tbsp soy sauce</li><li>1 tbsp rice vinegar</li><li>1 tsp sesame oil</li><li>½–1 tsp ginger</li><li>Salt &amp; pepper</li><li>Optional: sriracha, green onion, sesame seeds</li></ul>
+<h3>Directions</h3>
+<p>Brown turkey, add onion &amp; garlic, add slaw &amp; carrots. Cook till soft, then add sauces &amp; done.</p></article>
+<h3 class="group" id="grp-dinner-beef-potato-cheesesteak-bakes">Beef &amp; potato / cheesesteak bakes <span>5</span></h3>
+<article class="recipe" id="cheesy-beef-potato-pockets-high-protein" data-title="cheesy beef potato pockets! 🔥🧀🥩🥔 high protein"><div class="rhead"><h2>Cheesy Beef Potato Pockets! 🔥🧀🥩🥔 High Protein</h2><button class="print-btn" data-key="cheesy-beef-potato-pockets-high-protein" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>295</b><span>cal</span></div><div class="m"><b>24g</b><span>protein</span></div><div class="m"><b>8g</b><span>fat</span></div><div class="m"><b>31g</b><span>carbs</span></div><div class="m serv"><b>8</b><span>servings</span></div><span class="src">from the recipe</span></div><p>ONLY 296 calories, 24g Protein! Easy High Protein Meal Prep 😋</p>
+<p>Makes 8 Pockets 🔥</p>
+<p>Calories &amp; Macros 📊</p>
+<p>Per Pocket: 296 calories</p>
+<p>24g P | 31g C | 8g F</p>
+<p>Beef filling</p>
+<ul><li>500g lean ground beef (5% fat or less)</li><li>1 medium diced white onion</li><li>10g diced chilli (optional for heat - sub with 1/2 tsp cayenne)</li><li>1 tsp garlic powder</li><li>1 tsp smoked paprika</li><li>1 tsp salt</li><li>1 tsp black pepper</li><li>1 tsp mixed herbs</li><li>Cooking spray</li></ul>
+<p>Potato Pocket Dough</p>
+<ul><li>900g peeled potatoes (chop and boil in salted water starting from cold for an even cook)</li><li>125g (1 cup flour)</li><li>1 egg</li><li>Salt to taste</li><li>let the potatoes fully cool before making the dough</li><li>lightly grease your hands to help with handling</li></ul>
+<p>Pocket assembly</p>
+<ul><li>1/8 potato pocket dough</li><li>1/8 meat filling (weigh out total mixture and divide by 8 for gram amount)</li><li>20g low fat grated cheese</li></ul>
+<p>Place in a pan with cooking spray on medium-low heat, cover with a lid and cook for 1-2 minutes on each side till golden brown 🔥</p>
+<p>Storage &amp; Heating ♨️</p>
+<ul><li>Once cooled wrap in foil and store in the fridge or freezer</li><li>To reheat from the fridge, unwrap from the foil and air fry for 8-10 minutes at 220°C to get them crispy again.</li><li>to reheat from the freezer, unwrap from the foil, air fry at 220 for 13-15 minutes to get crispy..</li></ul></article>
+<article class="recipe" id="beef-potato-au-gratin-slow-cooker" data-title="beef &amp; potato au gratin slow cooker"><div class="rhead"><h2>Beef &amp; Potato Au Gratin Slow Cooker</h2><button class="print-btn" data-key="beef-potato-au-gratin-slow-cooker" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>665</b><span>cal</span></div><div class="m"><b>28g</b><span>protein</span></div><div class="m"><b>45g</b><span>fat</span></div><div class="m"><b>37g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">estimated</span></div><p>🛒 Ingredients (Serves 4–6)</p>
+<p>For the beef layer</p>
+<p>1 lb ground beef</p>
+<p>1 small onion, finely diced</p>
+<p>2 cloves garlic, minced</p>
+<p>1 tsp salt</p>
+<p>½ tsp black pepper</p>
+<p>1 tsp paprika</p>
+<p>For the potato layers</p>
+<p>2½ lbs russet or Yukon gold potatoes, thinly sliced</p>
+<p>1½ cups shredded cheddar cheese</p>
+<p>½ cup shredded mozzarella (optional, for extra melt)</p>
+<p>For the creamy sauce</p>
+<p>1½ cups heavy cream or half-and-half</p>
+<p>½ cup beef broth</p>
+<p>1 tbsp butter</p>
+<p>1 tsp dried thyme</p>
+<p>½ tsp onion powder</p>
+<p>For garnish</p>
+<p>Chopped fresh parsley</p>
+<h3>👩🍳 Instructions</h3>
+<p>Brown ground beef in a skillet over medium heat with onion and garlic until fully cooked. Season with salt, pepper, and paprika. Drain excess grease.</p>
+<p>Lightly grease the slow cooker insert.</p>
+<p>Layer half of the sliced potatoes evenly in the bottom.</p>
+<p>Add half of the cooked beef on top, then sprinkle with half of the cheese.</p>
+<p>Repeat layers with remaining potatoes, beef, and cheese.</p>
+<p>In a bowl, whisk cream, broth, melted butter, thyme, and onion powder.</p>
+<p>Pour sauce evenly over the layers.</p>
+<p>Cover and cook on LOW for 6–7 hours or HIGH for 3–4 hours, until potatoes are tender.</p>
+<p>Sprinkle with parsley before serving.</p>
+<p>🍽️ Serving Suggestions</p>
+<p>Serve with a simple green salad</p>
+<p>Add steamed broccoli or green beans</p></article>
+<article class="recipe" id="french-onion-beef-rice-casserole-high-protein" data-title="french onion beef &amp; rice casserole high protein"><div class="rhead"><h2>French Onion Beef &amp; Rice Casserole High Protein</h2><button class="print-btn" data-key="french-onion-beef-rice-casserole-high-protein" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>430</b><span>cal</span></div><div class="m"><b>40g</b><span>protein</span></div><div class="m"><b>12g</b><span>fat</span></div><div class="m"><b>38g</b><span>carbs</span></div><div class="m serv"><b>8</b><span>servings</span></div><span class="src">from the recipe</span></div><p>✅ One-pan, cozy, cheesy, and packed with protein — the perfect comfort food but made macro-friendly 👏🏻</p>
+<p>(8 servings)</p>
+<h3>Ingredients</h3>
+<ul><li>2 lbs (908g) 96/4 lean ground beef</li><li>2 large onions (500g), thinly sliced</li><li>2 tsp olive oil (10ml)</li><li>2 tsp balsamic vinegar</li><li>1 tsp Worcestershire sauce</li><li>1 tbsp (12g) minced garlic</li><li>1 ½ cups (285g) uncooked jasmine rice, rinsed</li><li>3 cups (720ml) low-sodium beef broth</li><li>1 cup (240ml) Fairlife fat-free milk</li><li>½ cup (113g) fat-free Greek yogurt</li><li>1 tbsp beef bouillon + more garlic &amp; onion powder</li><li>1 cup reduced fat cheddar cheese</li><li>1/2 cup reduced-fat mozzarella</li><li>½ cup (56g) parmesan cheese</li><li>¼ cup (15g) fresh parsley, chopped</li><li>Salt &amp; pepper to taste</li></ul>
+<p>🚨Bake with foil in the oven @ 375 for 35-45 min (if the liquid doesn&#x27;t absorb then bake with out the foil for an additional 10-15 min) top it off with cheese then toss is back in until the cheese is golden and melted</p>
+<ul><li>Optional Topping</li><li>Crispy onions (light sprinkle)</li><li>Extra provolone for that golden cheesy top</li><li>⸻</li><li>🔥 Macros per serving (8 servings)</li><li>Calories: 430</li><li>Protein: 40 g</li><li>Carbohydrates: 38 g</li><li>Fat: 12 g</li></ul></article>
+<article class="recipe" id="philly-cheesesteak-casserole-cheesy-cozy-comfort-food-made-easy" data-title="philly cheesesteak casserole – cheesy, cozy, comfort food made easy 🧀🥩🌶️"><div class="rhead"><h2>Philly Cheesesteak Casserole – Cheesy, Cozy, Comfort Food Made Easy 🧀🥩🌶️</h2><button class="print-btn" data-key="philly-cheesesteak-casserole-cheesy-cozy-comfort-food-made-easy" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>515</b><span>cal</span></div><div class="m"><b>38g</b><span>protein</span></div><div class="m"><b>37g</b><span>fat</span></div><div class="m"><b>7g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">estimated</span></div><p>If you love cheesy, cozy, comfort meals, this Philly Cheesesteak Casserole is exactly what you need. Juicy ground beef, sautéed bell peppers and onions, melty provolone, and a creamy egg mixture bake together into the perfect low-carb, weeknight-friendly dish. Fast prep, hearty flavor, and always a crowd-pleaser.</p>
+<p>Prep Time: 15 min</p>
+<p>Cook Time: 45 min</p>
+<p>Total Time: 1 hour</p>
+<p>Servings: 4–6</p>
+<h3>Ingredients</h3>
+<ul><li>1½ lb ground beef</li><li>2 bell peppers, chopped</li><li>1½ onions, chopped</li><li>8 oz provolone cheese, shredded or sliced</li><li>6 large eggs</li><li>½ cup heavy cream</li><li>2 tsp Worcestershire sauce</li><li>2 tsp olive oil or butter for sautéing</li><li>Salt and pepper, to taste</li><li>Optional: 1 cup mushrooms, sliced</li><li>Optional: 1–2 jalapeños, diced</li></ul>
+<h3>Instructions</h3>
+<p>1️⃣ Preheat the oven to 375°F (190°C) and lightly grease a 9x13-inch baking dish.</p>
+<p>2️⃣ Cook the beef: In a large skillet over medium heat, sauté ground beef until browned. Drain excess fat for a perfect casserole set. Season with salt and pepper.</p>
+<p>3️⃣ Sauté veggies: In the same skillet, sauté bell peppers, onions, and optional mushrooms or jalapeños in olive oil until tender.</p>
+<p>4️⃣ Combine beef and veggies: Add sautéed veggies to the cooked ground beef and stir to combine. Spread evenly in the prepared baking dish.</p>
+<p>5️⃣ Add cheese: Layer provolone cheese evenly over the beef and veggie mixture.</p>
+<p>6️⃣ Mix egg base: In a medium bowl, whisk together eggs, heavy cream, and Worcestershire sauce. Pour the mixture over the casserole evenly.</p>
+<p>7️⃣ Bake: Place in the preheated oven and bake for 35–40 minutes, until the eggs are set and the top is lightly golden.</p>
+<p>8️⃣ Rest before serving: Let the casserole rest for 5 minutes before slicing. This ensures it sets perfectly.</p>
+<p>Tips &amp; Variations:</p>
+<p>Add mushrooms or jalapeños for extra flavor and spice.</p>
+<p>Use cheddar or mozzarella instead of provolone for a different cheesy twist.</p>
+<p>Perfect as a low-carb dinner, meal prep, or family-friendly weeknight meal.</p>
+<p>Why You&#x27;ll Love This Recipe:</p>
+<p>Easy prep: Ready in under an hour</p>
+<p>Low-carb friendly: Keto-approved option</p>
+<p>Crowd-pleaser: Perfect for family dinners or potlucks</p>
+<p>Comfort food classic: All the flavor of a Philly Cheesesteak in a convenient</p></article>
+<article class="recipe" id="philly-cheesesteak-chicken" data-title="philly cheesesteak chicken"><div class="rhead"><h2>Philly Cheesesteak Chicken</h2><button class="print-btn" data-key="philly-cheesesteak-chicken" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>235</b><span>cal</span></div><div class="m"><b>39g</b><span>protein</span></div><div class="m"><b>7g</b><span>fat</span></div><div class="m"><b>3g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">estimated</span></div><p>\~38g protein / serving</p>
+<h3>Ingredients</h3>
+<ul><li>2 lb chicken breast</li><li>1/2 cup low sodium chicken broth</li><li>1 green bell pepper, sliced</li><li>1 onion, sliced</li><li>4 oz light mozzarella</li><li>1 tsp garlic powder</li><li>Salt + pepper</li><li>How:</li><li>Dump → LOW 6 hrs → shred → stir in cheese</li></ul></article>
+<h3 class="group" id="grp-dinner-pasta-italian">Pasta &amp; Italian <span>8</span></h3>
+<article class="recipe" id="cheesy-ziti" data-title="cheesy ziti"><div class="rhead"><h2>Cheesy Ziti</h2><button class="print-btn" data-key="cheesy-ziti" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>385</b><span>cal</span></div><div class="m"><b>26g</b><span>protein</span></div><div class="m"><b>21g</b><span>fat</span></div><div class="m"><b>24g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">estimated</span></div><p>Serves 6</p>
+<h3>Ingredients</h3>
+<ul><li>1 lb ground beef</li><li>2 cups marinara sauce</li><li>2 cups cooked ziti</li><li>1 cup ricotta</li><li>1 cup mozzarella</li><li>1 tsp Italian seasoning</li></ul>
+<h3>Steps</h3>
+<ol><li>Brown the ground beef and drain.</li><li>Layer beef, marinara, cooked ziti and cheese in the crockpot. Sprinkle with Italian seasoning.</li><li>Cover and cook.</li></ol>
+<h3>Cook Time</h3>
+<p>Low 2 to 3 hours</p></article>
+<article class="recipe" id="ultimate-meat-lover-s-pizza-pasta-bake-protein-pasta-cottage-cheese" data-title="ultimate meat lover&#x27;s pizza pasta bake (protein pasta + cottage cheese)"><div class="rhead"><h2>Ultimate Meat Lover&#x27;s Pizza Pasta Bake (Protein Pasta + Cottage Cheese)</h2><button class="print-btn" data-key="ultimate-meat-lover-s-pizza-pasta-bake-protein-pasta-cottage-cheese" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>770</b><span>cal</span></div><div class="m"><b>52g</b><span>protein</span></div><div class="m"><b>46g</b><span>fat</span></div><div class="m"><b>36g</b><span>carbs</span></div><div class="m serv"><b>9</b><span>servings</span></div><span class="src">estimated</span></div><p>Serves 9 | Prep 45 minutes | Bake 40 minutes at 375F</p>
+<h3>Ingredients</h3>
+<ul><li>1/2 lb high-protein bow tie pasta (chickpea, lentil or Barilla Protein+)</li><li>1 lb mild pork sausage</li><li>2 (26 oz) jars spaghetti sauce</li><li>1 large onion, diced</li><li>1 lb cooked ham, cubed</li><li>1 (8 oz) package sliced pepperoni</li><li>2 (8 oz) bags shredded mozzarella cheese</li><li>16 oz low-fat cottage cheese, blended smooth</li><li>6 tbsp grated Parmesan cheese</li><li>2 tbsp minced garlic</li><li>1 tsp dried oregano</li></ul>
+<h3>Steps</h3>
+<ol><li>Cook the protein pasta according to package directions until al dente. Drain, rinse under cold water and set aside. Protein pastas go soft fast, so pull it a minute early since it keeps cooking in the bake.</li><li>Blend the cottage cheese until completely smooth. This is what replaces the third bag of mozzarella.</li><li>In a large skillet, cook the pork sausage, diced onion, minced garlic and dried oregano over medium heat until the sausage is cooked through and the onions are translucent. Drain any excess fat and set aside.</li><li>Preheat the oven to 375F (190C). Lightly grease a 9x13 inch baking dish and spread just enough spaghetti sauce to coat the bottom.</li><li>First layer: spread 1/3 of the cooked pasta over the sauce. Cover with 1/3 of the remaining spaghetti sauce. Spread half the blended cottage cheese over the sauce, followed by 2 tablespoons of Parmesan. Spread the cooked sausage mixture evenly over the top.</li><li>Second layer: spread half of the remaining pasta into the dish. Cover with half of the remaining spaghetti sauce. Spread the rest of the cottage cheese, sprinkle one 8 oz bag of mozzarella and 2 tablespoons of Parmesan. Scatter the cubed ham evenly over the cheese.</li><li>Final layer: add all the remaining pasta. Pour the rest of the spaghetti sauce over the pasta. Sprinkle the last 8 oz bag of mozzarella and the remaining 2 tablespoons of Parmesan. Arrange the sliced pepperoni over the top.</li><li>Bake 40 minutes, until the casserole is bubbly and the cheese is golden brown.</li><li>Let it sit 5 minutes before serving so it sets.</li></ol></article>
+<article class="recipe" id="chicken-pasta-the-one-i-always-rave-about-high-protein" data-title="chicken pasta (the one i always rave about) high-protein"><div class="rhead"><h2>Chicken Pasta (the one I always rave about) High-Protein</h2><button class="print-btn" data-key="chicken-pasta-the-one-i-always-rave-about-high-protein" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>370</b><span>cal</span></div><div class="m"><b>31g</b><span>protein</span></div><div class="m"><b>16g</b><span>fat</span></div><div class="m"><b>25g</b><span>carbs</span></div><div class="m serv"><b>10</b><span>servings</span></div><span class="src">estimated</span></div><p>\~32g protein / serving</p>
+<h3>Ingredients</h3>
+<ul><li>2 lb chicken thighs</li><li>4 cups kale</li><li>3 cups low-fat cottage cheese (680g / 24 oz)</li><li>3 cups Prego tomato basil garlic (24 oz)</li><li>1 box Banza protein penne (8 oz)</li><li>2 tbsp olive oil</li><li>2 tsp each: cayenne, garlic salt, onion powder</li><li>How:</li><li>Dump everything except pasta → LOW 6–7 hrs → shred → blend sauce → stir in cooked pasta</li><li>Creamy Salsa Verde Chicken</li><li>\~35g protein / serving</li></ul>
+<h3>Ingredients</h3>
+<ul><li>2 lb chicken breast</li><li>1 cup salsa verde</li><li>4 oz low-fat cream cheese</li><li>1 tsp cumin</li><li>1 tsp garlic powder</li><li>How:</li><li>Dump → LOW 6 hrs → shred &amp; stir</li><li>(Great for bowls, wraps, or over rice)</li><li>White Chicken Chili</li><li>\~36g protein / serving</li></ul>
+<h3>Ingredients</h3>
+<ul><li>2 lb chicken breast</li><li>1 can white beans, drained</li><li>1 can green chiles</li><li>3 cups chicken broth</li><li>½ cup nonfat Greek yogurt</li><li>1 tsp cumin</li><li>How: Cook LOW 6–7 hrs → shred → stir in yogurt</li><li>Taco Chicken</li><li>\~38g protein / serving</li></ul>
+<h3>Ingredients</h3>
+<ul><li>2 lb chicken breast</li><li>1 packet taco seasoning</li><li>1 cup salsa</li><li>How:</li><li>Cook LOW 6 hrs → shred</li><li>(Tacos, bowls, nachos, salads — all week)</li><li>Creamy Tuscan Chicken</li><li>\~36g protein / serving</li></ul>
+<h3>Ingredients</h3>
+<ul><li>2 lb chicken breast</li><li>½ cup sun-dried tomatoes</li><li>3 cups chicken broth</li><li>½ cup nonfat Greek yogurt</li><li>2 tsp Italian seasoning</li><li>2 cups spinach</li><li>How:</li><li>Dump everything except yogurt + spinach → LOW 6–7 hrs → shred → stir in yogurt + spinach</li></ul></article>
+<article class="recipe" id="italian-marinara-chicken" data-title="italian marinara chicken"><div class="rhead"><h2>Italian Marinara Chicken</h2><button class="print-btn" data-key="italian-marinara-chicken" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>195</b><span>cal</span></div><div class="m"><b>32g</b><span>protein</span></div><div class="m"><b>4g</b><span>fat</span></div><div class="m"><b>8g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">from the recipe</span></div><ul><li>2 lb chicken breasts</li><li>2 cups marinara sauce</li><li>1 tsp Italian seasoning</li><li>½ tsp garlic powder</li></ul>
+<p>Servings: 6</p>
+<p>Macros (approx): 32g P | 8g C | 4g F</p>
+<p>How to make:</p>
+<p>Add everything to the crockpot → cook LOW 6–7 hrs or HIGH 3–4 hrs → shred → stir in any Greek yogurt or cream cheese after cooking → portion for the week.</p></article>
+<article class="recipe" id="chicken-pesto-bake" data-title="chicken pesto bake 🤤"><div class="rhead"><h2>Chicken Pesto Bake 🤤</h2><button class="print-btn" data-key="chicken-pesto-bake" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>485</b><span>cal</span></div><div class="m"><b>51g</b><span>protein</span></div><div class="m"><b>9g</b><span>fat</span></div><div class="m"><b>47g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">from the recipe</span></div><p>This serves 4 - 6</p>
+<p>Bowl size is 3 litres</p>
+<p>250g rice (any)</p>
+<p>1kg chicken breast (diced)</p>
+<p>100g of green Pesto (Leggos brand in 5l or aim for 120 calories per 47g of pesto)</p>
+<p>320g low fat greek yoghurt</p>
+<p>140g of chopped spinach</p>
+<p>1 large red onion (finely diced)</p>
+<p>500ml of chicken stock</p>
+<p>150g of sundried tomatoes</p>
+<p>Cook for 75 - 90 minutes @ 180 celcius / 360 farenheit</p>
+<p>Cover with alfoil for the first hour or so</p>
+<p>Calories for 6 serves</p>
+<p>484     47.2g carb   8.89 fat   51.4g protein</p></article>
+<article class="recipe" id="tuscan-chicken-orzo" data-title="✨ tuscan chicken orzo ✨"><div class="rhead"><h2>✨ Tuscan Chicken Orzo ✨</h2><button class="print-btn" data-key="tuscan-chicken-orzo" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>415</b><span>cal</span></div><div class="m"><b>46g</b><span>protein</span></div><div class="m"><b>12g</b><span>fat</span></div><div class="m"><b>31g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">estimated</span></div><p>(Save this! You&#x27;ll want it again)</p>
+<h3>Ingredients</h3>
+<ul><li>2 lbs chicken breasts or thighs</li><li>1 (7oz.) jar sun-dried tomatoes (use 1tbsp. Of the oil too)</li><li>4 cloves garlic, minced</li><li>2 cups chicken broth</li><li>1 tsp Italian seasoning</li><li>Salt + pepper</li><li>1 cup dry orzo</li><li>1 cup milk or half-and-half</li><li>3 big handfuls spinach</li><li>½–¾ cup freshly grated parmesan</li></ul>
+<h3>How to make it</h3>
+<p>1️⃣ Add chicken, sun-dried tomatoes (with 1 Tbsp. of oil), garlic, broth, Italian seasoning, salt &amp; pepper to the crockpot.</p>
+<p>2️⃣ Cook on low for 4–5 hours (or 3hrs on high), then shred the chicken in the crockpot.</p>
+<p>3️⃣ Stir in orzo + milk. Cook 20–30 minutes on HIGH until the orzo is tender (this is for al dente). Cook 30-35 min if you prefer a softer bite. If you cook longer, add a little more broth.</p>
+<p>4️⃣ Fold in spinach and parmesan until creamy and silky.</p></article>
+<article class="recipe" id="creamy-tuscan-chicken" data-title="creamy tuscan chicken"><div class="rhead"><h2>Creamy Tuscan Chicken</h2><button class="print-btn" data-key="creamy-tuscan-chicken" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>310</b><span>cal</span></div><div class="m"><b>44g</b><span>protein</span></div><div class="m"><b>8g</b><span>fat</span></div><div class="m"><b>8g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">from the recipe</span></div><h3>ingredients</h3>
+<ul><li>2 lb chicken breast (907 g)</li><li>1 cup low-sodium chicken broth</li><li>½ cup nonfat Greek yogurt (stir in at end)</li><li>½ cup sun-dried tomatoes</li><li>3 cloves garlic</li><li>Italian seasoning, salt, pepper</li><li>How to cook:</li><li>Add everything to the crockpot (except dairy added at the end when noted).</li><li>Cook low 6–8 hours or high 3–4 hours.</li><li>Shred meat if needed, stir well, adjust seasoning, and portion for the week.</li><li>macros (per serving)</li><li>310 cal | 44 g protein | 8 g carbs | 8 g fat</li></ul></article>
+<article class="recipe" id="creamy-tuscan-chicken-rice-10-servings" data-title="creamy tuscan chicken &amp; rice (10 servings)"><div class="rhead"><h2>Creamy Tuscan Chicken &amp; Rice (10 Servings)</h2><button class="print-btn" data-key="creamy-tuscan-chicken-rice-10-servings" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>585</b><span>cal</span></div><div class="m"><b>64g</b><span>protein</span></div><div class="m"><b>16g</b><span>fat</span></div><div class="m"><b>41g</b><span>carbs</span></div><div class="m serv"><b>10</b><span>servings</span></div><span class="src">from the recipe</span></div><p>💪 MACROS (Per Serving)</p>
+<ul><li>Calories: \~583</li><li>Protein: \~64.4g</li><li>Carbs: \~40.7g</li><li>Fat: \~15.6g</li></ul>
+<p>⸻</p>
+<p>✅ Ingredients (Measured)</p>
+<p>Protein &amp; Base</p>
+<ul><li>4 lbs raw, skinless chicken breast</li><li>400g Minute White Rice (about 2 ½ cups dry)</li></ul>
+<p>Sauce &amp; Flavor</p>
+<ul><li>550g fat-free cottage cheese (≈ 2 cups)</li><li>150g 1/3-fat cream cheese (≈ ¾ cup)</li><li>60g sun-dried tomatoes, chopped (≈ ¼ cup packed)</li><li>100g shredded parmesan (≈ 1 cup)</li><li>150g reduced-fat cheddar (≈ 1 ½ cups)</li><li>150g reduced-fat mozzarella (≈ 1 ½ cups)</li><li>3–4 cups fresh spinach</li><li>½ cup fresh basil, chopped</li><li>½ cup total chicken bone broth (¼ cup for the chicken + ¼ cup for the sauce)</li><li>1 tbsp fresh lemon juice</li></ul>
+<p>Seasonings</p>
+<ul><li>1–2 tsp garlic powder</li><li>1 tsp onion powder</li><li>1 tsp Italian seasoning (plus 1 tsp for the sauce)</li><li>Salt &amp; black pepper to taste</li><li>Optional: pinch paprika + red pepper flakes</li></ul>
+<p>⸻</p>
+<p>👨🍳 Slow Cooker Directions (Tasty Shreds Method)</p>
+<ol><li>Load the Crockpot (Chicken First)</li></ol>
+<p>Add to the slow cooker:</p>
+<ul><li>4 lbs chicken breast</li><li>Garlic powder, onion powder, Italian seasoning, salt &amp; pepper</li><li>¼ cup bone broth poured over the top</li></ul>
+<p>Cook on HIGH for 4 hours.</p>
+<ol><li>Make the Creamy Tuscan Sauce (Blend It Smooth)</li></ol>
+<p>In a blender, combine:</p>
+<ul><li>550g cottage cheese</li><li>150g 1/3-fat cream cheese</li><li>¼ cup bone broth</li><li>1 tsp Italian seasoning</li><li>Squeeze of lemon juice</li></ul>
+<p>Blend until completely smooth and creamy.</p>
+<p>(This prevents curdling + gives that restaurant-style silky sauce)</p>
+<ol><li>Add Veggies Before the Finish</li></ol>
+<p>When 1 hour remains, add:</p>
+<ul><li>Chopped sun-dried tomatoes</li><li>Spinach (it will wilt down)</li></ul>
+<ol><li>Shred &amp; Sauce It Up</li></ol>
+<p>At the 4-hour mark, shred the chicken directly in the crockpot.</p>
+<p>Pour in the blended Tuscan sauce, then add:</p>
+<ul><li>Fresh basil</li><li>Parmesan + cheddar + mozzarella on top</li></ul>
+<p>Cover and cook for 20 minutes to melt and thicken.</p>
+<ol><li>Add the Rice + Finish</li></ol>
+<p>Cook rice separately according to package directions.</p>
+<p>Add the cooked rice directly into the crockpot and fold everything together until creamy and fully coated.</p>
+<ol><li>Portion into 10 containers. Top with a little extra basil or parmesan if desired.</li></ol></article>
+<h3 class="group" id="grp-dinner-creamy-ranch-chicken">Creamy &amp; ranch chicken <span>4</span></h3>
+<article class="recipe" id="creamy-chicken" data-title="creamy chicken"><div class="rhead"><h2>Creamy Chicken</h2><button class="print-btn" data-key="creamy-chicken" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>365</b><span>cal</span></div><div class="m"><b>32g</b><span>protein</span></div><div class="m"><b>24g</b><span>fat</span></div><div class="m"><b>4g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">estimated</span></div><p>Serves 6</p>
+<h3>Ingredients</h3>
+<ul><li>2 lb chicken thighs</li><li>1 packet ranch seasoning</li><li>8 oz cream cheese</li></ul>
+<h3>Steps</h3>
+<ol><li>Place chicken thighs in the crockpot and sprinkle with ranch seasoning.</li><li>Set the cream cheese on top.</li><li>Cover and cook.</li><li>Stir at the end until the sauce comes together, then shred the chicken.</li></ol>
+<h3>Cook Time</h3>
+<p>Low 6 hours</p></article>
+<article class="recipe" id="mississippi-style-shredded-chicken-lightened" data-title="mississippi-style shredded chicken (lightened)"><div class="rhead"><h2>Mississippi-Style Shredded Chicken (Lightened)</h2><button class="print-btn" data-key="mississippi-style-shredded-chicken-lightened" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>185</b><span>cal</span></div><div class="m"><b>34g</b><span>protein</span></div><div class="m"><b>4g</b><span>fat</span></div><div class="m"><b>3g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">from the recipe</span></div><ul><li>2 lb chicken breasts</li><li>½ packet ranch seasoning</li><li>½ packet au jus mix</li><li>½ cup chicken broth</li><li>Pepperoncini peppers (to taste)</li></ul>
+<p>Servings: 6</p>
+<p>Macros (approx): 34g P | 3g C | 4g F</p>
+<p>How to make:</p>
+<p>Add everything to the crockpot → cook LOW 6–7 hrs or HIGH 3–4 hrs → shred → stir in any Greek yogurt or cream cheese after cooking → portion for the week.</p></article>
+<article class="recipe" id="crockpot-angel-chicken" data-title="crockpot angel chicken"><div class="rhead"><h2>Crockpot Angel Chicken</h2><button class="print-btn" data-key="crockpot-angel-chicken" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>520</b><span>cal</span></div><div class="m"><b>41g</b><span>protein</span></div><div class="m"><b>22g</b><span>fat</span></div><div class="m"><b>37g</b><span>carbs</span></div><div class="m serv"><b>8</b><span>servings</span></div><span class="src">estimated</span></div><h3>Ingredients</h3>
+<ul><li>2½ pounds boneless skinless chicken breasts about 4 large breasts</li><li>1 0.7-ounce packet Italian dressing seasoning mix</li><li>1 10.5-ounce can golden mushroom soup</li><li>¾ cup low-sodium chicken broth</li><li>8 ounces cream cheese softened and cubed</li><li>4 tablespoons unsalted butter cut into pieces</li><li>½ teaspoon black pepper</li><li>2 teaspoons minced garlic optional</li><li>12 ounces angel hair pasta</li><li>¼ cup grated Parmesan cheese optional</li><li>chopped parsley for garnish optional</li></ul>
+<h3>Instructions</h3>
+<p>Lightly spray the inside of a 6-quart slow cooker with nonstick cooking spray.</p>
+<p>Place the chicken in the bottom of the crockpot.</p>
+<p>In a bowl, whisk together the golden mushroom soup, chicken broth, Italian seasoning packet, black pepper, and garlic (if using).</p>
+<p>Pour the sauce mixture over the chicken.</p>
+<p>Scatter the butter pieces on top.</p>
+<p>Cover and cook on LOW for 4½ to 5½ hours, until the chicken is cooked through and tender.</p>
+<p>About 20–30 minutes before serving, add the cubed cream cheese. Cover again and let it soften.</p></article>
+<article class="recipe" id="creamy-lemon-herb-chicken" data-title="creamy lemon herb chicken"><div class="rhead"><h2>Creamy Lemon Herb Chicken</h2><button class="print-btn" data-key="creamy-lemon-herb-chicken" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>255</b><span>cal</span></div><div class="m"><b>44g</b><span>protein</span></div><div class="m"><b>6g</b><span>fat</span></div><div class="m"><b>6g</b><span>carbs</span></div><div class="m serv"><b>5</b><span>servings</span></div><span class="src">from the recipe</span></div><h3>ingredients</h3>
+<ul><li>2 lb boneless skinless chicken breast (907 g)</li><li>1 cup low-sodium chicken broth</li><li>juice + zest of 1 lemon</li><li>1 tsp garlic powder</li><li>1 tsp dried oregano</li><li>1 tsp dried thyme</li><li>salt + pepper</li><li>½ cup nonfat Greek yogurt (stir in at end)</li><li>How to cook:</li><li>Add everything to the crockpot (except dairy added at the end when noted).</li><li>Cook low 6–8 hours or high 3–4 hours.</li><li>Shred meat if needed, stir well, adjust seasoning, and portion for the week.</li><li>macros (per serving)</li><li>305 cal | 44 g protein | 6 g carbs | 6 g fat</li></ul></article>
+<h3 class="group" id="grp-dinner-buffalo">Buffalo <span>4</span></h3>
+<article class="recipe" id="buffalo-chicken-chili" data-title="buffalo chicken chili"><div class="rhead"><h2>Buffalo Chicken Chili</h2><button class="print-btn" data-key="buffalo-chicken-chili" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>345</b><span>cal</span></div><div class="m"><b>41g</b><span>protein</span></div><div class="m"><b>7g</b><span>fat</span></div><div class="m"><b>22g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">from the recipe</span></div><h3>ingredients</h3>
+<ul><li>2 lb chicken breast (907 g)</li><li>1 can black beans (15 oz), drained</li><li>1 can white beans (15 oz), drained</li><li>1 can diced tomatoes (14.5 oz)</li><li>½ cup buffalo sauce</li><li>1 cup chicken broth</li><li>chili powder, garlic powder</li><li>How to cook:</li><li>Add everything to the crockpot (except dairy added at the end when noted).</li><li>Cook low 6–8 hours or high 3–4 hours.</li><li>Shred meat if needed, stir well, adjust seasoning, and portion for the week.</li><li>macros (per serving)</li><li>345 cal | 41 g protein | 22 g carbs | 7 g fat</li></ul></article>
+<article class="recipe" id="shredded-buffalo-chicken" data-title="shredded buffalo chicken"><div class="rhead"><h2>Shredded Buffalo Chicken</h2><button class="print-btn" data-key="shredded-buffalo-chicken" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>185</b><span>cal</span></div><div class="m"><b>35g</b><span>protein</span></div><div class="m"><b>4g</b><span>fat</span></div><div class="m"><b>2g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">from the recipe</span></div><ul><li>2 lb chicken breasts</li><li>½ cup buffalo sauce</li><li>1 tbsp ranch seasoning</li><li>½ cup chicken broth</li></ul>
+<p>Servings: 6</p>
+<p>Macros (approx): 35g P | 2g C | 4g F</p>
+<p>How to make:</p>
+<p>Add everything to the crockpot → cook LOW 6–7 hrs or HIGH 3–4 hrs → shred → stir in any Greek yogurt or cream cheese after cooking → portion for the week.</p></article>
+<article class="recipe" id="crispy-boneless-buffalo-wings" data-title="crispy boneless buffalo wings 🤤🙌🔥"><div class="rhead"><h2>Crispy Boneless Buffalo Wings 🤤🙌🔥</h2><button class="print-btn" data-key="crispy-boneless-buffalo-wings" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>395</b><span>cal</span></div><div class="m"><b>41g</b><span>protein</span></div><div class="m"><b>23g</b><span>fat</span></div><div class="m"><b>5g</b><span>carbs</span></div><div class="m serv"><b>2</b><span>servings</span></div><span class="src">estimated</span></div><p>What you need:</p>
+<p>12 oz ground chicken</p>
+<p>1 large egg</p>
+<p>1/2 cup grated Parmesan</p>
+<p>2 tbsp ranch seasoning</p>
+<p>How to make them:</p>
+<ol><li>Combine all ingredients and form into nuggets.</li><li>Air fry @ 400F for 10-12 mins until crispy.</li><li>Toss in buffalo sauce and enjoy!</li></ol></article>
+<article class="recipe" id="chicken-wings" data-title="chicken wings"><div class="rhead"><h2>Chicken Wings</h2><button class="print-btn" data-key="chicken-wings" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>380</b><span>cal</span></div><div class="m"><b>29g</b><span>protein</span></div><div class="m"><b>26g</b><span>fat</span></div><div class="m"><b>13g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">estimated</span></div><p>Serves 6</p>
+<h3>Ingredients</h3>
+<ul><li>3 lb chicken wings</li><li>1/2 cup buffalo sauce</li><li>1/4 cup honey</li><li>1 tsp garlic powder</li><li>1 tsp onion powder</li><li>Salt and pepper</li></ul>
+<h3>Steps</h3>
+<ol><li>Toss the wings with the buffalo sauce, honey, garlic powder, onion powder, salt and pepper.</li><li>Add to the crockpot, cover and cook.</li><li>Broil briefly at the end for crispy edges.</li></ol>
+<h3>Cook Time</h3>
+<p>High 2 to 3 hours</p></article>
+<h3 class="group" id="grp-dinner-tex-mex-chicken">Tex-Mex chicken <span>6</span></h3>
+<article class="recipe" id="salsa-chicken" data-title="salsa chicken"><div class="rhead"><h2>Salsa Chicken</h2><button class="print-btn" data-key="salsa-chicken" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>195</b><span>cal</span></div><div class="m"><b>35g</b><span>protein</span></div><div class="m"><b>4g</b><span>fat</span></div><div class="m"><b>5g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">estimated</span></div><p>Serves 6</p>
+<h3>Ingredients</h3>
+<ul><li>2 lb chicken breasts</li><li>1 jar salsa</li><li>1 tsp cumin</li><li>1 tsp chili powder</li></ul>
+<h3>Steps</h3>
+<ol><li>Place chicken breasts in the crockpot.</li><li>Pour salsa over the chicken and sprinkle with cumin and chili powder.</li><li>Cover and cook.</li><li>Shred the chicken in the juices and let it sit 5 minutes before serving.</li></ol>
+<h3>Cook Time</h3>
+<p>Low 6 hours</p></article>
+<article class="recipe" id="salsa-verde-chicken" data-title="salsa verde chicken"><div class="rhead"><h2>Salsa Verde Chicken</h2><button class="print-btn" data-key="salsa-verde-chicken" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>220</b><span>cal</span></div><div class="m"><b>35g</b><span>protein</span></div><div class="m"><b>6g</b><span>fat</span></div><div class="m"><b>6g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">from the recipe</span></div><ul><li>2 lb boneless skinless chicken breasts</li><li>1 cup salsa verde</li><li>4 oz low-fat cream cheese</li><li>1 tsp cumin</li><li>1 tsp garlic powder</li></ul>
+<p>Servings: 6</p>
+<p>Macros (approx): 35g P | 6g C | 6g F</p>
+<p>How to make:</p>
+<p>Add everything to the crockpot → cook LOW 6–7 hrs or HIGH 3–4 hrs → shred → stir in any Greek yogurt or cream cheese after cooking → portion for the week.</p></article>
+<article class="recipe" id="creamy-taco-chicken" data-title="creamy taco chicken"><div class="rhead"><h2>Creamy Taco Chicken</h2><button class="print-btn" data-key="creamy-taco-chicken" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>210</b><span>cal</span></div><div class="m"><b>36g</b><span>protein</span></div><div class="m"><b>5g</b><span>fat</span></div><div class="m"><b>5g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">from the recipe</span></div><ul><li>2 lb chicken breasts</li><li>1 packet taco seasoning</li><li>1 cup nonfat Greek yogurt (stir in after cooking)</li><li>1 cup chicken broth</li></ul>
+<p>Servings: 6</p>
+<p>Macros (approx): 36g P | 5g C | 5g F</p>
+<p>How to make:</p>
+<p>Add everything to the crockpot → cook LOW 6–7 hrs or HIGH 3–4 hrs → shred → stir in any Greek yogurt or cream cheese after cooking → portion for the week.</p></article>
+<article class="recipe" id="chicken-tacos" data-title="chicken tacos"><div class="rhead"><h2>Chicken Tacos</h2><button class="print-btn" data-key="chicken-tacos" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>160</b><span>cal</span></div><div class="m"><b>26g</b><span>protein</span></div><div class="m"><b>3g</b><span>fat</span></div><div class="m"><b>5g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">estimated</span></div><p>Serves 6</p>
+<h3>Ingredients</h3>
+<ul><li>3 chicken breasts</li><li>1 cup salsa</li><li>1 packet taco seasoning</li><li>1/2 cup chicken broth</li><li>Juice of 1 lime</li></ul>
+<h3>Steps</h3>
+<ol><li>Add everything to the crockpot.</li><li>Cover and cook.</li><li>Shred the chicken and serve in tortillas with toppings.</li></ol>
+<h3>Cook Time</h3>
+<p>Low 6 hours or High 3 hours</p></article>
+<article class="recipe" id="santa-fe-chicken" data-title="santa fe chicken"><div class="rhead"><h2>Santa Fe Chicken</h2><button class="print-btn" data-key="santa-fe-chicken" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>235</b><span>cal</span></div><div class="m"><b>30g</b><span>protein</span></div><div class="m"><b>3g</b><span>fat</span></div><div class="m"><b>20g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">estimated</span></div><p>Serves 6</p>
+<h3>Ingredients</h3>
+<ul><li>3 chicken breasts</li><li>1 can black beans, drained</li><li>1 can corn, drained</li><li>1 can diced tomatoes</li><li>1 tsp cumin</li><li>1 tsp chili powder</li><li>Salt and pepper</li></ul>
+<h3>Steps</h3>
+<ol><li>Add everything to the crockpot.</li><li>Cover and cook.</li><li>Shred the chicken and stir everything together.</li></ol>
+<h3>Cook Time</h3>
+<p>Low 6 hours</p></article>
+<article class="recipe" id="cream-cheese-chicken-chili" data-title="cream cheese chicken chili"><div class="rhead"><h2>Cream Cheese Chicken Chili</h2><button class="print-btn" data-key="cream-cheese-chicken-chili" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>335</b><span>cal</span></div><div class="m"><b>23g</b><span>protein</span></div><div class="m"><b>13g</b><span>fat</span></div><div class="m"><b>32g</b><span>carbs</span></div><div class="m serv"><b>8</b><span>servings</span></div><span class="src">estimated</span></div><p>Serves 6 to 8</p>
+<h3>Ingredients</h3>
+<ul><li>2 chicken breasts (about 1 to 1 1/4 lb)</li><li>2 cans black beans, drained</li><li>2 cans corn, undrained, or 2 cups frozen corn</li><li>2 cans Rotel, undrained</li><li>1 packet ranch seasoning</li><li>1 packet taco seasoning</li><li>1 tsp cumin</li><li>1 tsp onion powder</li><li>1 tbsp chili powder</li><li>8 oz cream cheese</li></ul>
+<h3>Steps</h3>
+<ol><li>Add everything except the cream cheese to the crockpot.</li><li>Place the cream cheese on top.</li><li>Cover and cook until the chicken is cooked through.</li><li>Shred the chicken and stir everything together.</li></ol>
+<h3>Cook Time</h3>
+<p>Low 3 to 4 hours</p></article>
+<h3 class="group" id="grp-dinner-asian-global-chicken">Asian &amp; global chicken <span>7</span></h3>
+<article class="recipe" id="sesame-ginger-chicken" data-title="sesame ginger chicken"><div class="rhead"><h2>Sesame Ginger Chicken</h2><button class="print-btn" data-key="sesame-ginger-chicken" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>360</b><span>cal</span></div><div class="m"><b>37g</b><span>protein</span></div><div class="m"><b>16g</b><span>fat</span></div><div class="m"><b>14g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">from the recipe</span></div><h3>ingredients</h3>
+<ul><li>2 lb chicken thighs (907 g)</li><li>½ cup chicken broth</li><li>¼ cup low-sodium soy sauce</li><li>2 tbsp honey</li><li>1 tbsp sesame oil</li><li>2 tbsp rice vinegar</li><li>1 tbsp grated ginger (or 1 tsp ground)</li><li>3 cloves garlic, minced</li><li>optional: 1 tbsp cornstarch + 2 tbsp water (stir in at end)</li><li>How to cook:</li><li>Add everything to the crockpot (except dairy added at the end when noted).</li><li>Cook low 6–8 hours or high 3–4 hours.</li><li>Shred meat if needed, stir well, adjust seasoning, and portion for the week.</li><li>macros (per serving)</li><li>360 cal | 37 g protein | 14 g carbs | 16 g fat</li></ul></article>
+<article class="recipe" id="ginger-soy-chicken" data-title="ginger-soy chicken"><div class="rhead"><h2>Ginger-Soy Chicken</h2><button class="print-btn" data-key="ginger-soy-chicken" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>190</b><span>cal</span></div><div class="m"><b>32g</b><span>protein</span></div><div class="m"><b>3g</b><span>fat</span></div><div class="m"><b>9g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">from the recipe</span></div><ul><li>2 lb chicken breasts</li><li>⅓ cup low-sodium soy sauce or coconut aminos</li><li>¼ cup rice vinegar</li><li>1 tbsp honey or maple syrup</li><li>2 tsp fresh grated ginger</li><li>3 cloves garlic, minced</li><li>Optional: sliced green onions after cooking</li></ul>
+<p>Servings: 6</p>
+<p>Approx Macros: \~32g P | 9g C | 3g F</p>
+<p>How to make:</p>
+<p>Add everything to the crockpot → cook LOW 6–7 hrs or HIGH 3–4 hrs → shred → stir in any Greek yogurt or cream cheese after cooking → portion for the week.</p></article>
+<article class="recipe" id="honey-teriyaki-chicken-rice-bowls" data-title="honey teriyaki chicken &amp; rice bowls"><div class="rhead"><h2>Honey Teriyaki Chicken &amp; Rice Bowls</h2><button class="print-btn" data-key="honey-teriyaki-chicken-rice-bowls" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>515</b><span>cal</span></div><div class="m"><b>40g</b><span>protein</span></div><div class="m"><b>9g</b><span>fat</span></div><div class="m"><b>65g</b><span>carbs</span></div><div class="m serv"><b>8</b><span>servings</span></div><span class="src">from the recipe</span></div><p>Per Serving (Makes 8)</p>
+<p>515 Calories</p>
+<p>40g Protein</p>
+<p>65g Carbs</p>
+<p>9g Fat</p>
+<p>—</p>
+<h3>Ingredients</h3>
+<ul><li>1360g (48oz) boneless skinless chicken thighs</li><li>75g (5 Tbsp) soy sauce</li><li>30g (2 Tbsp) dark soy sauce</li><li>80g (4 Tbsp) honey</li><li>60g (4 Tbsp) mirin</li><li>30g (2 Tbsp) ginger paste</li><li>15g (1 Tbsp) garlic paste</li><li>High: 4-5 hours  OR  Low: 5+ on low</li><li>Corn Starch Slurry* (to thicken sauce):</li><li>3 Tbsp cornstarch</li><li>4 Tbsp cold water</li><li>480g (2.5 cups) short grain or sushi rice, dry weight</li><li>Low-Cal Yum Yum Sauce:</li><li>100g (½ cup) low-fat mayo</li><li>100g (½ cup) 0% greek yogurt</li><li>75g (5 Tbsp) sriracha</li><li>Salt, pepper, garlic powder to taste</li><li>Milk (as needed for desired consistency)</li><li>2 stalks green onions, chopped</li><li>—</li><li>Mix in a small bowl, add after chicken is done and let sit uncovered for 15-20 mins. Note: I added this in before cooking in the video, which you can do, but I recommend adding it at the end so you can better assess the need for thickening post-cooking (aka you can add more or less, depending on the amount of liquid present after slow cooking)</li></ul></article>
+<article class="recipe" id="honey-garlic-chicken" data-title="honey garlic chicken"><div class="rhead"><h2>Honey Garlic Chicken</h2><button class="print-btn" data-key="honey-garlic-chicken" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>315</b><span>cal</span></div><div class="m"><b>31g</b><span>protein</span></div><div class="m"><b>11g</b><span>fat</span></div><div class="m"><b>25g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">estimated</span></div><p>Serves 6</p>
+<h3>Ingredients</h3>
+<ul><li>2 lb chicken thighs</li><li>1/2 cup honey</li><li>1/4 cup soy sauce</li><li>1 tbsp garlic</li><li>1 tsp ginger</li></ul>
+<h3>Steps</h3>
+<ol><li>Place chicken thighs in the crockpot.</li><li>Whisk honey, soy sauce, garlic and ginger together and pour over the chicken.</li><li>Cover and cook.</li><li>Spoon the sauce over the chicken and top with green onion.</li></ol>
+<h3>Cook Time</h3>
+<p>Low 5 hours</p></article>
+<article class="recipe" id="crispy-honey-sesame-popcorn-chicken-high-protein" data-title="crispy honey sesame popcorn chicken🍗🍯 high protein"><div class="rhead"><h2>Crispy Honey Sesame Popcorn Chicken🍗🍯 High Protein</h2><button class="print-btn" data-key="crispy-honey-sesame-popcorn-chicken-high-protein" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>550</b><span>cal</span></div><div class="m"><b>45g</b><span>protein</span></div><div class="m"><b>9g</b><span>fat</span></div><div class="m"><b>70g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">from the recipe</span></div><p>Healthy &amp; Easy Meal Prep! 💪🏼</p>
+<p>(Macros: Per Serving - 6 Total / Chicken &amp; Rice)</p>
+<p>549 Calories</p>
+<p>70gC | 8.5gF | 44.6gP</p>
+<p>(Macros: Per Serving - 6 Total / Chicken Only)</p>
+<p>341 Calories</p>
+<p>25.6gC | 8gF | 40gP</p>
+<h3>Ingredients</h3>
+<ul><li>960g Diced Boneless &amp; Skinless Chicken Breast (raw weight)</li><li>30ml Salt Reduced Soy Sauce (Kikkomans Salt Reduced Soy Sauce)</li><li>1 Tsp Garlic Powder</li><li>1/2 Tsp White Pepper</li><li>1/2 Tsp Black Pepper</li><li>2 Whisked Eggs</li><li>120g Potato Starch (not all of this gets used - approximately 45g sticks to the chicken in total)</li><li>960g Cooked White Rice (160g per serving)</li><li>White Sesame Seeds</li><li>Ingredients: (Honey Sesame Sauce)</li><li>120ml Salt Reduced Soy Sauce</li><li>120ml Water</li><li>5 Diced Garlic Cloves</li><li>10g Minced Ginger</li><li>30ml Hoisin Sauce</li><li>50ml Reduced Sugar Ketchup (Heinz)</li><li>80g Honey</li><li>1 Tsp Cornstarch/Cornflour Mixed With Cold Water</li></ul></article>
+<article class="recipe" id="miso-chicken-slow-cooker" data-title="miso chicken 🐔 slow cooker"><div class="rhead"><h2>Miso Chicken 🐔 Slow Cooker</h2><button class="print-btn" data-key="miso-chicken-slow-cooker" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>375</b><span>cal</span></div><div class="m"><b>51g</b><span>protein</span></div><div class="m"><b>14g</b><span>fat</span></div><div class="m"><b>13g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">estimated</span></div><h3>Ingredients</h3>
+<ul><li>🍗 2.5 lbs chicken tenders</li><li>🥜 120g (8 tbsp) peanut butter</li><li>🥄 60g (4 tbsp) white miso paste</li><li>🥢 60g (4 tbsp) soy sauce</li><li>🍯 40g (2.5 tbsp) maple syrup</li><li>🍶 30g (2 tbsp) rice vinegar</li><li>🌱 20g (4 tsp) grated ginger</li><li>🧄 20g (4 tsp) grated garlic</li><li>🌶️ Red chili flakes, black pepper &amp; sesame seeds to taste</li></ul>
+<h3>Instructions</h3>
+<p>1️⃣ Whisk together peanut butter, miso, soy sauce, maple syrup, rice vinegar, ginger &amp; garlic until smooth.</p>
+<p>2️⃣ Toss chicken tenders in half the sauce to coat evenly.</p>
+<p>3️⃣ Add to your slow cooker with a splash of chicken bone broth (or water).</p>
+<p>4️⃣ Cook on:</p>
+<p>🔥 High: 4-6 hrs</p>
+<p>🌙 Low: 8 hrs</p>
+<p>5️⃣ Stir in the remaining sauce once cooked.</p>
+<p>6️⃣ Garnish with sesame seeds, chili flakes &amp; black pepper.</p></article>
+<article class="recipe" id="butter-chicken" data-title="butter chicken"><div class="rhead"><h2>Butter Chicken</h2><button class="print-btn" data-key="butter-chicken" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>340</b><span>cal</span></div><div class="m"><b>33g</b><span>protein</span></div><div class="m"><b>18g</b><span>fat</span></div><div class="m"><b>12g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">estimated</span></div><p>Serves 6</p>
+<h3>Ingredients</h3>
+<ul><li>2 lb chicken thighs</li><li>1 can crushed tomatoes</li><li>2 tbsp garam masala</li><li>1 tbsp ginger garlic paste</li><li>1/2 cup cream</li></ul>
+<h3>Steps</h3>
+<ol><li>Place chicken thighs in the crockpot.</li><li>Add crushed tomatoes, garam masala and ginger garlic paste.</li><li>Cover and cook.</li><li>Stir in the cream at the end and serve over rice.</li></ol>
+<h3>Cook Time</h3>
+<p>Low 6 hours</p></article>
+<h3 class="group" id="grp-dinner-simple-chicken-sides">Simple chicken &amp; sides <span>4</span></h3>
+<article class="recipe" id="chicken-and-potatoes" data-title="chicken and potatoes"><div class="rhead"><h2>Chicken and Potatoes</h2><button class="print-btn" data-key="chicken-and-potatoes" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>305</b><span>cal</span></div><div class="m"><b>37g</b><span>protein</span></div><div class="m"><b>4g</b><span>fat</span></div><div class="m"><b>27g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">estimated</span></div><p>Serves 6</p>
+<h3>Ingredients</h3>
+<ul><li>2 lb chicken breasts</li><li>4 potatoes, diced</li><li>2 carrots, chopped</li><li>1 onion, chopped</li><li>2 garlic cloves, minced</li><li>1 tsp Italian seasoning</li><li>Salt and pepper</li><li>1/2 cup chicken broth</li></ul>
+<h3>Steps</h3>
+<ol><li>Add everything to the crockpot including the chicken broth.</li><li>Cover and cook.</li><li>Slice or shred the chicken and serve with the vegetables.</li></ol>
+<h3>Cook Time</h3>
+<p>Low 6 to 7 hours or High 3 to 4 hours</p></article>
+<article class="recipe" id="cottage-cheese-crusted-chicken-cutlets-crispy-protein-packed-delight" data-title="cottage cheese crusted chicken cutlets 🍗🧀 – crispy, protein-packed delight"><div class="rhead"><h2>Cottage Cheese Crusted Chicken Cutlets 🍗🧀 – Crispy, Protein-Packed Delight</h2><button class="print-btn" data-key="cottage-cheese-crusted-chicken-cutlets-crispy-protein-packed-delight" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>220</b><span>cal</span></div><div class="m"><b>30g</b><span>protein</span></div><div class="m"><b>8g</b><span>fat</span></div><div class="m"><b>12g</b><span>carbs</span></div><div class="m serv"><b>4</b><span>servings</span></div><span class="src">from the recipe</span></div><p>Ingredients (makes about 4 cutlets):</p>
+<p>2 boneless chicken breasts</p>
+<p>1 cup cottage cheese</p>
+<p>1 cup breadcrumbs</p>
+<p>1 teaspoon garlic powder</p>
+<p>1 teaspoon paprika</p>
+<p>1/2 teaspoon salt</p>
+<p>1/2 teaspoon black pepper</p>
+<p>1 tablespoon olive oil</p>
+<p>Nutrition info (per cutlet): \~220 kcal | 30g protein | 8g fat | 12g carbs</p>
+<h3>Directions</h3>
+<p>Step 1: Preheat oven to 400°F (200°C) and line a baking sheet with parchment paper.</p>
+<p>Step 2: In a bowl, mix cottage cheese, garlic powder, paprika, salt, and black pepper until well combined.</p>
+<p>Step 3: Dip each chicken breast in the cottage cheese mixture, then coat with breadcrumbs evenly.</p>
+<p>Step 4: Place the coated chicken cutlets on the baking sheet, drizzle with olive oil, and bake for 25-30 minutes until golden and cooked through.</p></article>
+<article class="recipe" id="chicken-cheese-sticks" data-title="chicken cheese sticks"><div class="rhead"><h2>Chicken Cheese Sticks</h2><button class="print-btn" data-key="chicken-cheese-sticks" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>280</b><span>cal</span></div><div class="m"><b>22g</b><span>protein</span></div><div class="m"><b>21g</b><span>fat</span></div><div class="m"><b>2g</b><span>carbs</span></div><div class="m serv"><b>4</b><span>servings</span></div><span class="src">estimated</span></div><p>8 oz ground chicken</p>
+<p>1/2 cup grated parmesan</p>
+<p>1 egg</p>
+<p>3-4 Mozzarella sticks</p>
+<p>2 tbsp Melted butter</p>
+<p>1 tsp Minced garlic</p>
+<p>1 tsp chopped Parsley</p>
+<h3>How to make it</h3>
+<ol><li>Mix your chicken, parmesan, and egg.</li><li>Form around the cheese sticks.</li><li>Mix your butter, garlic, and parsley and brush on each one.</li><li>Air fry at 400F for 10 minutes, flipping halfway. Enjoy!</li></ol></article>
+<article class="recipe" id="tuna-burritos" data-title="tuna burritos"><div class="rhead"><h2>Tuna Burritos</h2><button class="print-btn" data-key="tuna-burritos" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>215</b><span>cal</span></div><div class="m"><b>46g</b><span>protein</span></div><div class="m"><b>2g</b><span>fat</span></div><div class="m"><b>4g</b><span>carbs</span></div><div class="m serv"><b>2</b><span>servings</span></div><span class="src">from the recipe</span></div><p>2 can of safe catch tuna</p>
+<p>100g of Greek yogurt</p>
+<p>Dill relish</p>
+<p>Broccoli slaw</p>
+<p>Mustard</p>
+<p>Mix</p>
+<p>Zero carb tortilla</p>
+<p>Wrap it up</p>
+<p>Then cook it on both sides</p>
+<p>Makes 2 burritos</p>
+<p>Each burrito:</p>
+<p>46g Protein</p>
+<p>215 calories</p>
+<p>Total for both:</p>
+<p>93g of protein</p>
+<p>430 calories</p></article>
+<h3 class="group" id="grp-dinner-crusts-breads-bases">Crusts, breads &amp; bases <span>5</span></h3>
+<article class="recipe" id="pizza-crust-cottage-cheese" data-title="pizza crust (cottage cheese)"><div class="rhead"><h2>Pizza Crust (Cottage Cheese)</h2><button class="print-btn" data-key="pizza-crust-cottage-cheese" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>300</b><span>cal</span></div><div class="m"><b>28g</b><span>protein</span></div><div class="m"><b>19g</b><span>fat</span></div><div class="m"><b>4g</b><span>carbs</span></div><div class="m serv"><b>2</b><span>servings</span></div><span class="src">estimated</span></div><h3>How to make it</h3>
+<p>Blend 1/2 cup cottage cheese, 1 egg and 1 cup parmesan.</p>
+<p>Bake @ 400F for 20 mins on a parchment lined sheet.</p>
+<p>Take it out, add your favorite pizza toppings and put back in for 10-15 mins. Once the cheese is bubbly, take it out and enjoy!</p></article>
+<article class="recipe" id="pizza-crust-chicken-or-turkey-with-176g-protein" data-title="pizza crust (chicken or turkey) with 176g protein"><div class="rhead"><h2>Pizza Crust (Chicken or Turkey) WITH 176G PROTEIN</h2><button class="print-btn" data-key="pizza-crust-chicken-or-turkey-with-176g-protein" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>170</b><span>cal</span></div><div class="m"><b>23g</b><span>protein</span></div><div class="m"><b>8g</b><span>fat</span></div><div class="m"><b>2g</b><span>carbs</span></div><div class="m serv"><b>8</b><span>servings</span></div><span class="src">from the recipe</span></div><p>If you are the whole thing you get all your protein for the day (even more for a lot of people)</p>
+<h3>&quot;INGREDIENTS -</h3>
+<ul><li>CHICKEN CRUST</li><li>450g ground chicken</li><li>2 large eggs</li><li>1/2 cup grated parmesan cheese</li><li>1 tsp garlic powder</li><li>1 tsp italian seasoning</li><li>1/2 tsp salt</li><li>1/2 tsp black pepper</li></ul>
+<h3>TOPPINGS</h3>
+<ul><li>1/2 cup pizza sauce</li><li>1 cup grated mozzarella cheese (I used low fat)</li><li>20 turkey pepperoni slices ( I used normal but 9 slices)</li></ul>
+<h3>DIRECTIONS -</h3>
+<ol><li>Set your oven to 400°F and line a baking sheet with parchment paper.</li><li>In a large bowl, mix together ground chicken, eggs, parmesan, garlic powder, Italian seasoning, salt, and black pepper until fully combined.</li><li>Transfer the chicken mixture onto the prepared baking sheet and press it into a thin, even circle or rectangle. You want it thin or else it will have a hard time getting crispy.</li><li>Pop it in the oven for 25 minutes, or until golden and firm. Let it rest for 5 minutes to set.</li><li>Crank the oven up to 425°F. Spread on your favorite pizza sauce, cheese, and toppings.</li><li>Bake for another 10 minutes, until the cheese is melty and bubbly.</li><li>Let it cool slightly, then dig in and enjoy every crispy, cheesy bite!&quot;</li></ol>
+<p>|  |  |</p>
+<p>| :-: | :-: |</p>
+<p>| Macros I calculated for the entire pizza: Calories: 1351Protein: 187gFat: 64Carb: 17  | Per slice: 169 Calories23g Protein8g Fat2g Carb  |</p></article>
+<article class="recipe" id="tortilla-quiche-recipe-high-protein" data-title="tortilla quiche recipe high protein"><div class="rhead"><h2>Tortilla Quiche Recipe High Protein</h2><button class="print-btn" data-key="tortilla-quiche-recipe-high-protein" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>460</b><span>cal</span></div><div class="m"><b>44g</b><span>protein</span></div><div class="m"><b>21g</b><span>fat</span></div><div class="m"><b>23g</b><span>carbs</span></div><div class="m serv"><b>2</b><span>servings</span></div><span class="src">from the recipe</span></div><p>Solid 9 out of 10 for taste and convenience definitely worth your time</p>
+<h3>Ingredients</h3>
+<ul><li>1 large tortilla wrap</li><li>4 eggs</li><li>100 g ham</li><li>25 g feta</li><li>100 g cottage cheese</li><li>62.5 g mozzarella</li><li>50 g broccoli chopped</li><li>100 g peppers chopped</li><li>100 g tomatoes chopped</li><li>Salt pepper paprika garlic powder</li></ul>
+<h3>Steps</h3>
+<p>Place the tortilla wrap into a pan or oven dish</p>
+<p>Whisk together the eggs and cottage cheese then mix in the ham and chopped veg season with salt pepper paprika and garlic powder</p>
+<p>Pour the mixture into the tortilla base top with feta and mozzarella</p>
+<p>Bake in a preheated fan oven at 180 degrees for 20 to 22 minutes until golden</p>
+<h3>Macros</h3>
+<p>Half the quiche was about 460 calories and 44 g protein</p></article>
+<article class="recipe" id="2-ingredient-fitness-bread-soft-cheesy-full-of-protein" data-title="🥖🧀 2-ingredient fitness bread – soft, cheesy &amp; full of protein"><div class="rhead"><h2>🥖🧀 2-Ingredient Fitness Bread – Soft, Cheesy &amp; Full of Protein</h2><button class="print-btn" data-key="2-ingredient-fitness-bread-soft-cheesy-full-of-protein" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>60</b><span>cal</span></div><div class="m"><b>7g</b><span>protein</span></div><div class="m"><b>3g</b><span>fat</span></div><div class="m"><b>2g</b><span>carbs</span></div><div class="m serv"><b>8</b><span>servings</span></div><span class="src">from the recipe</span></div><p>Ingredients (makes 1 loaf):</p>
+<p>1 cup cottage cheese</p>
+<p>1 cup almond flour</p>
+<p>Nutrition info (per slice):</p>
+<p>Approx. 60 kcal | 7g protein | 3g fat | 2g net carbs</p>
+<h3>Directions</h3>
+<p>Step 1: Preheat the oven to 350°F (175°C) and grease a loaf pan.</p>
+<p>Step 2: In a bowl, mix together cottage cheese and almond flour until well combined.</p>
+<p>Step 3: Pour the mixture into the prepared loaf pan and smooth the top.</p>
+<p>Step 4: Bake for 25-30 minutes or until golden brown and a toothpick comes out clean.</p></article>
+<article class="recipe" id="quick-cottage-cheese-garlic-naan-soft-flavorful-protein-packed" data-title="quick cottage cheese garlic naan – soft, flavorful &amp; protein-packed"><div class="rhead"><h2>Quick Cottage Cheese Garlic Naan – Soft, Flavorful &amp; Protein-Packed</h2><button class="print-btn" data-key="quick-cottage-cheese-garlic-naan-soft-flavorful-protein-packed" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>150</b><span>cal</span></div><div class="m"><b>6g</b><span>protein</span></div><div class="m"><b>5g</b><span>fat</span></div><div class="m"><b>20g</b><span>carbs</span></div><div class="m serv"><b>4</b><span>servings</span></div><span class="src">from the recipe</span></div><p>Ingredients (makes 4 naans):</p>
+<p>1 cup cottage cheese (240 ml | 220 g)</p>
+<p>1 cup all-purpose flour (240 ml | 125 g)</p>
+<p>1 tsp baking powder (5 ml | 4 g)</p>
+<p>1 tsp garlic powder (5 ml | 3 g)</p>
+<p>½ tsp salt (2.5 ml | 3 g)</p>
+<p>2 tbsp olive oil (30 ml)</p>
+<p>¼ cup warm water (60 ml)</p>
+<p>Fresh parsley, finely chopped, optional (for garnish)</p>
+<p>Nutrition info (per naan, approx):</p>
+<p>\~150 kcal | 6 g protein | 5 g fat | 20 g carbs</p>
+<h3>Directions</h3>
+<p>Step 1: Prepare the dough</p>
+<p>In a bowl, combine cottage cheese, flour, baking powder, garlic powder, and salt. Mix until a soft dough forms. Add warm water gradually if needed to bring the dough together.</p>
+<p>Step 2: Knead</p>
+<p>Transfer dough to a lightly floured surface and knead for about 1 minute until smooth and pliable.</p>
+<p>Step 3: Shape and cook</p>
+<p>Divide dough into 4 equal portions. Roll each into a round naan shape. Heat a skillet over medium heat with a little olive oil and cook each naan for 2–3 minutes per side until golden and cooked through.</p>
+<p>Step 4: Serve</p>
+<p>Brush with remaining olive oil, sprinkle with fresh parsley if desired, and serve warm.</p></article>
+<h2 class="section" id="sec-breakfast">Breakfast</h2>
+<h3 class="group" id="grp-breakfast-eggs">Eggs <span>3</span></h3>
+<article class="recipe" id="egg-loaf-french-toast-low-carb-breakfast-magic-high-protein" data-title="egg loaf (french toast - low-carb breakfast magic) high-protein"><div class="rhead"><h2>Egg Loaf (French Toast - Low-Carb Breakfast Magic) High-Protein</h2><button class="print-btn" data-key="egg-loaf-french-toast-low-carb-breakfast-magic-high-protein" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>200</b><span>cal</span></div><div class="m"><b>10g</b><span>protein</span></div><div class="m"><b>17g</b><span>fat</span></div><div class="m"><b>2g</b><span>carbs</span></div><div class="m serv"><b>8</b><span>servings</span></div><span class="src">estimated</span></div><p>Creamy, custard-like, and naturally sweetened with cinnamon — this high-protein, low-carb loaf is the kind of breakfast that keeps you full, balanced, and energized all morning. It&#x27;s a keto-friendly, sugar-free staple that tastes like French toast but nourishes like a meal prep dream.</p>
+<p>Enjoy it plain, with a drizzle of sugar-free syrup, or even sliced and toasted for a gluten-free French toast twist.</p>
+<h3>Ingredients</h3>
+<ul><li>8 large eggs</li><li>8 tablespoons (1 stick) grass-fed butter</li><li>8 ounces cottage cheese (or cream cheese for a richer texture)</li><li>1 tablespoon ground cinnamon (optional but recommended)</li></ul>
+<h3>Instructions</h3>
+<ol><li>Preheat your oven to 350°F (180°C).</li><li>Prepare a loaf pan: grease it lightly and line with parchment paper for easy removal.</li><li>Blend together the eggs, melted butter, cottage (or cream) cheese, and cinnamon until completely smooth and creamy.</li><li>Pour into the prepared loaf pan and bake for 30–40 minutes, or until it&#x27;s puffed, golden, and a toothpick comes out clean.</li></ol>
+<p>The texture will be soft and custard-like — similar to flan.</p>
+<ol><li>Cool in the pan for 10 minutes, then transfer to a rack to cool completely.</li><li>Slice and serve warm or chilled, topped with extra cinnamon or sugar-free maple syrup.</li></ol></article>
+<article class="recipe" id="breakfast-bowls" data-title="breakfast bowls 🍳🧀"><div class="rhead"><h2>Breakfast Bowls 🍳🧀</h2><button class="print-btn" data-key="breakfast-bowls" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>555</b><span>cal</span></div><div class="m"><b>63g</b><span>protein</span></div><div class="m"><b>29g</b><span>fat</span></div><div class="m"><b>11g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">from the recipe</span></div><p>(Makes 6 Servings: Each Serving is 1 Bowl)</p>
+<p>Macros (Per Serving):</p>
+<ul><li>557 Calories</li><li>29g Fat</li><li>11g Carbs</li><li>63g Protein</li></ul>
+<h3>Ingredients</h3>
+<ul><li>12 Eggs</li><li>3 Cups Egg Whites (720g)</li><li>3 Cups Cottage Cheese (660g)</li><li>2: 12oz Bags of Frozen 3 Peppers and Onions (340g per bag)</li><li>6 Chicken Sausage Links (85g each)</li><li>2 Cups Reduced Fat Cheddar Cheese (226g)</li><li>2 Tsp Salt and Pepper</li></ul>
+<h3>Instructions</h3>
+<p>1.) Crack 2 eggs into each container. Followed by ½ cup of egg whites (120g), ½ cup cottage cheese (110g), 4 oz pepper and onions (113g), 1 chicken sausage (85g), and 0.33 cups Cheddar cheese (38g). Top each with salt and pepper then mix well.</p>
+<p>2.) Bake in the oven at 400°F for 40-45 minutes.</p></article>
+<article class="recipe" id="breakfast-burritos" data-title="breakfast burritos"><div class="rhead"><h2>Breakfast Burritos</h2><button class="print-btn" data-key="breakfast-burritos" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>370</b><span>cal</span></div><div class="m"><b>36g</b><span>protein</span></div><div class="m"><b>13g</b><span>fat</span></div><div class="m"><b>28g</b><span>carbs</span></div><div class="m serv"><b>10</b><span>servings</span></div><span class="src">from the recipe</span></div><p>372 calories 36g protein 13g fat 39g carbs makes 10</p>
+<p>Fridge reheat 1:30</p>
+<p>Freezer 1:30 flip 30 done</p>
+<p>ingredients list</p>
+<p>turkey sausage 1 pound</p>
+<p>4 eggs</p>
+<p>32 ounces egg whites</p>
+<p>300g cottage cheese</p>
+<p>7 servings fat free cheese</p>
+<p>20 ounce bag of hash browns</p>
+<p>10 extreme wellness wraps</p>
+<p>Salt, pepper</p>
+<p>Oven 400 degrees for 30 min</p>
+<p>Make filling then stuff wraps with it.</p></article>
+<h3 class="group" id="grp-breakfast-pancakes-biscuits">Pancakes &amp; biscuits <span>3</span></h3>
+<article class="recipe" id="cottage-cheese-pancakes-high-protein" data-title="cottage cheese pancakes 🥞 high-protein"><div class="rhead"><h2>Cottage Cheese Pancakes 🥞 High-Protein</h2><button class="print-btn" data-key="cottage-cheese-pancakes-high-protein" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>375</b><span>cal</span></div><div class="m"><b>37g</b><span>protein</span></div><div class="m"><b>11g</b><span>fat</span></div><div class="m"><b>35g</b><span>carbs</span></div><div class="m serv"><b>1</b><span>servings</span></div><span class="src">from the recipe</span></div><p>Ingredients (1 serving makes 3 big pancakes):</p>
+<ul><li>½ cup egg whites</li><li>1 large egg</li><li>½ cup quick oats (dry)</li><li>½ cup low-fat cottage cheese (2%)</li></ul>
+<h3>Instructions</h3>
+<ol><li>Add all ingredients to a blender and blend until smooth.</li><li>Heat a non-stick skillet over medium heat and lightly spray if needed.</li><li>Pour batter into pancakes and cook 2–3 minutes per side, until set and golden.</li><li>Serve as-is or top with fruit, sugar-free syrup, or a drizzle of honey.</li></ol>
+<p>Macros (per serving):</p>
+<ul><li>Calories: 374</li><li>Protein: 37.1 g</li><li>Carbs: 34.9 g</li><li>Fat: 10.5 g</li></ul></article>
+<article class="recipe" id="golden-cheese-pancakes-easy-delicious-and-protein-packed" data-title="golden cheese pancakes 🥞🧀 – easy, delicious, and protein-packed"><div class="rhead"><h2>Golden Cheese Pancakes 🥞🧀 – Easy, Delicious, and Protein-Packed</h2><button class="print-btn" data-key="golden-cheese-pancakes-easy-delicious-and-protein-packed" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>120</b><span>cal</span></div><div class="m"><b>8g</b><span>protein</span></div><div class="m"><b>5g</b><span>fat</span></div><div class="m"><b>10g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">from the recipe</span></div><p>Ingredients (makes about 6 pancakes):</p>
+<p>1 cup cottage cheese</p>
+<p>2 large eggs</p>
+<p>1/2 cup all-purpose flour</p>
+<p>💪Nutrition (per pancake): \~120 kcal | 8g protein | 5g fat | 10g carbs</p></article>
+<article class="recipe" id="cottage-cheese-breakfast-biscuit-fluffy-savory-low-carb-high-protein" data-title="cottage cheese breakfast biscuit 🥐💪 – fluffy, savory &amp; low-carb high-protein"><div class="rhead"><h2>Cottage Cheese Breakfast Biscuit 🥐💪 – Fluffy, Savory &amp; Low-Carb High-Protein</h2><button class="print-btn" data-key="cottage-cheese-breakfast-biscuit-fluffy-savory-low-carb-high-protein" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>230</b><span>cal</span></div><div class="m"><b>17g</b><span>protein</span></div><div class="m"><b>16g</b><span>fat</span></div><div class="m"><b>4g</b><span>carbs</span></div><div class="m serv"><b>1</b><span>servings</span></div><span class="src">from the recipe</span></div><p>Ingredients (makes 1 biscuit, serves 1):</p>
+<p>1/4 cup cottage cheese / 55 g</p>
+<p>1 large egg</p>
+<p>3 tbsp almond flour / 18 g</p>
+<p>1/2 tsp baking powder / 2 g</p>
+<p>Pinch of salt / 0.5 g</p>
+<p>Nutrition info (per biscuit):</p>
+<p>About 230 calories | 17 g protein | 16 g fat | 4 g net carbs</p>
+<h3>Directions</h3>
+<p>Step 1: Mix Batter</p>
+<p>In a small bowl, whisk cottage cheese, egg, almond flour, baking powder, and salt until smooth.</p>
+<p>Step 2: Cook</p>
+<p>Microwave option: Pour into a greased ramekin and microwave 2–3 minutes until set.</p>
+<p>Oven option: Bake at 350°F (175°C) for 12–15 minutes until lightly golden.</p>
+<p>Step 3: Cool Slightly</p>
+<p>Let rest 2–3 minutes so the biscuit firms up.</p>
+<p>Step 4: Slice</p>
+<p>Carefully slice in half horizontally.</p>
+<p>Step 5: Serve</p>
+<p>Enjoy warm with butter, jam, or use for a breakfast sandwich.</p>
+<h3>Tips</h3>
+<p>Add garlic powder, herbs, or shredded cheese for a savory version.</p>
+<p>Do not overcook in the microwave to keep it fluffy.</p>
+<p>You can double the recipe and store biscuits in the fridge for up to 3 days.</p></article>
+<h2 class="section" id="sec-dessert">Dessert</h2>
+<h3 class="group" id="grp-dessert-cheesecake">Cheesecake <span>3</span></h3>
+<article class="recipe" id="blueberry-cheesecake-bake-high-protein" data-title="blueberry cheesecake bake high protein"><div class="rhead"><h2>Blueberry Cheesecake Bake High Protein</h2><button class="print-btn" data-key="blueberry-cheesecake-bake-high-protein" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>235</b><span>cal</span></div><div class="m"><b>18g</b><span>protein</span></div><div class="m"><b>6g</b><span>fat</span></div><div class="m"><b>28g</b><span>carbs</span></div><div class="m serv"><b>2</b><span>servings</span></div><span class="src">from the recipe</span></div><h3>Ingredients</h3>
+<ul><li>3 bananas (ripe ones, not green bricks)</li><li>3 eggs</li><li>240g Greek yoghurt (about a cup)</li><li>A handful of blueberries</li></ul>
+<h3>Steps</h3>
+<ol><li>Mash the bananas, crack in your eggs, and mix.</li><li>Add Greek yoghurt and give it a proper mixy mixy.</li><li>Pour into a small oven-safe dish (or three if you&#x27;re feeling fancy).</li><li>Toss in the blueberries and spread them about a bit.</li><li>Bake at 180°C for 25–30 mins until golden and set.</li></ol>
+<p>Macros (whole thing):</p>
+<p>🔥 Calories: \~520</p>
+<p>💪 Protein: \~35g</p>
+<p>🍌 Carbs: \~55g</p>
+<p>🥄 Fat: \~12g</p></article>
+<article class="recipe" id="lemon-cheesecake-bowl-low-cal-high-protein" data-title="lemon cheesecake bowl 🍋🍰 low cal high protein"><div class="rhead"><h2>Lemon Cheesecake Bowl 🍋🍰 Low Cal High Protein</h2><button class="print-btn" data-key="lemon-cheesecake-bowl-low-cal-high-protein" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>300</b><span>cal</span></div><div class="m"><b>23g</b><span>protein</span></div><div class="m"><b>8g</b><span>fat</span></div><div class="m"><b>34g</b><span>carbs</span></div><div class="m serv"><b>1</b><span>servings</span></div><span class="src">from the recipe</span></div><p>Recipe:</p>
+<ul><li>190g low fat cottage cheese</li><li>half a lemon zest</li><li>1.5 tbsp lemon juice (or a whole lemon ish!)</li><li>1/2 tsp vanilla extract</li><li>pinch salt</li><li>natural sweetener to taste (Maple Syrup)</li><li>30g graham crackers</li></ul>
+<p>Cals: 300 Protein: 23 Fat: 7.5 Carbs: 34</p></article>
+<article class="recipe" id="cheesecake-2-ingredient" data-title="cheesecake 2-ingredient"><div class="rhead"><h2>Cheesecake 2-Ingredient</h2><button class="print-btn" data-key="cheesecake-2-ingredient" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>170</b><span>cal</span></div><div class="m"><b>23g</b><span>protein</span></div><div class="m"><b>6g</b><span>fat</span></div><div class="m"><b>7g</b><span>carbs</span></div><div class="m serv"><b>1</b><span>servings</span></div><span class="src">estimated</span></div><p>Only 170 – 185 calories for the entire recipe! Oh and did I mention there&#x27;s 25g of protein in this?!</p>
+<h3>Ingredients</h3>
+<ul><li>– 3/4 cup greek yogurt (100 cal)</li><li>– 1 egg (70 cal)</li><li>optional topping 1 tsp of [coconut sugar](https://amzn.to/3Y0FwdT) (13 cal + 3g sugar)</li></ul>
+<h3>Method</h3>
+<p>Mix yogurt and egg until no clumps are present and pour into a small ramekin dish. Top with coconut sugar (if using) and bake in a preheated oven at 350 F for about 15 – 20 minutes. Remove from the oven (it will still be a bit jiggly in the center) and place in the fridge to chill, then enjoy!</p>
+<p>Sweeteners</p>
+<p>– If you want to incorporate sweetness throughout the entire cake (not just the top), I suggest adding 2 tsp of coconut sugar or another granulated sweetener of choice. I don&#x27;t recommend adding a liquid sweetener such as honey or maple syrup as this will make the cake less firm. I also love making this (or any dessert) without any sugar and then after it&#x27;s baked, you can drizzle raw honey on top for your preferred sweetness – that way you aren&#x27;t stuck with one sweetness because sometimes you want more and sometimes you want less depending on how you&#x27;re feeling.</p></article>
+<h3 class="group" id="grp-dessert-bowls-pudding">Bowls &amp; pudding <span>2</span></h3>
+<article class="recipe" id="chocolate-pudding" data-title="chocolate pudding"><div class="rhead"><h2>Chocolate Pudding</h2><button class="print-btn" data-key="chocolate-pudding" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>360</b><span>cal</span></div><div class="m"><b>25g</b><span>protein</span></div><div class="m"><b>14g</b><span>fat</span></div><div class="m"><b>34g</b><span>carbs</span></div><div class="m serv"><b>1</b><span>servings</span></div><span class="src">from the recipe</span></div><p>A solid 9/10 on the slap scale this is 100% worth a go</p>
+<h3>Ingredients</h3>
+<ul><li>4 room temperature or cold boiled eggs (not hot)</li><li>3 to 3.5 tbsp. cocoa powder</li><li>1/2 cup milk</li><li>1/4 cup honey</li><li>2 tsp. vanilla extract</li></ul>
+<ol><li>Blend together all of the ingredients in a blender. Start with 3 tablespoons cocoa powder first then taste it. If you can smell or taste the egg a bit add another 1/2 tbsp. cocoa powder.</li><li>Refrigerate for two hours and enjoy!</li></ol>
+<ul><li>Or</li><li>Recipe 🍊🍫</li><li>180g low fat cottage cheese</li><li>10-20g cocoa (depends on how rich you like it)</li><li>dash vanilla</li><li>dash salt</li><li>dash natural sweetener of choice</li><li>zest from 1/2 orange (go organic here if you can)</li><li>30g dark chocolate/semi sweet choc chips (I rotate with Lily&#x27;s and reg. 70% dark choc)</li><li>Cals: 310 Protein: 25g Fat: 14g Carbs: 34g</li></ul></article>
+<article class="recipe" id="protein-dessert-sex-bowl" data-title="protein dessert sex bowl"><div class="rhead"><h2>Protein Dessert Sex Bowl</h2><button class="print-btn" data-key="protein-dessert-sex-bowl" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>300</b><span>cal</span></div><div class="m"><b>26g</b><span>protein</span></div><div class="m"><b>6g</b><span>fat</span></div><div class="m"><b>32g</b><span>carbs</span></div><div class="m serv"><b>1</b><span>servings</span></div><span class="src">from the recipe</span></div><ul><li>low fat cottage cheese 1 cup</li><li>vanilla extract</li><li>sweeten however you like (Maple Syrup) 1 tbsp</li><li>salt</li><li>top w/ berries</li><li>semi-sweet or dark choc chips just a few</li></ul>
+<p>Calories: 300, Protein: 26 g, Carbs: 32 g, Fat: 6 g</p></article>
+<h3 class="group" id="grp-dessert-cake-cookie-dough">Cake &amp; cookie dough <span>2</span></h3>
+<article class="recipe" id="protein-cake" data-title="protein cake🔥🔥"><div class="rhead"><h2>Protein Cake🔥🔥</h2><button class="print-btn" data-key="protein-cake" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>350</b><span>cal</span></div><div class="m"><b>53g</b><span>protein</span></div><div class="m"><b>8g</b><span>fat</span></div><div class="m"><b>16g</b><span>carbs</span></div><div class="m serv"><b>1</b><span>servings</span></div><span class="src">estimated</span></div><p>1️⃣ 100g yogurt</p>
+<p>2️⃣ 1 egg</p>
+<p>3️⃣ 1½ scoops protein powder</p>
+<p>4️⃣ Mix well</p>
+<p>5️⃣ Microwave 1–2 min (🚨 DO NOT overcook or it&#x27;s ruined)</p>
+<p>6️⃣ Top with berries + whipped cream</p></article>
+<article class="recipe" id="protein-cookie-dough" data-title="protein cookie dough"><div class="rhead"><h2>Protein Cookie Dough</h2><button class="print-btn" data-key="protein-cookie-dough" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print shopping list</button></div><div class="macros"><div class="m"><b>235</b><span>cal</span></div><div class="m"><b>30g</b><span>protein</span></div><div class="m"><b>10g</b><span>fat</span></div><div class="m"><b>6g</b><span>carbs</span></div><div class="m serv"><b>6</b><span>servings</span></div><span class="src">from the recipe</span></div><p>My protein cookie dough recipe needs just 3 main ingredients to make, and it tastes like actual cookie dough! Ready in minutes, each serving packs in over 30 grams of protein. Watch the video below to see how I make it in my kitchen!</p>
+<p>6 Servings</p>
+<h3>Ingredients</h3>
+<ul><li>1 cup vanilla protein powder</li><li>1/2 cup peanut butter or any nut or seed butter</li><li>1/4 cup maple syrup or honey/sugar free maple syrup</li><li>1/4 cup water * See notes</li></ul>
+<h3>Instructions</h3>
+<p>In a small bowl, whisk together the peanut butter and maple syrup until combined. Slowly add in the protein powder until a thick and crumbly texture remains.</p>
+<p>Using a tablespoon, add enough water until a thick consistency remains. Fold through the chocolate chips or mix-ins of choice.</p>
+<p>Enjoy immediately or chill for 30 minutes for a more firm edible cookie dough.</p>
+<h3>Notes</h3>
+<ul><li>Only add enough to achieve the desired texture of cookie dough.</li></ul>
+<p>Serving size: 1/3 of a cup</p>
+<p>TO STORE: Cookie dough can be stored in the refrigerator, covered, for up to 1 week. Let the cookie dough sit at room temperature for 30 minutes before enjoying, or add a few tablespoons of water/milk to loosen it up.</p>
+<p>TO FREEZE: Place portions of the cookie dough in airtight containers and store them in the freezer for up to 6 months.</p>
+<h3>Nutrition</h3>
+<p>Serving: 1serving | Calories: 180kcal | Carbohydrates: 6g | Protein: 30g | Fat: 10g | Sodium: 119mg | Potassium: 180mg | Fiber: 3g | Vitamin A: 36IU | Calcium: 54mg | Iron: 1mg | NET CARBS: 3g</p></article>
+  </main>
+</div>
+<div id="printarea" aria-hidden="true"></div>
+<script>
+var SHOP = {"crockpot-bbq-beef-roast": {"t": "Crockpot BBQ Beef Roast", "i": ["3 to 4 pound chuck roast", "1 large onion, sliced", "1 cup barbecue sauce", "½ cup beef broth", "2 tablespoons Worcestershire sauce", "2 tablespoons brown sugar", "1 tablespoon apple cider vinegar", "1 teaspoon garlic powder", "1 teaspoon smoked paprika", "1 teaspoon salt", "½ teaspoon black pepper"]}, "bbq-pulled-beef": {"t": "BBQ Pulled Beef", "i": ["3 lb beef chuck roast", "1 cup BBQ sauce", "1/2 cup beef broth", "1 tbsp brown sugar", "1 tsp smoked paprika", "1 tsp garlic powder", "1 tsp onion powder", "Salt and pepper"]}, "bbq-pulled-pork": {"t": "BBQ Pulled Pork", "i": ["3 lb pork shoulder", "1 cup BBQ sauce", "1/2 cup apple cider vinegar"]}, "bbq-chicken-crockpot": {"t": "🥘 BBQ Chicken Crockpot", "i": ["2 lb boneless, skinless chicken breast", "1 cup low-sugar BBQ sauce (G Hughes)", "1 tbsp apple cider vinegar", "1 tsp garlic powder"]}, "bbq-drumsticks": {"t": "BBQ Drumsticks", "i": ["12 chicken drumsticks", "1 cup BBQ sauce", "1/2 cup ketchup", "1 tbsp honey", "1 tsp garlic powder"]}, "beef-roast-with-potatoes-and-carrots-crockpot": {"t": "Beef Roast with Potatoes and Carrots Crockpot", "i": ["3 to 4 lb beef chuck roast", "1 lb baby potatoes or 4 large potatoes cut into chunks", "4 to 5 carrots sliced thick", "1 onion sliced", "3 cloves garlic minced", "1 cup beef broth", "2 tbsp olive oil", "2 tsp salt", "1 tsp black pepper", "1 tsp paprika", "1 tsp dried thyme or rosemary", "1 tbsp Worcestershire sauce", "2 tbsp tomato paste"]}, "beef-stew": {"t": "Beef Stew", "i": ["2 lb chuck roast, cubed", "Carrots, sliced", "Potatoes, cubed", "1 onion, chopped", "2 cups beef broth", "2 tbsp tomato paste"]}, "slow-cooker-mushroom-beef-tips": {"t": "Slow Cooker Mushroom Beef Tips", "i": ["2 lb beef stew meat", "1 (8 oz) package mushrooms, sliced", "1 onion, chopped", "2 cloves garlic, minced", "1 cup beef broth", "1 (10.5 oz) can cream of mushroom soup", "1 tbsp Worcestershire sauce", "1 tsp salt", "1/2 tsp black pepper"]}, "crock-pot-mississippi-steak-bites": {"t": "Crock Pot Mississippi Steak Bites", "i": ["2 lb sirloin steak, cut into bite-sized pieces", "1 packet ranch seasoning mix", "1 packet au jus gravy mix", "1/2 cup unsalted butter", "5 to 6 pepperoncini peppers", "1/4 cup pepperoncini juice", "1/2 tsp black pepper"]}, "honey-garlic-shredded-beef": {"t": "Honey Garlic Shredded Beef", "i": ["2 lb chuck roast (907 g)", "½ cup low-sodium beef broth", "¼ cup low-sodium soy sauce", "¼ cup honey", "2 tbsp minced garlic", "1 tsp ground ginger", "black pepper", "How to cook:", "Add everything to the crockpot (except dairy added at the end when noted).", "Shred meat if needed, stir well, adjust seasoning, and portion for the week.", "macros (per serving)", "370 cal | 39 g protein | 15 g carbs | 17 g fat"]}, "barbacoa-beef": {"t": "Barbacoa Beef", "i": ["3 lb chuck roast", "3 tbsp chipotle in adobo", "1 tsp cumin", "1 tsp oregano", "1 cup broth"]}, "korean-beef": {"t": "Korean Beef", "i": ["3 lb chuck roast", "1/2 cup soy sauce", "1/4 cup brown sugar", "1 tbsp ginger", "1 tbsp garlic", "Sesame seeds for topping"]}, "mongolian-beef-slow-cooker": {"t": "Mongolian Beef Slow Cooker", "i": ["4 lb Top Round Beef — thinly sliced against the grain", "2 Tbsp Corn Starch (added in the last hour)", "1 cup Beef Bone Broth", "1 cup Premium Light Soy Sauce", "2 Tbsp Hoisin Sauce", "2 Tbsp Sriracha Sauce", "4 Tbsp Rice Vinegar", "3 Cloves Garlic, minced", "1 Red Bell Pepper, sliced", "2 Whole Jalapeños, sliced (optional for heat)", "2 Stevia Packets (or 1 Tbsp brown sugar equivalent)", "400 g Minute White Rice (measure dry and prepare separately per package directions)", "Green Onions & Sesame Seeds for garnish"]}, "beef-taco-meat-crockpot": {"t": "Beef Taco Meat Crockpot", "i": ["2 lb 93/7 ground beef", "1 cup tomato sauce", "1 packet taco seasoning", "½ cup water"]}, "sloppy-joes": {"t": "Sloppy Joes", "i": ["3 lb ground beef", "1 onion, chopped", "1/2 cup ketchup", "1/2 cup brown sugar", "1/3 cup mustard", "1 tbsp soy sauce", "1/2 tsp garlic powder"]}, "crockpot-creamy-potato-hamburger-soup": {"t": "Crockpot Creamy Potato Hamburger Soup", "i": ["1 lb ground beef", "1 medium onion, diced", "3 cloves garlic, minced", "5 cups potatoes, peeled and diced", "3 cups chicken broth", "2 cups milk", "1 cup heavy cream", "1 cup shredded cheddar cheese", "2 medium carrots, diced", "2 celery stalks, diced", "1 tsp salt", "½ tsp black pepper", "½ tsp smoked paprika", "2 tbsp fresh parsley, chopped (optional, for garnish)"]}, "easy-beef-cabbage-soup-one-pot": {"t": "Easy Beef Cabbage Soup (One Pot)", "i": ["▢large pot", "▢cutting board", "▢wooden spoon", "▢3 tbs olive oil, divided", "▢2 lb ground beef", "▢1 tsp salt", "▢1 tsp each paprika, garlic powder, onion powder + Italian herb blend", "▢1 medium onion, diced", "▢2 medium carrots, diced", "▢3 large portabello caps", "▢3 cloves garlic, minced", "▢2 tbs tomato paste", "▢1 tbs low sodium soy sauce", "▢1 tbs Worcestershire sauce", "▢2 tbs brown sugar", "▢5 cups (0.35 kg) cabbage, chopped", "▢28 oz (0.80 kg) crushed tomatoes", "▢4 cups (1 l) low sodium beef broth", "▢Top with: sour cream, olive oil, fresh parsley + freshly grated parmesan, (optional)"]}, "eggroll-in-a-bowl-skillet-high-protein": {"t": "Eggroll-in-a-Bowl Skillet High Protein", "i": ["1 lb lean ground turkey", "1 bag coleslaw mix", "1 cup shredded carrots", "½ cup diced onion", "2–3 cloves garlic", "2 tbsp soy sauce", "1 tbsp rice vinegar", "1 tsp sesame oil", "½–1 tsp ginger", "Salt & pepper", "Optional: sriracha, green onion, sesame seeds"]}, "cheesy-beef-potato-pockets-high-protein": {"t": "Cheesy Beef Potato Pockets! 🔥🧀🥩🥔 High Protein", "i": ["24g P | 31g C | 8g F", "500g lean ground beef (5% fat or less)", "1 medium diced white onion", "10g diced chilli (optional for heat - sub with 1/2 tsp cayenne)", "1 tsp garlic powder", "1 tsp smoked paprika", "1 tsp salt", "1 tsp black pepper", "1 tsp mixed herbs", "Cooking spray", "900g peeled potatoes (chop and boil in salted water starting from cold for an even cook)", "125g (1 cup flour)", "1 egg", "Salt to taste", "let the potatoes fully cool before making the dough", "lightly grease your hands to help with handling", "1/8 potato pocket dough", "1/8 meat filling (weigh out total mixture and divide by 8 for gram amount)", "20g low fat grated cheese", "Once cooled wrap in foil and store in the fridge or freezer", "To reheat from the fridge, unwrap from the foil and air fry for 8-10 minutes at 220°C to get them crispy again.", "to reheat from the freezer, unwrap from the foil, air fry at 220 for 13-15 minutes to get crispy.."]}, "beef-potato-au-gratin-slow-cooker": {"t": "Beef & Potato Au Gratin Slow Cooker", "i": ["1 lb ground beef", "1 small onion, finely diced", "2 cloves garlic, minced", "1 tsp salt", "½ tsp black pepper", "1 tsp paprika", "2½ lbs russet or Yukon gold potatoes, thinly sliced", "1½ cups shredded cheddar cheese", "½ cup shredded mozzarella (optional, for extra melt)", "1½ cups heavy cream or half-and-half", "½ cup beef broth", "1 tbsp butter", "1 tsp dried thyme", "½ tsp onion powder"]}, "french-onion-beef-rice-casserole-high-protein": {"t": "French Onion Beef & Rice Casserole High Protein", "i": ["2 lbs (908g) 96/4 lean ground beef", "2 large onions (500g), thinly sliced", "2 tsp olive oil (10ml)", "2 tsp balsamic vinegar", "1 tsp Worcestershire sauce", "1 tbsp (12g) minced garlic", "1 ½ cups (285g) uncooked jasmine rice, rinsed", "3 cups (720ml) low-sodium beef broth", "1 cup (240ml) Fairlife fat-free milk", "½ cup (113g) fat-free Greek yogurt", "1 tbsp beef bouillon + more garlic & onion powder", "1 cup reduced fat cheddar cheese", "1/2 cup reduced-fat mozzarella", "½ cup (56g) parmesan cheese", "¼ cup (15g) fresh parsley, chopped", "Salt & pepper to taste", "Optional Topping", "Crispy onions (light sprinkle)", "Extra provolone for that golden cheesy top", "⸻", "🔥 Macros per serving (8 servings)", "Calories: 430", "Protein: 40 g", "Carbohydrates: 38 g", "Fat: 12 g"]}, "philly-cheesesteak-casserole-cheesy-cozy-comfort-food-made-easy": {"t": "Philly Cheesesteak Casserole – Cheesy, Cozy, Comfort Food Made Easy 🧀🥩🌶️", "i": ["1½ lb ground beef", "2 bell peppers, chopped", "1½ onions, chopped", "8 oz provolone cheese, shredded or sliced", "6 large eggs", "½ cup heavy cream", "2 tsp Worcestershire sauce", "2 tsp olive oil or butter for sautéing", "Salt and pepper, to taste", "Optional: 1 cup mushrooms, sliced", "Optional: 1–2 jalapeños, diced"]}, "philly-cheesesteak-chicken": {"t": "Philly Cheesesteak Chicken", "i": ["2 lb chicken breast", "1/2 cup low sodium chicken broth", "1 green bell pepper, sliced", "1 onion, sliced", "4 oz light mozzarella", "1 tsp garlic powder", "Salt + pepper", "How:", "Dump → LOW 6 hrs → shred → stir in cheese"]}, "cheesy-ziti": {"t": "Cheesy Ziti", "i": ["1 lb ground beef", "2 cups marinara sauce", "2 cups cooked ziti", "1 cup ricotta", "1 cup mozzarella", "1 tsp Italian seasoning"]}, "ultimate-meat-lover-s-pizza-pasta-bake-protein-pasta-cottage-cheese": {"t": "Ultimate Meat Lover's Pizza Pasta Bake (Protein Pasta + Cottage Cheese)", "i": ["1/2 lb high-protein bow tie pasta (chickpea, lentil or Barilla Protein+)", "1 lb mild pork sausage", "2 (26 oz) jars spaghetti sauce", "1 large onion, diced", "1 lb cooked ham, cubed", "1 (8 oz) package sliced pepperoni", "2 (8 oz) bags shredded mozzarella cheese", "16 oz low-fat cottage cheese, blended smooth", "6 tbsp grated Parmesan cheese", "2 tbsp minced garlic", "1 tsp dried oregano"]}, "chicken-pasta-the-one-i-always-rave-about-high-protein": {"t": "Chicken Pasta (the one I always rave about) High-Protein", "i": ["2 lb chicken thighs", "4 cups kale", "3 cups low-fat cottage cheese (680g / 24 oz)", "3 cups Prego tomato basil garlic (24 oz)", "1 box Banza protein penne (8 oz)", "2 tbsp olive oil", "2 tsp each: cayenne, garlic salt, onion powder", "How:", "Dump everything except pasta → LOW 6–7 hrs → shred → blend sauce → stir in cooked pasta", "Creamy Salsa Verde Chicken", "\\~35g protein / serving", "2 lb chicken breast", "1 cup salsa verde", "4 oz low-fat cream cheese", "1 tsp cumin", "1 tsp garlic powder", "Dump → LOW 6 hrs → shred & stir", "(Great for bowls, wraps, or over rice)", "White Chicken Chili", "\\~36g protein / serving", "1 can white beans, drained", "1 can green chiles", "3 cups chicken broth", "½ cup nonfat Greek yogurt", "How: Cook LOW 6–7 hrs → shred → stir in yogurt", "Taco Chicken", "\\~38g protein / serving", "1 packet taco seasoning"]}, "italian-marinara-chicken": {"t": "Italian Marinara Chicken", "i": ["2 lb chicken breasts", "2 cups marinara sauce", "1 tsp Italian seasoning", "½ tsp garlic powder"]}, "chicken-pesto-bake": {"t": "Chicken Pesto Bake 🤤", "i": ["250g rice (any)", "1kg chicken breast (diced)", "100g of green Pesto (Leggos brand in 5l or aim for 120 calories per 47g of pesto)", "320g low fat greek yoghurt", "140g of chopped spinach", "1 large red onion (finely diced)", "500ml of chicken stock", "150g of sundried tomatoes", "484     47.2g carb   8.89 fat   51.4g protein"]}, "tuscan-chicken-orzo": {"t": "✨ Tuscan Chicken Orzo ✨", "i": ["2 lbs chicken breasts or thighs", "1 (7oz.) jar sun-dried tomatoes (use 1tbsp. Of the oil too)", "4 cloves garlic, minced", "2 cups chicken broth", "1 tsp Italian seasoning", "Salt + pepper", "1 cup dry orzo", "1 cup milk or half-and-half", "3 big handfuls spinach", "½–¾ cup freshly grated parmesan"]}, "creamy-tuscan-chicken": {"t": "Creamy Tuscan Chicken", "i": ["2 lb chicken breast (907 g)", "1 cup low-sodium chicken broth", "½ cup nonfat Greek yogurt (stir in at end)", "½ cup sun-dried tomatoes", "3 cloves garlic", "Italian seasoning, salt, pepper", "How to cook:", "Add everything to the crockpot (except dairy added at the end when noted).", "Shred meat if needed, stir well, adjust seasoning, and portion for the week.", "macros (per serving)", "310 cal | 44 g protein | 8 g carbs | 8 g fat"]}, "creamy-tuscan-chicken-rice-10-servings": {"t": "Creamy Tuscan Chicken & Rice (10 Servings)", "i": ["Calories: \\~583", "Protein: \\~64.4g", "Carbs: \\~40.7g", "Fat: \\~15.6g", "4 lbs raw, skinless chicken breast", "400g Minute White Rice (about 2 ½ cups dry)", "550g fat-free cottage cheese (≈ 2 cups)", "150g 1/3-fat cream cheese (≈ ¾ cup)", "60g sun-dried tomatoes, chopped (≈ ¼ cup packed)", "100g shredded parmesan (≈ 1 cup)", "150g reduced-fat cheddar (≈ 1 ½ cups)", "150g reduced-fat mozzarella (≈ 1 ½ cups)", "3–4 cups fresh spinach", "½ cup fresh basil, chopped", "½ cup total chicken bone broth (¼ cup for the chicken + ¼ cup for the sauce)", "1 tbsp fresh lemon juice", "1–2 tsp garlic powder", "1 tsp onion powder", "1 tsp Italian seasoning (plus 1 tsp for the sauce)", "Salt & black pepper to taste", "Optional: pinch paprika + red pepper flakes"]}, "creamy-chicken": {"t": "Creamy Chicken", "i": ["2 lb chicken thighs", "1 packet ranch seasoning", "8 oz cream cheese"]}, "mississippi-style-shredded-chicken-lightened": {"t": "Mississippi-Style Shredded Chicken (Lightened)", "i": ["2 lb chicken breasts", "½ packet ranch seasoning", "½ packet au jus mix", "½ cup chicken broth", "Pepperoncini peppers (to taste)"]}, "crockpot-angel-chicken": {"t": "Crockpot Angel Chicken", "i": ["2½ pounds boneless skinless chicken breasts about 4 large breasts", "1 0.7-ounce packet Italian dressing seasoning mix", "1 10.5-ounce can golden mushroom soup", "¾ cup low-sodium chicken broth", "8 ounces cream cheese softened and cubed", "4 tablespoons unsalted butter cut into pieces", "½ teaspoon black pepper", "2 teaspoons minced garlic optional", "12 ounces angel hair pasta", "¼ cup grated Parmesan cheese optional", "chopped parsley for garnish optional"]}, "creamy-lemon-herb-chicken": {"t": "Creamy Lemon Herb Chicken", "i": ["2 lb boneless skinless chicken breast (907 g)", "1 cup low-sodium chicken broth", "juice + zest of 1 lemon", "1 tsp garlic powder", "1 tsp dried oregano", "1 tsp dried thyme", "salt + pepper", "½ cup nonfat Greek yogurt (stir in at end)", "How to cook:", "Add everything to the crockpot (except dairy added at the end when noted).", "Shred meat if needed, stir well, adjust seasoning, and portion for the week.", "macros (per serving)", "305 cal | 44 g protein | 6 g carbs | 6 g fat"]}, "buffalo-chicken-chili": {"t": "Buffalo Chicken Chili", "i": ["2 lb chicken breast (907 g)", "1 can black beans (15 oz), drained", "1 can white beans (15 oz), drained", "1 can diced tomatoes (14.5 oz)", "½ cup buffalo sauce", "1 cup chicken broth", "chili powder, garlic powder", "How to cook:", "Add everything to the crockpot (except dairy added at the end when noted).", "Shred meat if needed, stir well, adjust seasoning, and portion for the week.", "macros (per serving)", "345 cal | 41 g protein | 22 g carbs | 7 g fat"]}, "shredded-buffalo-chicken": {"t": "Shredded Buffalo Chicken", "i": ["2 lb chicken breasts", "½ cup buffalo sauce", "1 tbsp ranch seasoning", "½ cup chicken broth"]}, "crispy-boneless-buffalo-wings": {"t": "Crispy Boneless Buffalo Wings 🤤🙌🔥", "i": ["12 oz ground chicken", "1 large egg", "1/2 cup grated Parmesan", "2 tbsp ranch seasoning"]}, "chicken-wings": {"t": "Chicken Wings", "i": ["3 lb chicken wings", "1/2 cup buffalo sauce", "1/4 cup honey", "1 tsp garlic powder", "1 tsp onion powder", "Salt and pepper"]}, "salsa-chicken": {"t": "Salsa Chicken", "i": ["2 lb chicken breasts", "1 jar salsa", "1 tsp cumin", "1 tsp chili powder"]}, "salsa-verde-chicken": {"t": "Salsa Verde Chicken", "i": ["2 lb boneless skinless chicken breasts", "1 cup salsa verde", "4 oz low-fat cream cheese", "1 tsp cumin", "1 tsp garlic powder"]}, "creamy-taco-chicken": {"t": "Creamy Taco Chicken", "i": ["2 lb chicken breasts", "1 packet taco seasoning", "1 cup nonfat Greek yogurt (stir in after cooking)", "1 cup chicken broth"]}, "chicken-tacos": {"t": "Chicken Tacos", "i": ["3 chicken breasts", "1 cup salsa", "1 packet taco seasoning", "1/2 cup chicken broth", "Juice of 1 lime"]}, "santa-fe-chicken": {"t": "Santa Fe Chicken", "i": ["3 chicken breasts", "1 can black beans, drained", "1 can corn, drained", "1 can diced tomatoes", "1 tsp cumin", "1 tsp chili powder", "Salt and pepper"]}, "cream-cheese-chicken-chili": {"t": "Cream Cheese Chicken Chili", "i": ["2 chicken breasts (about 1 to 1 1/4 lb)", "2 cans black beans, drained", "2 cans corn, undrained, or 2 cups frozen corn", "2 cans Rotel, undrained", "1 packet ranch seasoning", "1 packet taco seasoning", "1 tsp cumin", "1 tsp onion powder", "1 tbsp chili powder", "8 oz cream cheese"]}, "sesame-ginger-chicken": {"t": "Sesame Ginger Chicken", "i": ["2 lb chicken thighs (907 g)", "½ cup chicken broth", "¼ cup low-sodium soy sauce", "2 tbsp honey", "1 tbsp sesame oil", "2 tbsp rice vinegar", "1 tbsp grated ginger (or 1 tsp ground)", "3 cloves garlic, minced", "optional: 1 tbsp cornstarch + 2 tbsp water (stir in at end)", "How to cook:", "Add everything to the crockpot (except dairy added at the end when noted).", "Shred meat if needed, stir well, adjust seasoning, and portion for the week.", "macros (per serving)", "360 cal | 37 g protein | 14 g carbs | 16 g fat"]}, "ginger-soy-chicken": {"t": "Ginger-Soy Chicken", "i": ["2 lb chicken breasts", "⅓ cup low-sodium soy sauce or coconut aminos", "¼ cup rice vinegar", "1 tbsp honey or maple syrup", "2 tsp fresh grated ginger", "3 cloves garlic, minced", "Optional: sliced green onions after cooking"]}, "honey-teriyaki-chicken-rice-bowls": {"t": "Honey Teriyaki Chicken & Rice Bowls", "i": ["1360g (48oz) boneless skinless chicken thighs", "75g (5 Tbsp) soy sauce", "30g (2 Tbsp) dark soy sauce", "80g (4 Tbsp) honey", "60g (4 Tbsp) mirin", "30g (2 Tbsp) ginger paste", "15g (1 Tbsp) garlic paste", "High: 4-5 hours  OR  Low: 5+ on low", "Corn Starch Slurry* (to thicken sauce):", "3 Tbsp cornstarch", "4 Tbsp cold water", "480g (2.5 cups) short grain or sushi rice, dry weight", "Low-Cal Yum Yum Sauce:", "100g (½ cup) low-fat mayo", "100g (½ cup) 0% greek yogurt", "75g (5 Tbsp) sriracha", "Salt, pepper, garlic powder to taste", "Milk (as needed for desired consistency)", "2 stalks green onions, chopped", "—"]}, "honey-garlic-chicken": {"t": "Honey Garlic Chicken", "i": ["2 lb chicken thighs", "1/2 cup honey", "1/4 cup soy sauce", "1 tbsp garlic", "1 tsp ginger"]}, "crispy-honey-sesame-popcorn-chicken-high-protein": {"t": "Crispy Honey Sesame Popcorn Chicken🍗🍯 High Protein", "i": ["960g Diced Boneless & Skinless Chicken Breast (raw weight)", "30ml Salt Reduced Soy Sauce (Kikkomans Salt Reduced Soy Sauce)", "1 Tsp Garlic Powder", "1/2 Tsp White Pepper", "1/2 Tsp Black Pepper", "2 Whisked Eggs", "120g Potato Starch (not all of this gets used - approximately 45g sticks to the chicken in total)", "960g Cooked White Rice (160g per serving)", "White Sesame Seeds", "Ingredients: (Honey Sesame Sauce)", "120ml Salt Reduced Soy Sauce", "120ml Water", "5 Diced Garlic Cloves", "10g Minced Ginger", "30ml Hoisin Sauce", "50ml Reduced Sugar Ketchup (Heinz)", "80g Honey", "1 Tsp Cornstarch/Cornflour Mixed With Cold Water"]}, "miso-chicken-slow-cooker": {"t": "Miso Chicken 🐔 Slow Cooker", "i": ["🍗 2.5 lbs chicken tenders", "🥜 120g (8 tbsp) peanut butter", "🥄 60g (4 tbsp) white miso paste", "🥢 60g (4 tbsp) soy sauce", "🍯 40g (2.5 tbsp) maple syrup", "🍶 30g (2 tbsp) rice vinegar", "🌱 20g (4 tsp) grated ginger", "🧄 20g (4 tsp) grated garlic", "🌶️ Red chili flakes, black pepper & sesame seeds to taste"]}, "butter-chicken": {"t": "Butter Chicken", "i": ["2 lb chicken thighs", "1 can crushed tomatoes", "2 tbsp garam masala", "1 tbsp ginger garlic paste", "1/2 cup cream"]}, "chicken-and-potatoes": {"t": "Chicken and Potatoes", "i": ["2 lb chicken breasts", "4 potatoes, diced", "2 carrots, chopped", "1 onion, chopped", "2 garlic cloves, minced", "1 tsp Italian seasoning", "Salt and pepper", "1/2 cup chicken broth"]}, "cottage-cheese-crusted-chicken-cutlets-crispy-protein-packed-delight": {"t": "Cottage Cheese Crusted Chicken Cutlets 🍗🧀 – Crispy, Protein-Packed Delight", "i": ["2 boneless chicken breasts", "1 cup cottage cheese", "1 cup breadcrumbs", "1 teaspoon garlic powder", "1 teaspoon paprika", "1/2 teaspoon salt", "1/2 teaspoon black pepper", "1 tablespoon olive oil"]}, "chicken-cheese-sticks": {"t": "Chicken Cheese Sticks", "i": ["8 oz ground chicken", "1/2 cup grated parmesan", "1 egg", "3-4 Mozzarella sticks", "2 tbsp Melted butter", "1 tsp Minced garlic", "1 tsp chopped Parsley"]}, "tuna-burritos": {"t": "Tuna Burritos", "i": ["2 can of safe catch tuna", "100g of Greek yogurt", "46g Protein", "215 calories", "93g of protein", "430 calories"]}, "pizza-crust-cottage-cheese": {"t": "Pizza Crust (Cottage Cheese)", "i": ["Blend 1/2 cup cottage cheese, 1 egg and 1 cup parmesan."]}, "pizza-crust-chicken-or-turkey-with-176g-protein": {"t": "Pizza Crust (Chicken or Turkey) WITH 176G PROTEIN", "i": ["CHICKEN CRUST", "450g ground chicken", "2 large eggs", "1/2 cup grated parmesan cheese", "1 tsp garlic powder", "1 tsp italian seasoning", "1/2 tsp salt", "1/2 tsp black pepper", "1/2 cup pizza sauce", "1 cup grated mozzarella cheese (I used low fat)", "20 turkey pepperoni slices ( I used normal but 9 slices)"]}, "tortilla-quiche-recipe-high-protein": {"t": "Tortilla Quiche Recipe High Protein", "i": ["1 large tortilla wrap", "4 eggs", "100 g ham", "25 g feta", "100 g cottage cheese", "62.5 g mozzarella", "50 g broccoli chopped", "100 g peppers chopped", "100 g tomatoes chopped", "Salt pepper paprika garlic powder"]}, "2-ingredient-fitness-bread-soft-cheesy-full-of-protein": {"t": "🥖🧀 2-Ingredient Fitness Bread – Soft, Cheesy & Full of Protein", "i": ["1 cup cottage cheese", "1 cup almond flour"]}, "quick-cottage-cheese-garlic-naan-soft-flavorful-protein-packed": {"t": "Quick Cottage Cheese Garlic Naan – Soft, Flavorful & Protein-Packed", "i": ["1 cup cottage cheese (240 ml | 220 g)", "1 cup all-purpose flour (240 ml | 125 g)", "1 tsp baking powder (5 ml | 4 g)", "1 tsp garlic powder (5 ml | 3 g)", "½ tsp salt (2.5 ml | 3 g)", "2 tbsp olive oil (30 ml)", "¼ cup warm water (60 ml)"]}, "egg-loaf-french-toast-low-carb-breakfast-magic-high-protein": {"t": "Egg Loaf (French Toast - Low-Carb Breakfast Magic) High-Protein", "i": ["8 large eggs", "8 tablespoons (1 stick) grass-fed butter", "8 ounces cottage cheese (or cream cheese for a richer texture)", "1 tablespoon ground cinnamon (optional but recommended)"]}, "breakfast-bowls": {"t": "Breakfast Bowls 🍳🧀", "i": ["12 Eggs", "3 Cups Egg Whites (720g)", "3 Cups Cottage Cheese (660g)", "2: 12oz Bags of Frozen 3 Peppers and Onions (340g per bag)", "6 Chicken Sausage Links (85g each)", "2 Cups Reduced Fat Cheddar Cheese (226g)", "2 Tsp Salt and Pepper"]}, "breakfast-burritos": {"t": "Breakfast Burritos", "i": ["372 calories 36g protein 13g fat 39g carbs makes 10", "turkey sausage 1 pound", "4 eggs", "32 ounces egg whites", "300g cottage cheese", "7 servings fat free cheese", "20 ounce bag of hash browns", "10 extreme wellness wraps", "Salt, pepper"]}, "cottage-cheese-pancakes-high-protein": {"t": "Cottage Cheese Pancakes 🥞 High-Protein", "i": ["½ cup egg whites", "1 large egg", "½ cup quick oats (dry)", "½ cup low-fat cottage cheese (2%)"]}, "golden-cheese-pancakes-easy-delicious-and-protein-packed": {"t": "Golden Cheese Pancakes 🥞🧀 – Easy, Delicious, and Protein-Packed", "i": ["1 cup cottage cheese", "2 large eggs", "1/2 cup all-purpose flour"]}, "cottage-cheese-breakfast-biscuit-fluffy-savory-low-carb-high-protein": {"t": "Cottage Cheese Breakfast Biscuit 🥐💪 – Fluffy, Savory & Low-Carb High-Protein", "i": ["1/4 cup cottage cheese / 55 g", "1 large egg", "3 tbsp almond flour / 18 g", "1/2 tsp baking powder / 2 g", "Pinch of salt / 0.5 g"]}, "blueberry-cheesecake-bake-high-protein": {"t": "Blueberry Cheesecake Bake High Protein", "i": ["3 bananas (ripe ones, not green bricks)", "3 eggs", "240g Greek yoghurt (about a cup)", "A handful of blueberries"]}, "lemon-cheesecake-bowl-low-cal-high-protein": {"t": "Lemon Cheesecake Bowl 🍋🍰 Low Cal High Protein", "i": ["190g low fat cottage cheese", "half a lemon zest", "1.5 tbsp lemon juice (or a whole lemon ish!)", "1/2 tsp vanilla extract", "pinch salt", "natural sweetener to taste (Maple Syrup)", "30g graham crackers"]}, "cheesecake-2-ingredient": {"t": "Cheesecake 2-Ingredient", "i": ["– 3/4 cup greek yogurt (100 cal)", "– 1 egg (70 cal)", "optional topping 1 tsp of [coconut sugar](https://amzn.to/3Y0FwdT) (13 cal + 3g sugar)"]}, "chocolate-pudding": {"t": "Chocolate Pudding", "i": ["4 room temperature or cold boiled eggs (not hot)", "3 to 3.5 tbsp. cocoa powder", "1/2 cup milk", "1/4 cup honey", "2 tsp. vanilla extract"]}, "protein-dessert-sex-bowl": {"t": "Protein Dessert Sex Bowl", "i": ["low fat cottage cheese 1 cup", "vanilla extract", "sweeten however you like (Maple Syrup) 1 tbsp", "salt", "top w/ berries", "semi-sweet or dark choc chips just a few"]}, "protein-cake": {"t": "Protein Cake🔥🔥", "i": ["1️⃣ 100g yogurt", "2️⃣ 1 egg", "3️⃣ 1½ scoops protein powder", "4️⃣ Mix well", "5️⃣ Microwave 1–2 min (🚨 DO NOT overcook or it's ruined)", "6️⃣ Top with berries + whipped cream"]}, "protein-cookie-dough": {"t": "Protein Cookie Dough", "i": ["1 cup vanilla protein powder", "1/2 cup peanut butter or any nut or seed butter", "1/4 cup maple syrup or honey/sugar free maple syrup", "1/4 cup water * See notes"]}};
+(function () {
+  var input = document.getElementById('search');
+  var cards = [].slice.call(document.querySelectorAll('article.recipe'));
+  var heads = [].slice.call(document.querySelectorAll('h2.section, h3.group'));
+  var navItems = [].slice.call(document.querySelectorAll('#nav li'));
+  var count = document.getElementById('count');
+  var total = cards.length;
+  input.addEventListener('input', function () {
+    var q = input.value.trim().toLowerCase(), shown = 0;
+    cards.forEach(function (c) {
+      var hit = !q || c.getAttribute('data-title').indexOf(q) > -1 || c.textContent.toLowerCase().indexOf(q) > -1;
+      c.classList.toggle('hidden', !hit);
+      if (hit) shown++;
+    });
+    heads.forEach(function (h) { h.classList.toggle('hidden', !!q); });
+    navItems.forEach(function (li) {
+      var a = li.querySelector('a'); if (!a) return;
+      li.classList.toggle('hidden', !(!q || a.textContent.toLowerCase().indexOf(q) > -1));
+    });
+    count.textContent = q ? shown + ' of ' + total + ' recipes' : total + ' recipes';
+  });
+
+  var area = document.getElementById('printarea');
+  function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest ? e.target.closest('.print-btn') : null;
+    if (!btn) return;
+    var r = SHOP[btn.getAttribute('data-key')];
+    if (!r) return;
+    if (!r.i.length) { window.alert('No ingredient list was found for this recipe.'); return; }
+    area.innerHTML = '<h1>' + esc(r.t) + '</h1><p class="sub">Shopping list \u00b7 ' + r.i.length +
+      ' items</p><ul>' + r.i.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
+    document.body.classList.add('printing-list');
+    window.print();
+    setTimeout(function () { document.body.classList.remove('printing-list'); }, 3000);
+  });
+  window.addEventListener('afterprint', function () { document.body.classList.remove('printing-list'); });
+})();
+</script>
+</body>
+</html>
