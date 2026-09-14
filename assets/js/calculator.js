@@ -89,19 +89,14 @@
 
   function open() {
     panel.show();
-    launcher.setAttribute("aria-expanded", "true");
     panel.querySelector("button").focus();
   }
 
   function close() {
     panel.close();
-    launcher.setAttribute("aria-expanded", "false");
     launcher.focus();
   }
 
-  launcher.addEventListener("click", function () {
-    if (panel.open) close(); else open();
-  });
   document.getElementById("calc-close").addEventListener("click", close);
   keys.addEventListener("click", function (event) {
     var button = event.target.closest("button");
@@ -125,4 +120,5 @@
     } else return;
     event.preventDefault();
   });
+  if (document.location.hash === "#calculator") open();
 })();

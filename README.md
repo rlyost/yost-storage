@@ -19,6 +19,8 @@ CSS, and JavaScript; the landing page additionally loads local responsive image 
 
 ## Landing page
 
+All menu items open in a new tab, including Set Alarm and Calc.
+
 ### Daylight logo swap
 
 The logo and page palette follow the sun rather than a fixed clock time:
@@ -47,7 +49,7 @@ sleeps or the clock changes.
 
 ### Timer / alarm
 
-Opened from **Set Alarm** in the menu. Two modes share one state machine:
+Opened in a new tab from **Set Alarm** in the menu. Two modes share one state machine:
 
 - **Timer** — hours/minutes/seconds, plus 1, 5, 10, 25, 30 minute and 1 hour presets.
 - **Alarm** — a wall-clock time; a time already past today rolls to tomorrow.

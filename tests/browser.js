@@ -52,25 +52,25 @@
     var saved = localStorage.getItem(KEY);
     try {
       localStorage.removeItem(KEY);
-      var doc = await load('../index.html');
+      var doc = await load('../index.html#calculator');
       var $ = function (id) { return doc.getElementById(id); };
-      $('calc-link').click();
       check($('calculator').open && doc.activeElement === $('calc-close'), 'Calculator dialog opens with close-button focus');
       ['1', '.', '5', '+', '2', '.', '5', 'Enter'].forEach(function (value) { key(doc, value); });
       check($('calc-display').textContent === '4', 'Calculator keyboard arithmetic');
       key(doc, 'Escape');
       check(!$('calculator').open && doc.activeElement === $('calc-link'), 'Calculator Escape returns focus');
-      $('calc-link').click(); $('calc-close').click();
+      doc = await load('../index.html#calculator');
+      $('calc-close').click();
       check(doc.activeElement === $('calc-link'), 'Calculator close button returns focus');
 
-      $('alarm-link').click();
+      doc = await load('../index.html#alarm');
       check($('alarm-dialog').matches(':modal'), 'Alarm uses a native modal dialog');
       $('alarm-sound').checked = false;
       $('alarm-sound').dispatchEvent(new frame.contentWindow.Event('change'));
       $('t-h').value = 0; $('t-m').value = 0; $('t-s').value = 4;
       $('btn-set').click();
       check(!$('alarm-dialog').open, 'Arming closes the alarm dialog');
-      $('alarm-link').click(); $('btn-stop').click();
+      doc = await load('../index.html#alarm'); $('btn-stop').click();
       var paused = JSON.parse(localStorage.getItem(KEY));
       check(paused.state === 'paused' && paused.remainingMs > 0, 'Stop banks remaining timer time');
       $('btn-set').click();

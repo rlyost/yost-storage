@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const vm = require('node:vm');
 const fs = require('node:fs');
 
-function calculator() {
+function calculator(hash = "#calculator") {
   const elements = {};
   let focused;
   function element() {
@@ -17,6 +17,7 @@ function calculator() {
       querySelector() { return elements['calc-close']; } };
   }
   const document = element();
+  document.location = { hash };
   document.getElementById = id => elements[id] ??= element();
   vm.runInNewContext(fs.readFileSync('assets/js/calculator.js', 'utf8'), { document });
   return { elements, focus: () => focused,
@@ -32,22 +33,19 @@ function calculator() {
   };
 }
 
-test('calculator opens, closes, and returns focus through each control', () => {
+test('calculator opens from its URL and returns focus when closed', () => {
   const c = calculator();
-  c.click('calc-link'); assert.equal(c.elements.calculator.open, true);
+  assert.equal(c.elements.calculator.open, true);
   assert.equal(c.focus(), c.elements['calc-close']);
-  assert.equal(c.elements['calc-link'].attributes['aria-expanded'], 'true');
   c.key('Escape'); assert.equal(c.elements.calculator.open, false);
   assert.equal(c.focus(), c.elements['calc-link']);
-  assert.equal(c.elements['calc-link'].attributes['aria-expanded'], 'false');
-  c.click('calc-link'); c.click('calc-close');
-  assert.equal(c.focus(), c.elements['calc-link']);
-  c.click('calc-link'); c.click('calc-link');
-  assert.equal(c.elements.calculator.open, false);
+  const d = calculator(); d.click('calc-close');
+  assert.equal(d.elements.calculator.open, false);
+  assert.equal(d.focus(), d.elements['calc-link']);
 });
 
 test('keyboard arithmetic, decimal aliases, editing, percent and error recovery', () => {
-  const c = calculator(); c.click('calc-link');
+  const c = calculator();
   for (const key of ['1', ',', '5', '+', '2', '.', '5', 'Enter']) assert.equal(c.key(key), true);
   assert.equal(c.display(), '4');
   c.key('*'); c.key('3'); c.key('='); assert.equal(c.display(), '12');
@@ -60,15 +58,16 @@ test('keyboard arithmetic, decimal aliases, editing, percent and error recovery'
 });
 
 test('keyboard leaves editable controls and closed calculator alone', () => {
-  const c = calculator(); assert.equal(c.key('7'), false);
-  c.click('calc-link');
+  assert.equal(calculator('').key('7'), false);
+  const c = calculator();
+
   for (const tag of ['INPUT', 'TEXTAREA', 'SELECT']) assert.equal(c.key('7', tag), false);
   assert.equal(c.key('Tab'), false); assert.equal(c.key('a'), false);
   assert.equal(c.display(), '0');
 });
 
 test('delegated buttons support zero, chaining, operation replacement and digit limit', () => {
-  const c = calculator(); c.click('calc-link');
+  const c = calculator();
   for (const digit of '1234567890123') c.button({ digit });
   assert.equal(c.display(), '123456789012');
   c.button({ action: 'clear' }); c.button({ digit: '8' });

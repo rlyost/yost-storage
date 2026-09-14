@@ -239,10 +239,6 @@
 
   /* ---- wiring ----------------------------------------------------- */
 
-  $("alarm-link").addEventListener("click", function () {
-    render();
-    dlg.showModal();
-  });
   $("alarm-close").addEventListener("click", function () { dlg.close(); });
 
   Object.keys(tabs).forEach(function (m) {
@@ -296,4 +292,8 @@
   if (st.mode === "alarm") $("a-time").value = st.alarmTime;
   writeTimerFields(st.mode === "timer" ? (st.remainingMs || st.durationMs) : st.durationMs);
   commit(st); // Persist normalized recovery state and reconcile its effects.
+  if (document.location.hash === "#alarm") {
+    render();
+    dlg.showModal();
+  }
 })();

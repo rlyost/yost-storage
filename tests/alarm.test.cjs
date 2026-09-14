@@ -24,6 +24,7 @@ function app(options = {}) {
   }
   const elements = {};
   const document = element();
+  document.location = { hash: options.hash || "" };
   document.hidden = false;
   document.getElementById = id => elements[id] ??= element();
   const preset = element();
@@ -156,8 +157,12 @@ test('countdown ticks skip configuration and closed-dialog writes', () => {
   assert.equal(a.elements['mode-timer'].attributeWrites, writes);
   assert.equal(a.elements['alarm-big'].textContent, display);
   assert.match(a.elements['alarm-status'].textContent, /0:59/);
-  a.click('alarm-link');
-  assert.equal(a.elements['alarm-big'].textContent, '0:59');
+  a.elements['alarm-dialog'].showModal();
   a.advance(1000); a.tick();
   assert.equal(a.elements['alarm-big'].textContent, '0:58');
+});
+
+test('alarm URL opens the alarm dialog on load', () => {
+  const a = app({ hash: '#alarm' });
+  assert.equal(a.elements['alarm-dialog'].open, true);
 });
