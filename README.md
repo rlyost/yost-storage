@@ -19,7 +19,7 @@ CSS, and JavaScript; the landing page additionally loads local responsive image 
 
 ## Landing page
 
-All menu items open in a new tab, including Set Alarm and Calc.
+Navigation links open in a new tab. Set Alarm and Calc open popups on the current page.
 
 ### Daylight logo swap
 
@@ -49,7 +49,7 @@ sleeps or the clock changes.
 
 ### Timer / alarm
 
-Opened in a new tab from **Set Alarm** in the menu. Two modes share one state machine:
+Opened as a popup on the current page from **Set Alarm** in the menu. Two modes share one state machine:
 
 - **Timer** — hours/minutes/seconds, plus 1, 5, 10, 25, 30 minute and 1 hour presets.
 - **Alarm** — a wall-clock time; a time already past today rolls to tomorrow.
@@ -105,6 +105,7 @@ The landing-page menu links to:
 - [YostNotes](https://www.yost.group/apps/yostnotes_app.html)
 - [The Gateway](https://www.yost.group/apps/gateway_app.html)
 - [Citadel Money](https://app.citadel-map.com)
+- [Ballot](https://runballot.com/)
 - [GitHub](https://github.com/rlyost)
 - Zsh Color Guide
 - Claude Engineering Prompts

@@ -195,14 +195,27 @@
         transform: translateY(-50%);
       }
 
-      .footer-nav a {
+      .footer-nav a,
+      .footer-nav .nav-action {
         color: #555;
         font-size: 0.75rem;
         font-weight: 600;
         text-decoration: none;
       }
 
-      .footer-nav a:hover {
+      /* Set Alarm acts on this page rather than navigating, so it is a button
+         wearing the nav links' clothes. */
+      .footer-nav .nav-action {
+        padding: 0;
+        border: 0;
+        background: none;
+        font-family: inherit;
+        line-height: inherit;
+        cursor: pointer;
+      }
+
+      .footer-nav a:hover,
+      .footer-nav .nav-action:hover {
         color: #000;
         text-decoration: underline;
         text-underline-offset: 0.2rem;
@@ -528,6 +541,7 @@
 
       [data-daylight="night"] .footer-nav a,
       [data-daylight="night"] .footer-nav a:hover,
+      [data-daylight="night"] .footer-nav .nav-action,
       [data-daylight="night"] .alarm-status,
       [data-daylight="night"] .footer-stack {
         color: #fff;
@@ -621,7 +635,8 @@
           transform: none;
         }
 
-        .footer-nav a {
+        .footer-nav a,
+        .footer-nav .nav-action {
           font-size: 0.8125rem;
         }
 
@@ -690,14 +705,15 @@
         <a target="_blank" rel="noopener noreferrer" href="https://www.yost.group/apps/yostnotes_app.html">YostNotes</a>
         <a target="_blank" rel="noopener noreferrer" href="https://www.yost.group/apps/gateway_app.html">The Gateway</a>
         <a target="_blank" rel="noopener noreferrer" href="https://app.citadel-map.com">Citadel Money</a>
+        <a target="_blank" rel="noopener noreferrer" href="https://runballot.com/">Ballot</a>
         <a target="_blank" rel="noopener noreferrer" href="https://github.com/rlyost">GitHub</a>
         <a target="_blank" rel="noopener noreferrer" href="PAWS_Training_Manual.html">PAWS Training Manual</a>
         <a target="_blank" rel="noopener noreferrer" href="High_Protein_Crockpot.html">High Protein Crockpot</a>
         <a target="_blank" rel="noopener noreferrer" href="zsh_terminal_colorization_guide.html">Zsh Color Guide</a>
         <a target="_blank" rel="noopener noreferrer" href="claude-engineering-prompts.html">Claude Engineering Prompts</a>
         <a target="_blank" rel="noopener noreferrer" href="multi_platform_deployment_guide.html">Multi-Platform Deployment Guide</a>
-        <a href="index.html#alarm" target="_blank" rel="noopener noreferrer" id="alarm-link">Set Alarm</a>
-        <a href="index.html#calculator" target="_blank" rel="noopener noreferrer" id="calc-link">Calc</a>
+        <button type="button" class="nav-action" id="alarm-link" aria-haspopup="dialog">Set Alarm</button>
+        <button type="button" class="nav-action" id="calc-link" aria-expanded="false" aria-controls="calculator">Calc</button>
       </nav>
       <div class="footer-stack">
         <div class="clock" id="clock" role="timer" aria-live="off"></div>

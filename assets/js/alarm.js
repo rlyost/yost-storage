@@ -239,6 +239,10 @@
 
   /* ---- wiring ----------------------------------------------------- */
 
+  $("alarm-link").addEventListener("click", function () {
+    render();
+    dlg.showModal();
+  });
   $("alarm-close").addEventListener("click", function () { dlg.close(); });
 
   Object.keys(tabs).forEach(function (m) {
