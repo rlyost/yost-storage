@@ -52,18 +52,26 @@
     var saved = localStorage.getItem(KEY);
     try {
       localStorage.removeItem(KEY);
-      var doc = await load('../index.html#calculator');
+      var doc = await load('../index.html');
+      var initialURL = doc.location.href;
+      doc.getElementById('calc-link').click();
       var $ = function (id) { return doc.getElementById(id); };
+      check(doc.location.href === initialURL, 'Calculator menu action stays on the current page');
       check($('calculator').open && doc.activeElement === $('calc-close'), 'Calculator dialog opens with close-button focus');
       ['1', '.', '5', '+', '2', '.', '5', 'Enter'].forEach(function (value) { key(doc, value); });
       check($('calc-display').textContent === '4', 'Calculator keyboard arithmetic');
       key(doc, 'Escape');
       check(!$('calculator').open && doc.activeElement === $('calc-link'), 'Calculator Escape returns focus');
-      doc = await load('../index.html#calculator');
+      $('calc-link').click();
+      check($('calculator').open, 'Calculator menu reopens the popup');
+      $('calc-link').click();
+      check(!$('calculator').open, 'Calculator menu toggles the popup closed');
+      $('calc-link').click();
       $('calc-close').click();
       check(doc.activeElement === $('calc-link'), 'Calculator close button returns focus');
 
-      doc = await load('../index.html#alarm');
+      $('alarm-link').click();
+      check(doc.location.href === initialURL, 'Alarm menu action stays on the current page');
       check($('alarm-dialog').matches(':modal'), 'Alarm uses a native modal dialog');
       $('alarm-sound').checked = false;
       $('alarm-sound').dispatchEvent(new frame.contentWindow.Event('change'));
