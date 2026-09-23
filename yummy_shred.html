@@ -31,11 +31,6 @@ nav a:hover{background:var(--accent-soft);color:var(--accent)}
 nav .nav-grp{margin-top:16px}
 nav .nav-grp a{color:var(--accent);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
 nav li:not(.nav-grp) a{padding-left:16px}
-.guide{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:8px 20px;margin:0 0 22px}
-.guide summary{cursor:pointer;font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:650;padding:10px 0}
-.guide h4{margin:16px 0 4px;font-size:14px}
-.guide p,.guide li{font-size:14px;color:var(--ink)}
-.guide ul{margin:4px 0 10px;padding-left:20px}
 h3.group{font-size:15px;margin:34px 0 2px;display:flex;align-items:center;gap:9px;letter-spacing:-.01em}
 h3.group:first-of-type{margin-top:0}
 h3.group span{font-size:11px;font-weight:600;color:var(--muted);background:var(--chip);border-radius:999px;padding:1px 8px}
@@ -92,6 +87,7 @@ h3.instr{margin-top:20px}
   body.printing-list #printarea{display:block;color:#000}
 }
 </style>
+<link rel="stylesheet" href="assets/css/nutrition-calculator.css">
 </head>
 <body>
 <header class="top">
@@ -118,12 +114,32 @@ h3.instr{margin-top:20px}
   <main id="main">
     <details class="guide">
       <summary>How to find your daily calories &amp; protein</summary>
+      <form class="nutrition-form" id="nutrition-form" novalidate>
+        <p class="nutrition-hint" id="nutrition-hint">Enter your current body weight for an estimated daily calorie range for fat loss and a protein goal, using the guide below.</p>
+        <div class="nutrition-fields">
+          <label class="nutrition-field" for="nutrition-weight">Current body weight
+            <input id="nutrition-weight" name="weight" type="number" inputmode="decimal" min="1" step="any" placeholder="e.g. 180" required aria-describedby="nutrition-hint nutrition-error">
+          </label>
+          <label class="nutrition-field" for="nutrition-unit">Unit
+            <select id="nutrition-unit" name="unit"><option value="lb">Pounds (lb)</option><option value="kg">Kilograms (kg)</option></select>
+          </label>
+          <button type="submit">Calculate</button>
+        </div>
+        <p class="nutrition-error" id="nutrition-error" role="alert" hidden></p>
+        <div aria-live="polite" aria-atomic="true">
+          <div class="nutrition-results" id="nutrition-results" hidden>
+            <div class="nutrition-result"><span>Daily calories for fat loss</span><strong id="nutrition-calories"></strong><span>calories / day</span></div>
+            <div class="nutrition-result"><span>Daily protein goal</span><strong id="nutrition-protein"></strong><span>grams / day</span></div>
+          </div>
+        </div>
+        <noscript><p>Enable JavaScript to use the calculator, or use the formulas below.</p></noscript>
+      </form>
       <h4>Step 1 &mdash; Daily calories</h4>
-      <p>Bodyweight (lbs) &times; 11&ndash;12 = daily calories for fat loss. 200 lbs &times; 12 = 2,400/day;
+      <p>Current body weight (lbs) &times; 11&ndash;12 = daily calories for fat loss. 200 lbs &times; 12 = 2,400/day;
       180 lbs &times; 11 = 1,980/day. Higher end if you are very active, lower end if sedentary.
       Track your weight 7&ndash;14 days; if it is not moving, drop 150&ndash;200 calories and reassess.</p>
       <h4>Step 2 &mdash; Protein goal</h4>
-      <p>Bodyweight (lbs) &times; 0.8&ndash;1.0. At 180 lbs that is 145&ndash;180g/day; at 200 lbs,
+      <p>Current body weight (lbs) &times; 0.8&ndash;1.0. At 180 lbs that is 144&ndash;180g/day; at 200 lbs,
       160&ndash;200g/day. When in doubt, aim higher.</p>
       <h4>Step 3 &mdash; Get a digital food scale</h4>
       <p>Eyeballing food is the fastest way to stall progress. Weigh proteins, measure carbs and fats,
@@ -213,5 +229,6 @@ var SHOP = {"birria-queso-protein-bowl": {"t": "Birria Queso Protein Bowl", "i":
   window.addEventListener('afterprint', clearPrint);
 })();
 </script>
+<script src="assets/js/nutrition-calculator.js"></script>
 </body>
 </html>
