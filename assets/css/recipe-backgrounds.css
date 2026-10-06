@@ -1,0 +1,48 @@
+/* Shared recipe-page scenery, with an opaque reading surface for navigation. */
+:root{
+  --backdrop-rgb:251,249,246;
+  --hero-rgb:255,255,255;
+}
+@media (prefers-color-scheme:dark){
+  :root{--backdrop-rgb:22,21,15;--hero-rgb:31,30,24}
+}
+body.crockpot-page{--recipe-background:url('../images/crockpot-background.webp')}
+body.shred-page{--recipe-background:url('../images/yummy-shred-background.webp')}
+body:is(.crockpot-page,.shred-page){isolation:isolate}
+body:is(.crockpot-page,.shred-page)::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background-image:linear-gradient(rgba(var(--backdrop-rgb),.91),rgba(var(--backdrop-rgb),.96)),var(--recipe-background);
+  background-position:center;
+  background-size:cover;
+  background-repeat:no-repeat;
+}
+body:is(.crockpot-page,.shred-page) .hero{
+  background-color:var(--panel);
+  background-image:linear-gradient(90deg,rgba(var(--hero-rgb),.98) 0%,rgba(var(--hero-rgb),.94) 35%,rgba(var(--hero-rgb),.64) 58%,rgba(var(--hero-rgb),.12) 100%),var(--recipe-background);
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
+body:is(.crockpot-page,.shred-page) nav{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px;
+}
+@media (max-width:860px){
+  body:is(.crockpot-page,.shred-page) .hero{
+    background-image:linear-gradient(90deg,rgba(var(--hero-rgb),.97),rgba(var(--hero-rgb),.84)),var(--recipe-background);
+    background-position:right center;
+  }
+  body:is(.crockpot-page,.shred-page) nav{padding:10px}
+}
+@media print{
+  body:is(.crockpot-page,.shred-page)::before{display:none}
+  body:is(.crockpot-page,.shred-page){background:#fff}
+  body:is(.crockpot-page,.shred-page) .hero{background:#fff}
+  body:is(.crockpot-page,.shred-page) nav{border:none;padding:0;background:none}
+}
