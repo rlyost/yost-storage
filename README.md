@@ -224,6 +224,8 @@ For repeatable real-browser checks, serve this directory with
 `python3 -m http.server 8000`, then open
 <http://localhost:8000/tests/browser.html> and choose **Run tests**. Use a
 separate local preview tab; the harness runs a muted timer and restores the
-previous local alarm record when finished. It reports 15 checks for dialogs,
+previous local alarm record when finished. It checks dialogs,
 focus, calculator input, alarm reload/ringing, and manual search/tab behavior.
+Choose **Run print tests** to check recipe and shopping-list print previews on both recipe pages
+at mobile width, including browsers that ignore, reject, or lack programmatic printing.
 The Node suite includes calculator behavior and pure alarm-state tests.

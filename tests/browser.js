@@ -42,12 +42,72 @@
     try { await waitFor(function () { return performance.now() - changed > 150; }); }
     finally { observer.disconnect(); }
   }
+  async function recipePrintChecks() {
+    frame.width = '390';
+    for (var path of ['High_Protein_Crockpot.html', 'yummy_shred.html']) {
+      var doc = await load('../' + path);
+      var win = frame.contentWindow;
+      var toolbar = doc.getElementById('print-toolbar');
+      var recipeButton = doc.querySelector('.recipe-btn');
+      var target = doc.getElementById(recipeButton.dataset.target);
+      var printCalls = 0;
+      win.print = function () { printCalls++; };
+      recipeButton.querySelector('path').dispatchEvent(new win.MouseEvent('click', { bubbles: true }));
+      check(printCalls === 1 && !toolbar.hidden && target.checkVisibility(), path + ': tap opens recipe preview and calls print synchronously');
+      check(Array.from(doc.querySelectorAll('article.recipe')).filter(function (card) {
+        return card.checkVisibility();
+      }).length === 1, path + ': preview shows only the selected recipe');
+      await new Promise(function (resolve) { setTimeout(resolve, 3200); });
+      win.dispatchEvent(new win.Event('afterprint'));
+      check(!toolbar.hidden && target.classList.contains('print-target'), path + ': preview persists for browser-menu printing');
+      doc.getElementById('print-current').click();
+      check(printCalls === 2, path + ': preview Print button retries');
+      key(doc, 'Escape');
+      check(toolbar.hidden && doc.activeElement === recipeButton, path + ': Escape restores recipe-button focus');
+      win.print = function () { throw new Error('Printing unavailable'); };
+      recipeButton.click();
+      check(!toolbar.hidden && target.checkVisibility(), path + ': rejected printing retains a usable preview');
+      doc.getElementById('print-back').click();
+      win.print = undefined;
+      var shoppingButton = doc.querySelector('.print-btn');
+      shoppingButton.click();
+      var recipe = win.SHOP[shoppingButton.dataset.key];
+      var area = doc.getElementById('printarea');
+      check(area.checkVisibility() && area.getAttribute('aria-hidden') === 'false' &&
+        Array.from(area.querySelectorAll('li')).map(function (li) { return li.textContent; }).join('\n') === recipe.i.join('\n'),
+        path + ': unavailable printing shows an accessible shopping list with exact ingredients');
+      check(doc.documentElement.scrollWidth <= win.innerWidth, path + ': mobile preview has no horizontal overflow');
+      doc.getElementById('print-back').click();
+      check(toolbar.hidden && doc.activeElement === shoppingButton && !doc.body.classList.contains('printing-list'),
+        path + ': Back restores the recipe page and focus');
+    }
+  }
+  document.getElementById('run-print').addEventListener('click', async function () {
+    var printRun = this;
+    if (!['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)) {
+      output.textContent = 'Run this harness on a local HTTP server.';
+      return;
+    }
+    printRun.disabled = button.disabled = true;
+    lines = [];
+    try {
+      await recipePrintChecks();
+      lines.push('COMPLETE: ' + lines.length + ' checks passed');
+    } catch (error) {
+      lines.push('FAIL ' + error.message);
+    } finally {
+      frame.src = 'about:blank';
+      frame.width = '1000';
+      output.textContent = lines.join('\n');
+      printRun.disabled = button.disabled = false;
+    }
+  });
   button.addEventListener('click', async function () {
     if (!['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)) {
       output.textContent = 'Run this harness on a local HTTP server.';
       return;
     }
-    button.disabled = true;
+    button.disabled = document.getElementById('run-print').disabled = true;
     lines = [];
     var saved = localStorage.getItem(KEY);
     try {
@@ -103,14 +163,17 @@
         return !card.classList.contains('hidden');
       }), 'Clearing search removes marks and restores cards');
       check(cards.every(function (card, i) { return card.textContent === original[i]; }), 'Clearing preserves all original text');
+
+      await recipePrintChecks();
       lines.push('COMPLETE: ' + lines.length + ' checks passed');
     } catch (error) {
       lines.push('FAIL ' + error.message);
     } finally {
       frame.src = 'about:blank';
+      frame.width = '1000';
       if (saved === null) localStorage.removeItem(KEY); else localStorage.setItem(KEY, saved);
       output.textContent = lines.join('\n');
-      button.disabled = false;
+      button.disabled = document.getElementById('run-print').disabled = false;
     }
   });
 })();

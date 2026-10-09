@@ -79,8 +79,16 @@ article.recipe ul li::before{content:"";position:absolute;left:4px;top:11px;widt
 </style>
 <link rel="stylesheet" href="assets/css/nutrition-calculator.css">
 <link rel="stylesheet" href="assets/css/recipe-backgrounds.css">
+<link rel="stylesheet" href="assets/css/recipe-print.css">
 </head>
 <body id="top" class="crockpot-page">
+<section id="print-toolbar" aria-label="Print preview controls" hidden>
+  <div class="print-actions">
+    <button id="print-back" type="button">Back to recipes</button>
+    <button id="print-current" type="button">Print</button>
+  </div>
+  <p>If no print dialog opens, on iPhone or iPad tap Safari’s Share button, then Print (scroll down if needed). In other browsers, open the menu and choose Print.</p>
+</section>
 <header class="top">
   <h1>Rick’s Favorite High Protein Dishes (Mostly Crockpot)</h1>
   <input id="search" type="search" placeholder="Search recipes or ingredients..." autocomplete="off">
@@ -978,39 +986,9 @@ var SHOP = {"slow-cooker-ground-beef-cabbage": {"t": "Slow Cooker Ground Beef & 
     });
     count.textContent = q ? shown + ' of ' + total + ' recipes' : total + ' recipes';
   });
-
-  function clearPrint(){
-    document.body.classList.remove('printing-list','printing-recipe');
-    var t=document.querySelector('.print-target'); if (t) t.classList.remove('print-target');
-  }
-  document.addEventListener('click', function (e) {
-    var rb=e.target.closest ? e.target.closest('.recipe-btn') : null;
-    if (!rb) return;
-    var card=document.getElementById(rb.getAttribute('data-target'));
-    if (!card) return;
-    clearPrint();
-    card.classList.add('print-target');
-    document.body.classList.add('printing-recipe');
-    window.print();
-    setTimeout(clearPrint, 3000);
-  });
-  var area = document.getElementById('printarea');
-  function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
-  document.addEventListener('click', function (e) {
-    var btn = e.target.closest ? e.target.closest('.print-btn') : null;
-    if (!btn) return;
-    var r = SHOP[btn.getAttribute('data-key')];
-    if (!r) return;
-    if (!r.i.length) { window.alert('No ingredient list was found for this recipe.'); return; }
-    area.innerHTML = '<h1>' + esc(r.t) + '</h1><p class="sub">Shopping list \u00b7 ' + r.i.length +
-      ' items</p><ul>' + r.i.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
-    document.body.classList.add('printing-list');
-    window.print();
-    setTimeout(clearPrint, 3000);
-  });
-  window.addEventListener('afterprint', clearPrint);
 })();
 </script>
+<script src="assets/js/recipe-print.js"></script>
 <script src="assets/js/nutrition-calculator.js"></script>
 </body>
 </html>

@@ -1,0 +1,25 @@
+#print-toolbar[hidden]{display:none}
+#print-toolbar{max-width:800px;margin:0 auto;padding:20px;position:relative}
+.print-actions{display:flex;flex-wrap:wrap;gap:10px}
+.print-actions button{min-height:44px;padding:9px 16px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink);font:inherit;cursor:pointer}
+.print-actions button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+#print-current{background:var(--accent);color:#fff;border-color:var(--accent)}
+#print-toolbar p{margin:12px 0 0;font-size:14px;color:var(--muted)}
+@media screen{
+  body:is(.printing-recipe,.printing-list){--panel:#fff;--bg:#fff;--ink:#1f1d1a;--muted:#6b655c;--line:#e4ded4;--accent:#a8431f;--chip:#f4efe7;background:#fff}
+  body:is(.printing-recipe,.printing-list)::before{display:none}
+  body:is(.printing-recipe,.printing-list) :is(header.top,nav,.hero,.guide,h2.section,h3.group,.btns,.print-btn,.recipe-btn){display:none}
+  body.printing-recipe .wrap{display:block;max-width:800px;padding:0 20px 40px}
+  body.printing-recipe article.recipe:not(.print-target){display:none!important}
+  body.printing-recipe article.recipe.print-target{display:block!important;border:none;padding:0;margin:0;background:#fff}
+  body.printing-list .wrap{display:none}
+  body.printing-list #printarea{display:block;max-width:800px;margin:0 auto;padding:0 20px 40px;color:#1f1d1a}
+}
+@media print{
+  #print-toolbar{display:none}
+  body:is(.printing-recipe,.printing-list){--ink:#000;--muted:#555;--accent:#000;--chip:#fff;--line:#ddd;color:#000;background:#fff}
+  body:is(.printing-recipe,.printing-list) :is(header.top,nav,.hero){display:none}
+  body.printing-recipe .wrap{margin:0;max-width:none}
+  body.printing-recipe .cols{grid-template-columns:2.2in minmax(0,1fr)}
+  body.printing-recipe .cols img{max-width:2.2in}
+}
