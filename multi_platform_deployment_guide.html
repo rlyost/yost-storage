@@ -546,7 +546,7 @@ android {
 <div class="callout danger">
 <strong>Guard the keystore and passwords.</strong> Store <code>upload-keystore.jks</code> and <code>key.properties</code> outside the repository, in a password manager or secret store, and add both to <code>.gitignore</code>. Back them up in two places.
 </div>
-<p class="source">References: <a href="https://docs.flutter.dev/deployment/android">Flutter Android deployment</a> and <a href="https://support.google.com/googleplay/android-developer/answer/9842756">Play App Signing</a>.</p>
+<p class="source">References: <a href="https://docs.flutter.dev/deployment/android">Flutter Android deployment</a> and <a href="https://support.google.com/googleplay/android-developer/answer/9842756?hl=en">Play App Signing</a>.</p>
 </section>
 
 <section class="content-section" id="b2-android"><h2>B2. Configure the Android project<a class="anchor" href="#b2-android">#</a></h2>
@@ -567,7 +567,7 @@ targetSdk = 36</code></pre>
 </div>
 <h3>Icon and version</h3>
 <p>Replace the launcher icons under <code>android/app/src/main/res/</code>, or generate them with the <code>flutter_launcher_icons</code> package. Flutter maps the build name in <code>pubspec.yaml</code> to <code>versionName</code> and the build number to <code>versionCode</code>.</p>
-<p class="source">Reference: <a href="https://support.google.com/googleplay/android-developer/answer/11926878">Play target API level requirement</a>.</p>
+<p class="source">Reference: <a href="https://support.google.com/googleplay/android-developer/answer/11926878?hl=en">Play target API level requirement</a>.</p>
 </section>
 
 <section class="content-section" id="b3-build"><h2>B3. Build the app bundle<a class="anchor" href="#b3-build">#</a></h2>
@@ -592,7 +592,7 @@ flutter build appbundle --build-name=1.0.0 --build-number=1</code></pre>
 <div class="callout warning">
 <strong>Check whether the 12-tester rule applies to you.</strong> Personal developer accounts created after November 13, 2023 must run a closed test with at least 12 testers opted in for 14 continuous days, then apply for production access, before they can publish. Organization accounts and older personal accounts are exempt. If the rule applies, start the closed test as early as possible because it is the longest fixed wait in the process.
 </div>
-<p class="source">Reference: <a href="https://support.google.com/googleplay/android-developer/answer/14151465">Play testing requirements for new personal accounts</a>.</p>
+<p class="source">Reference: <a href="https://support.google.com/googleplay/android-developer/answer/14151465?hl=en">Play testing requirements for new personal accounts</a>.</p>
 </section>
 
 <section class="content-section" id="b5-billing"><h2>B5. Set up in-app purchases<a class="anchor" href="#b5-billing">#</a></h2>
@@ -626,7 +626,7 @@ flutter build appbundle --build-name=1.0.0 --build-number=1</code></pre>
 <div class="callout">
 <strong>Sensitive permissions need their own form.</strong> If the manifest requests SMS, call log, all-files access, accessibility services, exact alarms, or health data, Play shows an additional declaration asking which feature needs it. Health apps also go through a data-type review before Health Connect access works. See the sensitive-data section below.
 </div>
-<p class="source">Reference: <a href="https://support.google.com/googleplay/android-developer/answer/10787469">Data safety form</a>.</p>
+<p class="source">Reference: <a href="https://support.google.com/googleplay/android-developer/answer/10787469?hl=en">Data safety form</a>.</p>
 </section>
 
 <section class="content-section" id="b7-production"><h2>B7. Roll out to production<a class="anchor" href="#b7-production">#</a></h2>
@@ -662,7 +662,7 @@ flutter build appbundle --build-name=1.0.0 --build-number=1</code></pre>
 <div class="callout danger">
 <strong>The fastest way to get rejected.</strong> Wording that reads as professional advice, a permission with no matching feature, or a privacy answer that contradicts your policy. Sweep the app and both listings for these before you submit.
 </div>
-<p class="source">References: <a href="https://developer.apple.com/documentation/healthkit/setting-up-healthkit">Setting up HealthKit</a>, <a href="https://support.google.com/googleplay/android-developer/answer/14738291">Health apps declaration form</a>, <a href="https://developer.android.com/health-and-fitness/health-connect/publish">Publish a Health Connect app</a>, and <a href="https://support.google.com/googleplay/android-developer/answer/13996367">Google Play health apps policy</a>.</p>
+<p class="source">References: <a href="https://developer.apple.com/documentation/healthkit/setting-up-healthkit">Setting up HealthKit</a>, <a href="https://support.google.com/googleplay/android-developer/answer/14738291?hl=en">Health apps declaration form</a>, <a href="https://developer.android.com/health-and-fitness/health-connect/publish">Publish a Health Connect app</a>, and <a href="https://support.google.com/googleplay/android-developer/answer/16679511?hl=en">Google Play health apps policy</a>.</p>
 </section>
 
 <section class="content-section" id="timeline"><h2>Timeline and updates<a class="anchor" href="#timeline">#</a></h2>
