@@ -4,6 +4,12 @@
   var output = document.getElementById('results');
   var KEY = 'handlerpath.alarm';
   var lines = [];
+  var loadSequence = 0;
+  function alarmBook() { return JSON.parse(localStorage.getItem(KEY)); }
+  function alarmState() {
+    var book = alarmBook();
+    return book.alarms.find(function (entry) { return entry.id === book.selectedId; });
+  }
   function check(condition, message) {
     if (!condition) throw new Error(message);
     lines.push('PASS ' + message);
@@ -13,7 +19,10 @@
     return new Promise(function (resolve, reject) {
       var timeout = setTimeout(function () { reject(new Error('Page load timed out')); }, 10000);
       frame.onload = function () { clearTimeout(timeout); resolve(frame.contentDocument); };
-      frame.src = path;
+      // A hash-only iframe navigation does not load a new document.
+      var target = new URL(path, document.baseURI);
+      target.searchParams.set('test-load', String(++loadSequence));
+      frame.src = target.href;
     });
   }
   function waitFor(predicate) {
@@ -139,15 +148,39 @@
       $('btn-set').click();
       check(!$('alarm-dialog').open, 'Arming closes the alarm dialog');
       doc = await load('../index.html#alarm'); $('btn-stop').click();
-      var paused = JSON.parse(localStorage.getItem(KEY));
+      var paused = alarmState();
       check(paused.state === 'paused' && paused.remainingMs > 0, 'Stop banks remaining timer time');
       $('btn-set').click();
       doc = await load('../index.html');
-      check(JSON.parse(localStorage.getItem(KEY)).state === 'running', 'Reload restores a running deadline');
+      check(alarmState().state === 'running', 'Reload restores a running deadline');
       await waitFor(function () { return !$('alarm-ring').hidden; });
       check($('alarm-status').textContent === 'ALARM RINGING', 'Restored timer rings');
       $('alarm-off').click();
-      check($('alarm-ring').hidden && JSON.parse(localStorage.getItem(KEY)).state === 'idle', 'Turn Off hides overlay and disarms');
+      check($('alarm-ring').hidden && alarmState().state === 'idle', 'Turn Off hides overlay and disarms');
+
+      $('alarm-link').click();
+      $('t-h').value = 0; $('t-m').value = 10; $('t-s').value = 0;
+      $('btn-set').click();
+      var firstDeadline = alarmState().deadline;
+      $('alarm-link').click(); $('alarm-add').click();
+      check(doc.activeElement === $('a-time'), 'Adding an alarm focuses its time field');
+      $('a-time').value = '23:59'; $('btn-set').click();
+      var secondId = alarmBook().selectedId;
+      check(alarmBook().alarms.length === 2 && alarmBook().alarms[0].deadline === firstDeadline,
+        'Adding an alarm preserves the existing timer');
+      $('alarm-link').click(); $('a-time').value = '23:58';
+      $('a-time').dispatchEvent(new frame.contentWindow.Event('input'));
+      check($('btn-set').textContent === 'Save changes', 'Running alarms expose an edit action');
+      $('btn-set').click();
+      doc = await load('../index.html#alarm');
+      check(alarmBook().selectedId === secondId && alarmState().alarmTime === '23:58' &&
+        alarmBook().alarms[0].deadline === firstDeadline, 'Multiple alarms and edits survive reload');
+      $('alarm-list').querySelector('.alarm-select').click();
+      check(doc.activeElement === $('t-h'), 'Selecting a saved timer opens its editor');
+      $('alarm-list').querySelector('li:last-child button:last-child').click();
+      check(alarmBook().alarms.length === 1 && alarmState().deadline === firstDeadline,
+        'Deleting another alarm preserves the selected timer');
+      $('btn-reset').click();
 
       doc = await load('../PAWS_Training_Manual.html');
       var cards = Array.from(doc.querySelectorAll('.card'));

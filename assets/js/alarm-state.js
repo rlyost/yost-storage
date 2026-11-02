@@ -14,10 +14,10 @@ var HandlerPathAlarm = (function () {
   }
 
   // Decode atomically: malformed or incomplete records fall back to defaults.
-  // Unknown fields are ignored; the existing storage key/schema stays compatible.
-  function decode(raw, defaults, now) {
+  // Unknown fields are ignored; this also decodes the legacy single record.
+  function decode(raw, fallback, now) {
     var v;
-    try { v = JSON.parse(raw); } catch (e) { return defaults; }
+    try { v = JSON.parse(raw); } catch (e) { return fallback; }
     function duration(n) {
       return Number.isFinite(n) && n >= 0 && n <= 8640000000000000;
     }
@@ -30,9 +30,9 @@ var HandlerPathAlarm = (function () {
         (v.alarmTime !== "" && !/^([01]\d|2[0-3]):[0-5]\d$/.test(v.alarmTime)) ||
         (v.state === "paused" && v.mode !== "timer") ||
         (v.state === "running" && (v.deadline === 0 ||
-          (v.mode === "alarm" && v.alarmTime === "")))) return defaults;
+          (v.mode === "alarm" && v.alarmTime === "")))) return fallback;
     var next = {};
-    Object.keys(defaults).forEach(function (key) { next[key] = v[key]; });
+    Object.keys(defaults()).forEach(function (key) { next[key] = v[key]; });
     if (next.state === "ringing") next.state = "idle";
     if (next.state === "running" && now >= next.deadline) {
       next.state = now - next.deadline < CATCHUP_MS ? "ringing" : "idle";
@@ -92,5 +92,31 @@ var HandlerPathAlarm = (function () {
     return next;
   }
 
-  return Object.freeze({ defaults: defaults, decode: decode, transition: transition });
+  function collectionDefaults() {
+    return { version: 2, selectedId: "alarm-1", alarms: [Object.assign({ id: "alarm-1" }, defaults())] };
+  }
+
+  // Migrate the original single timer/alarm, preserving its deadline and preferences.
+  function decodeCollection(raw, now) {
+    var fallback = collectionDefaults(), value;
+    try { value = JSON.parse(raw); } catch (e) { return fallback; }
+    if (!value || value.version !== 2) {
+      fallback.alarms[0] = Object.assign({ id: "alarm-1" }, decode(raw, defaults(), now));
+      return fallback;
+    }
+    if (!Array.isArray(value.alarms) || !value.alarms.length) return fallback;
+    var ids = new Set(), alarms = [];
+    for (var i = 0; i < value.alarms.length; i++) {
+      var record = value.alarms[i];
+      if (!record || typeof record.id !== "string" || !record.id || ids.has(record.id)) return fallback;
+      var state = decode(JSON.stringify(record), null, now);
+      if (!state) return fallback;
+      ids.add(record.id);
+      alarms.push(Object.assign({ id: record.id }, state));
+    }
+    return { version: 2, selectedId: ids.has(value.selectedId) ? value.selectedId : alarms[0].id, alarms: alarms };
+  }
+
+  return Object.freeze({ defaults: defaults, decode: decode, transition: transition,
+    collectionDefaults: collectionDefaults, decodeCollection: decodeCollection });
 })();

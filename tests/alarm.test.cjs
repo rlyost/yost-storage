@@ -16,7 +16,10 @@ function app(options = {}) {
   const intervals = new Map();
   function element() {
     const listeners = {};
-    return { value: '', hidden: true, open: false, dataset: {}, textContent: '',
+    return { value: '', hidden: true, open: false, dataset: {}, textContent: '', children: [],
+      append(...nodes) { this.children.push(...nodes); },
+      replaceChildren(...nodes) { this.children = nodes; },
+      focus() { document.activeElement = this; },
       addEventListener(name, fn) { listeners[name] = fn; },
       emit(name, event = {}) { listeners[name]?.(event); },
       setAttribute() { this.attributeWrites = (this.attributeWrites || 0) + 1; }, close() { this.open = false; },
@@ -27,6 +30,7 @@ function app(options = {}) {
   document.location = { hash: options.hash || "" };
   document.hidden = false;
   document.getElementById = id => elements[id] ??= element();
+  document.createElement = () => element();
   const preset = element();
   preset.dataset.secs = '60';
   document.querySelectorAll = () => [preset];
@@ -45,12 +49,18 @@ function app(options = {}) {
     clearInterval(id) { intervals.delete(id); }
   });
   return { elements, document, preset, intervals,
-    state: () => JSON.parse(stored),
+    book: () => JSON.parse(stored),
+    state() { const book = JSON.parse(stored);
+      const { id, ...state } = book.alarms.find(entry => entry.id === book.selectedId);
+      return state; },
+    select(index) { elements['alarm-list'].children[index].children[0].emit('click'); },
+    remove(index) { elements['alarm-list'].children[index].children[1].emit('click'); },
     click: id => elements[id].emit('click'),
     advance(ms) { now += ms; },
     tick() { for (const { fn } of [...intervals.values()]) fn(); },
-    timer(seconds) { elements['t-h'].value = 0; elements['t-m'].value = 0;
-      elements['t-s'].value = seconds; elements['btn-set'].emit('click'); }
+    timer(seconds) { elements['t-h'].value = Math.floor(seconds / 3600);
+      elements['t-m'].value = Math.floor(seconds / 60) % 60;
+      elements['t-s'].value = seconds % 60; elements['btn-set'].emit('click'); }
   };
 }
 
@@ -165,4 +175,86 @@ test('countdown ticks skip configuration and closed-dialog writes', () => {
 test('alarm URL opens the alarm dialog on load', () => {
   const a = app({ hash: '#alarm' });
   assert.equal(a.elements['alarm-dialog'].open, true);
+});
+
+test('multiple alarms can be added, edited and deleted without changing other deadlines', () => {
+  const now = new Date(2026, 8, 5, 12).getTime();
+  const a = app({ now });
+  a.timer(60);
+  const first = a.book().alarms[0];
+  a.click('alarm-add');
+  a.elements['a-time'].value = '12:02'; a.click('btn-set');
+  assert.equal(a.book().alarms.length, 2);
+  assert.equal(a.book().alarms[0].deadline, first.deadline);
+  const secondId = a.book().selectedId;
+  a.elements['a-time'].value = '12:03';
+  a.elements['a-time'].emit('input'); a.click('btn-set');
+  assert.equal(a.state().deadline, now + 180000);
+  assert.equal(a.book().selectedId, secondId);
+  assert.equal(a.book().alarms[0].deadline, first.deadline);
+  a.select(0); a.click('btn-stop');
+  assert.equal(a.book().alarms[1].deadline, now + 180000);
+  a.remove(0);
+  assert.equal(a.book().selectedId, secondId);
+  assert.equal(a.state().deadline, now + 180000);
+  a.remove(0);
+  assert.equal(a.book().alarms.length, 1);
+  assert.equal(a.state().state, 'idle');
+  assert.equal(a.intervals.size, 0);
+});
+
+test('simultaneous and staggered alarms ring independently while other timers continue', () => {
+  const a = app(); a.timer(1);
+  a.click('alarm-add'); a.click('mode-timer'); a.timer(1);
+  a.click('alarm-add'); a.click('mode-timer'); a.timer(10);
+  a.advance(1000); a.tick();
+  assert.deepEqual(a.book().alarms.map(entry => entry.state), ['ringing', 'ringing', 'running']);
+  assert.equal(a.elements['alarm-status'].textContent, '2 ALARMS RINGING');
+  assert.equal(a.elements['alarm-ring'].hidden, false);
+  a.click('alarm-off');
+  assert.deepEqual(a.book().alarms.map(entry => entry.state), ['idle', 'idle', 'running']);
+  assert.equal(a.intervals.size, 1);
+  a.advance(9000); a.tick();
+  assert.equal(a.state().state, 'ringing');
+  a.remove(2);
+  assert.equal(a.elements['alarm-ring'].hidden, true);
+  assert.equal(a.intervals.size, 0);
+});
+
+test('a selected idle alarm does not prevent other alarms from catching up or reloading', () => {
+  const now = new Date(2026, 8, 5, 12).getTime();
+  const a = app({ now }); a.timer(1); a.click('alarm-add');
+  const saved = JSON.stringify(a.book());
+  const restored = app({ now: now + 1000, raw: saved });
+  assert.equal(restored.state().mode, 'alarm');
+  assert.equal(restored.state().state, 'idle');
+  assert.equal(restored.book().alarms[0].state, 'ringing');
+  assert.equal(restored.elements['alarm-ring'].hidden, false);
+  a.document.hidden = true; a.advance(1000);
+  a.document.hidden = false; a.document.emit('visibilitychange');
+  assert.equal(a.book().alarms[0].state, 'ringing');
+});
+
+test('editing a paused timer sets a new duration and invalid edits preserve running alarms', () => {
+  const a = app(); a.timer(60); a.advance(10000); a.click('btn-stop');
+  a.elements['t-s'].value = 5; a.elements['t-s'].emit('input');
+  a.click('btn-set');
+  assert.equal(a.state().durationMs, 65000);
+  const deadline = a.state().deadline;
+  for (const value of [-1, 60, 0.5, Infinity]) {
+    a.elements['t-m'].value = value; a.click('btn-set');
+    assert.equal(a.state().deadline, deadline);
+    assert.equal(a.state().state, 'running');
+  }
+});
+
+test('ring timeout belongs to each alarm and is not restarted by unrelated changes', () => {
+  const a = app(); a.timer(1); a.click('alarm-add'); a.click('mode-timer'); a.timer(121);
+  a.advance(1000); a.tick();
+  a.advance(120000); a.tick();
+  a.advance(180000); a.tick();
+  assert.deepEqual(a.book().alarms.map(entry => entry.state), ['idle', 'ringing']);
+  a.advance(120000); a.tick();
+  assert.equal(a.elements['alarm-ring'].hidden, true);
+  assert.equal(a.intervals.size, 0);
 });

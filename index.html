@@ -281,6 +281,8 @@
 
       .alarm-dialog {
         width: min(94vw, 29rem);
+        max-height: calc(100svh - 2rem);
+        overflow-y: auto;
         padding: 2.25rem;
         border: 1px solid #d8d8d8;
         border-radius: 0.75rem;
@@ -322,6 +324,42 @@
       .alarm-close:hover {
         opacity: 1;
       }
+
+      .alarm-list-head, .alarm-entry {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+      }
+
+      .alarm-list-head { margin-bottom: 0.75rem; }
+      .alarm-list-head h3 { margin: 0; font-size: 0.875rem; }
+      .alarm-list {
+        display: grid;
+        gap: 0.5rem;
+        max-height: 12rem;
+        overflow-y: auto;
+        margin: 0 0 1.5rem;
+        padding: 0.2rem;
+        list-style: none;
+      }
+
+      .alarm-list-head button, .alarm-entry button {
+        padding: 0.6rem 0.7rem;
+        border: 1px solid #999;
+        border-radius: 0.4rem;
+        background: none;
+        color: inherit;
+        font: inherit;
+        font-size: 0.8125rem;
+        cursor: pointer;
+      }
+
+      .alarm-entry .alarm-select { flex: 1; min-width: 0; text-align: left; }
+      .alarm-select[aria-pressed="true"] { border-color: currentColor; box-shadow: inset 0 0 0 1px currentColor; }
+      .alarm-select strong, .alarm-select small { display: block; }
+      .alarm-select small { margin-top: 0.25rem; opacity: 0.7; }
+      .alarm-help { font-size: 0.8125rem; line-height: 1.5; opacity: 0.7; }
 
       .alarm-modes {
         display: flex;
@@ -759,11 +797,18 @@
 
     <dialog class="alarm-dialog" id="alarm-dialog" aria-labelledby="alarm-title">
       <div class="alarm-head">
-        <h2 id="alarm-title">Set Alarm</h2>
+        <h2 id="alarm-title">Alarms</h2>
         <button type="button" class="alarm-close" id="alarm-close" aria-label="Close">&times;</button>
       </div>
 
-      <div class="alarm-modes" role="tablist">
+      <div class="alarm-list-head">
+        <h3>Saved alarms &amp; timers</h3>
+        <button type="button" id="alarm-add">+ Add alarm</button>
+      </div>
+      <ul class="alarm-list" id="alarm-list" aria-label="Saved alarms and timers"></ul>
+      <p class="alarm-help">Select an entry to edit it. Each runs independently. Keep this page open for alarms to ring.</p>
+
+      <div class="alarm-modes" role="tablist" aria-label="Timer or alarm">
         <button type="button" role="tab" id="mode-timer" data-mode="timer" aria-selected="true">Timer</button>
         <button type="button" role="tab" id="mode-alarm" data-mode="alarm" aria-selected="false">Alarm</button>
       </div>
@@ -791,7 +836,7 @@
       </div>
 
       <div class="alarm-readout" aria-live="polite">
-        <span id="alarm-big">&mdash;</span><small id="alarm-sub">Not set</small>
+        <span id="alarm-big">&mdash;</span><small id="alarm-sub" role="status">Not set</small>
       </div>
 
       <div class="alarm-actions">
@@ -808,10 +853,11 @@
 
     <div class="alarm-ring" id="alarm-ring" hidden role="alertdialog" aria-label="Alarm ringing">
       <img id="alarm-ring-logo" alt="">
+      <p id="alarm-ring-text"></p>
       <button type="button" class="alarm-off" id="alarm-off">Turn Off</button>
     </div>
 
-    <script src="assets/js/alarm-state.js"></script>
-    <script src="assets/js/alarm.js?v=popup-20260917"></script>
+    <script src="assets/js/alarm-state.js?v=multiple-20261102"></script>
+    <script src="assets/js/alarm.js?v=multiple-20261102"></script>
   </body>
 </html>

@@ -49,13 +49,16 @@ sleeps or the clock changes.
 
 ### Timer / alarm
 
-Opened as a popup on the current page from **Set Alarm** in the menu. Two modes share one state machine:
+Opened as a popup on the current page from **Set Alarm** in the menu. The saved list
+supports multiple independent alarms and timers. Choose **+ Add alarm** to create an
+entry, select an entry to edit it, or use its **Delete** button to remove it. Each entry
+has its own time, sound setting, and controls. Two modes are available:
 
 - **Timer** — hours/minutes/seconds, plus 1, 5, 10, 25, 30 minute and 1 hour presets.
 - **Alarm** — a wall-clock time; a time already past today rolls to tomorrow.
 
-Controls are **Set** (arms it; reads *Resume* after a Stop), **Stop** (banks the
-remaining time so Resume picks up exactly where it left off — on a wall-clock alarm
+Controls are **Set** (arms it; reads *Resume* after a Stop, or *Save changes* when
+editing a running entry), **Stop** (banks the remaining time so Resume picks up exactly where it left off — on a wall-clock alarm
 there is nothing to resume into, so Stop disarms it), **Reset** (back to the configured
 duration, disarmed), and **Turn Off** (silences a ringing alarm).
 
@@ -66,8 +69,15 @@ photosensitive-seizure threshold — and `prefers-reduced-motion` gets a steady 
 instead. Ringing self-stops after five minutes. A repeating WebAudio beep is on by
 default and can be switched off in the panel.
 
-State persists in `localStorage` under `handlerpath.alarm`. A deadline missed while the
-tab was closed still rings if it came due in the last five minutes; anything staler is
+Changing a running entry's time and choosing **Save changes** reschedules that entry.
+Editing, stopping, resetting, or deleting one entry leaves the others running. The
+status badge shows the next deadline and the number of additional active entries.
+Overlapping alarms share the ringing overlay; **Turn Off** on that overlay dismisses
+all currently ringing entries while future deadlines continue.
+
+State persists as a versioned collection in `localStorage` under `handlerpath.alarm`.
+Existing single-alarm records migrate automatically, preserving their deadline and
+sound preference. A deadline missed while the tab was closed still rings if it came due in the last five minutes; anything staler is
 dropped silently. Deadlines are stored as absolute timestamps rather than accumulated
 intervals, so a throttled background tab or a sleeping laptop cannot drift the count.
 The visible countdown updates once per second and skips DOM rendering while the page is
@@ -203,7 +213,7 @@ only for tests). No packages or build step are needed. Tests use controlled
 browser boundaries; native dialog and audio behavior still need browser checks.
 
 Malformed saved alarm records now fall back atomically to the default idle
-five-minute timer. Valid saved records keep the existing format. Selecting a
+five-minute timer. Valid legacy records migrate to the collection format. Selecting a
 preset cancels the current countdown or ringing and leaves its duration ready
 for Set.
 
