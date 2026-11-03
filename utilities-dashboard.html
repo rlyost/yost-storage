@@ -42,7 +42,7 @@ footer{max-width:1200px;margin:0 auto;padding:10px 20px 40px;color:var(--mute);f
 <body>
 <header>
   <h1>Utilities Dashboard</h1>
-  <p>Household · Prepared by Dexter (utilities assistant) · Data as of Mon 2026-11-02, 5:50 PM Pacific</p>
+  <p>Household · Prepared by Dexter (utilities assistant) · Data as of Tue 2026-11-03, 3:50 AM Pacific</p>
 </header>
 <main>
 
@@ -78,6 +78,8 @@ footer{max-width:1200px;margin:0 auto;padding:10px 20px 40px;color:var(--mute);f
   <tr><td>California Water Service</td><td>Home</td><td>2026-10-28</td><td class="n">$146.44</td><td>2026-11-16</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Explained</span> ~$6 carry-over from $150 autopay cap</td></tr>
   <tr><td>Comcast Business</td><td>Office</td><td>2026-10-27</td><td class="n">$278.47</td><td>2026-11-19</td><td><span class="tag ok">Yes</span></td><td class="mute">No prior bills on file yet</td></tr>
   <tr><td>Comcast Business</td><td>Site 2</td><td>2026-10-14</td><td class="n">$305.45</td><td>2026-11-06</td><td><span class="tag ok">Yes</span></td><td class="mute">No prior bills on file yet</td></tr>
+  <tr><td>Superior Plus Energy (propane, level budget plan)</td><td>—</td><td>2026-11-01</td><td class="n">$295.00</td><td>2026-11-20</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Normal</span> Budget payment unchanged from Oct ($295); no delivery this period</td></tr>
+  <tr><td>Patriot Mobile (cell)</td><td>—</td><td>2026-10-24</td><td class="n">$229.44</td><td>2026-10-29</td><td><span class="tag ok">Yes</span></td><td class="mute">First bill on file (autopay charged)</td></tr>
   <tr><td>GreenWaste Recovery (trash)</td><td>—</td><td colspan="2" class="mute">Billed quarterly; no bill logged yet</td><td>—</td><td><span class="tag ok">Yes</span></td><td class="mute">Will compare by quarter</td></tr>
   <tr><td>PG&amp;E (delivery + gas) / Peninsula Clean Energy</td><td>Home</td><td colspan="2" class="mute">No bill emails logged yet</td><td>—</td><td class="mute">Unknown</td><td class="mute">—</td></tr>
 </table>
@@ -138,19 +140,37 @@ footer{max-width:1200px;margin:0 auto;padding:10px 20px 40px;color:var(--mute);f
 
 <!-- WATER / TRASH / GAS -->
 <section>
-<h2>Water, trash and gas</h2>
+<h2>Water, trash, gas, propane and mobile</h2>
 <div class="grid g2">
   <div class="card"><h2>Cal Water · recent amounts</h2><div id="c-water"></div><p class="mute">Earlier payments from bill-pay / Cal Water emails. $150.00 is the autopay cap, not the full bill (last month was ~$156). Usage (CCF) isn't in the emails.</p></div>
   <div class="card">
     <h2>Trash · GreenWaste Recovery</h2><p>Autopay, billed quarterly. Each bill will be compared with the previous quarter and the same quarter last year. No bill logged yet.</p>
     <h2 style="margin-top:16px">Gas · PG&amp;E</h2><p class="mute">No gas usage or bills on file yet. A PG&amp;E Green Button gas export or bill would fill this in.</p>
   </div>
+  <div class="card">
+    <h2>Propane · Superior Plus Energy</h2>
+    <p>Level budget plan on autopay: <b>$295.00/month</b> (same in Oct and Nov 2026). Because the payment is fixed, I track gallons delivered and price per gallon instead of the bill amount.</p>
+    <table>
+      <tr><th>Statement</th><th class="n">Budget payment</th><th class="n">Gallons delivered</th><th class="n">Price/gal</th><th class="n">Account balance</th></tr>
+      <tr><td>2026-11-01</td><td class="n">$295.00</td><td class="n">0</td><td class="n">—</td><td class="n">$3,427.29 credit</td></tr>
+    </table>
+    <p class="mute">No delivery between the Oct and Nov statements, so no price per gallon yet. Deliveries are irregular and heavier in winter. I flag only a budget change, a true-up/catch-up balance, or a price jump over 20%.</p>
+  </div>
+  <div class="card">
+    <h2>Mobile · Patriot Mobile</h2>
+    <p>Autopay is active.</p>
+    <table>
+      <tr><th>Statement</th><th class="n">Amount</th><th>Due</th><th>Autopay</th></tr>
+      <tr><td>2026-10-24</td><td class="n">$229.44</td><td>2026-10-29</td><td><span class="tag ok">Yes</span></td></tr>
+    </table>
+    <p class="mute">First bill on file. Later bills will be compared with the last 3 months and the same month last year.</p>
+  </div>
 </div>
 </section>
 
 </main>
 <footer>
-Sources: PG&amp;E Green Button interval export (2025-10-22 to 2026-10-22; the DailyUsageData zip holds the same file, counted once) · Utility Bills Google Sheet · Comcast Business SOAs for both sites · Gmail bill notices. Dexter never pays, switches plans or contacts a utility without Rick's OK.
+Sources: PG&amp;E Green Button interval export (2025-10-22 to 2026-10-22; the DailyUsageData zip holds the same file, counted once) · Utility Bills Google Sheet · Comcast Business SOAs for both sites · Gmail bill notices (incl. Superior Plus and Patriot Mobile statements). Dexter never pays, switches plans or contacts a utility without Rick's OK.
 </footer>
 <script>
 const D={"tot":14238,"cost":4867.02,"days":365,"peakD":10.7,"peak49":26.0,"months":[["2025-10",303,132.61,9],["2025-11",1077,470.94,30],["2025-12",937,410.37,31],["2026-01",1146,472.67,31],["2026-02",1098,415.15,28],["2026-03",1262,385.71,31],["2026-04",1163,355.31,30],["2026-05",1111,339.1,31],["2026-06",1245,382.27,30],["2026-07",946,289.95,31],["2026-08",1612,495.14,31],["2026-09",1198,369.52,30],["2026-10",1140,348.28,22]],"hw":[1.14,1.22,1.16,1.02,1.04,1.21,1.4,2.12,1.7,1.37,1.35,1.51,1.59,1.47,1.47,1.68,1.73,1.88,1.98,2.2,2.3,2.52,1.7,1.23],"hs":[1.67,1.41,1.33,1.33,1.46,1.09,1.38,1.8,1.82,1.38,1.35,1.41,1.38,1.42,1.57,1.48,1.68,1.8,1.79,2.28,2.72,3.28,2.31,1.85],"max":["2026-08-09",99.9],"min":["2025-12-24",10.5]};
