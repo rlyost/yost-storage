@@ -9,6 +9,8 @@ CSS, and JavaScript; the landing page additionally loads local responsive image 
 - `index.html` — **The Pack.** Landing page: a logo that swaps itself at sunrise and
   sunset, a large digital clock, a pop-up calculator, a timer/alarm, and the **RLTW!**
   signoff.
+- `dashboards/index.html` — Lab results dashboard, with TitanLog training history at
+  `dashboards/titanlog.html`. Both are publicly hosted and include noindex metadata.
 - `PAWS_Training_Manual.html` — PAWS Service Dog Training Manual. Sticky header with
   live search and tab filtering, a sidebar table of contents, and session logs.
 - `zsh_terminal_colorization_guide.html` — Walkthrough for switching to Zsh and
@@ -184,6 +186,35 @@ python3 -m http.server 8000
 ```
 
 Then visit <http://localhost:8000>.
+
+## Dashboards
+
+The homepage **Dashboard** menu opens `/dashboards/index.html`; the TitanLog view is
+`/dashboards/titanlog.html`. All styles, scripts, and data required by these pages live
+in `dashboards/`, so GitHub Pages can serve them directly without a build step.
+Both pages link to the Utilities dashboard.
+
+The lab dashboard contains 75 markers and 522 measurements. TitanLog contains the
+correct workout backup: 267 sessions, including 147 completed and 120 abandoned,
+plus exercise progress, saved record entries, body data, and templates. Their data
+files are part of this public repository and site, as explicitly approved by the owner.
+
+Both dashboard pages retain `noindex, nofollow` meta tags. GitHub Pages does not apply
+Cloudflare `_headers` rules; the local draft's `_headers` file is not deployed here.
+No indexing directive is used as an access restriction.
+
+Run `node --test tests/*.test.cjs tests/dashboards/*.test.cjs` for the complete Node
+suite. `tests/dashboards/` also contains browser checks for both dashboard views.
+To refresh the supplied data, run the matching importer, then review and commit the
+generated data file:
+
+```sh
+python3 scripts/dashboards/extract_workbook.py /absolute/path/to/workbook.xlsx
+python3 scripts/dashboards/extract_titanlog.py /absolute/path/to/titanlog-backup.json
+```
+
+Original input documents, local Sites configuration, and the private draft repository
+are not needed to serve the public dashboards.
 
 ## Deployment
 
