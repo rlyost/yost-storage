@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Utilities Dashboard</title>
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--ink:#1d2330;--mute:#6b7385;--line:#e3e6ec;--blue:#2f6fde;--orange:#e8833a;--red:#c8423b;--green:#2e8b57;--amber:#c99a1a}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:#1d2330;color:#fff;padding:22px 28px}
+header h1{margin:0;font-size:24px}
+header p{margin:4px 0 0;color:#b8c0d0;font-size:13px}
+main{max-width:1200px;margin:0 auto;padding:20px}
+.grid{display:grid;gap:16px}
+.g4{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.g2{grid-template-columns:repeat(auto-fit,minmax(460px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.card h2{margin:0 0 10px;font-size:16px}
+.card h3{margin:14px 0 6px;font-size:14px;color:var(--mute);text-transform:uppercase;letter-spacing:.04em}
+.kpi .v{font-size:26px;font-weight:700}
+.kpi .l{color:var(--mute);font-size:13px}
+.kpi .s{font-size:12px;color:var(--mute);margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--mute);font-weight:600;font-size:12px;text-transform:uppercase}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;padding:1px 8px;border-radius:10px;font-size:12px;font-weight:600}
+.ok{background:#e3f4ea;color:var(--green)}.warn{background:#fdf1dc;color:#9a6b00}.bad{background:#fbe4e2;color:var(--red)}.info{background:#e5edfb;color:var(--blue)}
+.alert{border-left:4px solid var(--amber)}
+.mute{color:var(--mute);font-size:13px}
+svg text{font-size:11px;fill:#6b7385}
+a{color:var(--blue)}
+ul{margin:6px 0;padding-left:20px}
+section{margin-top:22px}
+section>h2{font-size:18px;margin:0 0 10px}
+.legend span{display:inline-flex;align-items:center;margin-right:14px;font-size:12px;color:var(--mute)}
+.legend i{width:12px;height:12px;border-radius:2px;margin-right:5px;display:inline-block}
+footer{max-width:1200px;margin:0 auto;padding:10px 20px 40px;color:var(--mute);font-size:12px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Utilities Dashboard</h1>
+  <p>Household · Prepared by Dexter (utilities assistant) · Data as of Mon 2026-11-02, 5:50 PM Pacific</p>
+</header>
+<main>
+
+<!-- ACTION ITEMS -->
+<div class="card alert">
+  <h2>Needs attention</h2>
+  <table>
+    <tr><th>Item</th><th>Status</th><th>Next step</th></tr>
+    <tr><td><b>Cal Water bill $146.44</b>, due Mon 2026-11-16</td>
+        <td><span class="tag ok">Explained</span> Includes ~$6 carried over from last month's ~$156 bill</td>
+        <td>Autopay is capped at $150, so any bill over $150 is only partly paid. This month's own charges are ~$140. No action needed.</td></tr>
+    <tr><td><b>Due dates</b></td><td><span class="tag ok">Covered</span></td><td>All open bills are on autopay. Nothing to pay by hand.</td></tr>
+    <tr><td><b>Electric rate plan</b></td><td><span class="tag ok">Cheapest</span></td><td>E-TOU-D is still the cheapest plan you qualify for. Re-check after a rate change, new season (summer 2027-06-01), or new data.</td></tr>
+  </table>
+</div>
+
+<!-- KPIs -->
+<section>
+<div class="grid g4">
+  <div class="card kpi"><div class="l">Open bills (all autopay)</div><div class="v" id="k-open"></div><div class="s">Cal Water + 2 Comcast accounts</div></div>
+  <div class="card kpi"><div class="l">Electricity, last 12 months</div><div class="v" id="k-kwh"></div><div class="s" id="k-kwh-s"></div></div>
+  <div class="card kpi"><div class="l">Electric cost (PG&amp;E estimate in export)</div><div class="v" id="k-cost"></div><div class="s">2025-10-23 to 2026-10-22. Not a bill total.</div></div>
+  <div class="card kpi"><div class="l">Internet, monthly (latest statements)</div><div class="v">$583.92</div><div class="s">Comcast Office $278.47 + Site 2 $305.45</div></div>
+</div>
+</section>
+
+<!-- OPEN BILLS -->
+<section>
+<h2>Bills on file</h2>
+<div class="card">
+<table>
+  <tr><th>Provider</th><th>Account</th><th>Statement</th><th class="n">Amount</th><th>Due</th><th>Autopay</th><th>Compared with</th></tr>
+  <tr><td>California Water Service</td><td>Home</td><td>2026-10-28</td><td class="n">$146.44</td><td>2026-11-16</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Explained</span> ~$6 carry-over from $150 autopay cap</td></tr>
+  <tr><td>Comcast Business</td><td>Office</td><td>2026-10-27</td><td class="n">$278.47</td><td>2026-11-19</td><td><span class="tag ok">Yes</span></td><td class="mute">No prior bills on file yet</td></tr>
+  <tr><td>Comcast Business</td><td>Site 2</td><td>2026-10-14</td><td class="n">$305.45</td><td>2026-11-06</td><td><span class="tag ok">Yes</span></td><td class="mute">No prior bills on file yet</td></tr>
+  <tr><td>GreenWaste Recovery (trash)</td><td>—</td><td colspan="2" class="mute">Billed quarterly; no bill logged yet</td><td>—</td><td><span class="tag ok">Yes</span></td><td class="mute">Will compare by quarter</td></tr>
+  <tr><td>PG&amp;E (delivery + gas) / Peninsula Clean Energy</td><td>Home</td><td colspan="2" class="mute">No bill emails logged yet</td><td>—</td><td class="mute">Unknown</td><td class="mute">—</td></tr>
+</table>
+<p class="mute">Source: Utility Bills sheet (private), updated by the Tue &amp; Fri 3:45 AM bill check.</p>
+</div>
+</section>
+
+<!-- ELECTRIC -->
+<section>
+<h2>Electricity · PG&amp;E + Peninsula Clean Energy · Home</h2>
+<div class="grid g4">
+  <div class="card kpi"><div class="l">Current plan</div><div class="v">E-TOU-D</div><div class="s">Peak = weekdays 5–8 PM</div></div>
+  <div class="card kpi"><div class="l">Use in E-TOU-D peak</div><div class="v" id="k-pk"></div><div class="s">Share of yearly kWh, weekdays 5–8 PM (holidays not removed)</div></div>
+  <div class="card kpi"><div class="l">Use 4–9 PM, every day</div><div class="v" id="k-pk49"></div><div class="s">The window E-TOU-C and E-ELEC would price as peak</div></div>
+  <div class="card kpi"><div class="l">Highest / lowest day</div><div class="v" id="k-mx"></div><div class="s" id="k-mx-s"></div></div>
+</div>
+<div class="grid g2" style="margin-top:16px">
+  <div class="card"><h2>Monthly use (kWh) and PG&amp;E cost estimate</h2><div class="legend"><span><i style="background:var(--blue)"></i>kWh</span><span><i style="background:var(--orange)"></i>Cost estimate ($)</span><span class="mute">Oct 2025 and Oct 2026 are partial months</span></div><div id="c-month"></div></div>
+  <div class="card"><h2>Average use by hour of day (kWh)</h2><div class="legend"><span><i style="background:var(--blue)"></i>Winter (Oct–May)</span><span><i style="background:var(--orange)"></i>Summer (Jun–Sep)</span><span><i style="background:#f3d6d4"></i>E-TOU-D peak 5–8 PM</span></div><div id="c-hour"></div></div>
+</div>
+<div class="card" style="margin-top:16px"><h2>Daily use, 2025-10-23 to 2026-10-22 (kWh)</h2><div id="c-daily"></div></div>
+<div class="card" style="margin-top:16px">
+  <h2>What drives the electric cost</h2>
+  <ul>
+    <li><b>Evenings are the biggest hours.</b> Use climbs from 4 PM and tops out at 9 PM (2.5 kWh/hr in winter, 3.3 in summer). The 9 PM hour falls outside every plan's peak window, and E-TOU-D's peak is only 3 weekday hours (vs. 5 hours every day on E-TOU-C), which is why E-TOU-D comes out cheapest.</li>
+    <li><b>High base load.</b> Overnight (1–4 AM) use averages 1.0–1.7 kWh an hour. That always-on load alone adds up to about 25–40 kWh a day, most of the 39 kWh daily average. Finding always-on loads (well/pool pump, heaters, old fridge/freezer, servers) is the biggest savings lever.</li>
+    <li><b>August 2026 was the highest month</b> (1,612 kWh), with the top day on 2026-08-09 (99.9 kWh). Worth asking what ran that week.</li>
+    <li><b>Moving use out of weekdays 5–8 PM</b> (dishwasher, laundry, dryer) saves the most per kWh on E-TOU-D.</li>
+  </ul>
+</div>
+</section>
+
+<!-- INTERNET -->
+<section>
+<h2>Internet · Comcast Business</h2>
+<div class="grid g2">
+  <div class="card">
+    <h2>Contracts (signed 2025-03-04, term 2025-04-01 to 2028-03-31)</h2>
+    <table>
+      <tr><th>Site</th><th>Service</th><th class="n">Contract monthly</th><th class="n">Latest bill</th></tr>
+      <tr><td>Office</td><td>Business Internet Performance (500 Mbps), SecurityEdge, 1 Mobility Voice line</td><td class="n">$204.94</td><td class="n">$278.47</td></tr>
+      <tr><td>Site 2</td><td>Business Internet Advanced (800 Mbps) + Premium Speed Upgrade, SecurityEdge, Connection Pro, 1 Mobility Voice line</td><td class="n">$249.94</td><td class="n">$305.45</td></tr>
+    </table>
+    <p class="mute">Contract monthly = promo package + equipment at signing. Package promo ran months 1–12, then steps up; the contracts include $20 yearly increases. Latest bills also include taxes, fees and any mobile lines.</p>
+  </div>
+  <div class="card">
+    <h2>Early termination fee if you cancel</h2>
+    <p>$35 × full months left, <b>per site</b> (Comcast terms v42.2). 30 days' notice required.</p>
+    <table id="etf"><tr><th>Cancellation takes effect</th><th class="n">Months left</th><th class="n">One site</th><th class="n">Both sites</th></tr></table>
+    <p class="mute">AT&amp;T pays up to $750 toward a competitor's fee (reward card). Unconfirmed: whether that is per account/location, and whether it covers Comcast at Site 2 when AT&amp;T service is at the home fiber point.</p>
+  </div>
+</div>
+<div class="card" style="margin-top:16px">
+  <h2>AT&amp;T Fiber watch · home fiber point</h2>
+  <p><span class="tag info">Being built</span> CPUC "San Mateo - 1" grant, no completion date. Plan when available: AT&amp;T Business Fiber 1 Gig (~$140/mo). Site 2 is fed from the fiber point by 5G radio. Checked automatically on the 14th and 28th at 3:23 AM.</p>
+</div>
+</section>
+
+<!-- WATER / TRASH / GAS -->
+<section>
+<h2>Water, trash and gas</h2>
+<div class="grid g2">
+  <div class="card"><h2>Cal Water · recent amounts</h2><div id="c-water"></div><p class="mute">Earlier payments from bill-pay / Cal Water emails. $150.00 is the autopay cap, not the full bill (last month was ~$156). Usage (CCF) isn't in the emails.</p></div>
+  <div class="card">
+    <h2>Trash · GreenWaste Recovery</h2><p>Autopay, billed quarterly. Each bill will be compared with the previous quarter and the same quarter last year. No bill logged yet.</p>
+    <h2 style="margin-top:16px">Gas · PG&amp;E</h2><p class="mute">No gas usage or bills on file yet. A PG&amp;E Green Button gas export or bill would fill this in.</p>
+  </div>
+</div>
+</section>
+
+</main>
+<footer>
+Sources: PG&amp;E Green Button interval export (2025-10-22 to 2026-10-22; the DailyUsageData zip holds the same file, counted once) · Utility Bills Google Sheet · Comcast Business SOAs for both sites · Gmail bill notices. Dexter never pays, switches plans or contacts a utility without Rick's OK.
+</footer>
+<script>
+const D={"tot":14238,"cost":4867.02,"days":365,"peakD":10.7,"peak49":26.0,"months":[["2025-10",303,132.61,9],["2025-11",1077,470.94,30],["2025-12",937,410.37,31],["2026-01",1146,472.67,31],["2026-02",1098,415.15,28],["2026-03",1262,385.71,31],["2026-04",1163,355.31,30],["2026-05",1111,339.1,31],["2026-06",1245,382.27,30],["2026-07",946,289.95,31],["2026-08",1612,495.14,31],["2026-09",1198,369.52,30],["2026-10",1140,348.28,22]],"hw":[1.14,1.22,1.16,1.02,1.04,1.21,1.4,2.12,1.7,1.37,1.35,1.51,1.59,1.47,1.47,1.68,1.73,1.88,1.98,2.2,2.3,2.52,1.7,1.23],"hs":[1.67,1.41,1.33,1.33,1.46,1.09,1.38,1.8,1.82,1.38,1.35,1.41,1.38,1.42,1.57,1.48,1.68,1.8,1.79,2.28,2.72,3.28,2.31,1.85],"max":["2026-08-09",99.9],"min":["2025-12-24",10.5]};
+D.dv=[31,39.9,34.2,40.7,31.6,31.8,32.7,30.6,30.1,27.7,43.4,36.6,45.7,42.1,38.3,31.7,30.2,30.1,28.5,30.4,33,31.3,37.5,50.3,38.1,36.2,37.8,34.6,37.8,32.5,39.5,36.6,35.9,33.4,32.2,40,29.8,39,36.6,33.6,30.9,34.1,48.2,34.1,30.9,35.8,39,31.8,33.1,34.8,40.8,33.6,32.2,29.8,30.7,28.2,31,27.2,49.9,38.6,28.5,20.2,10.5,21.5,20.8,22.5,22.7,21.8,21,19.7,28.2,36.1,33.5,33.3,37.7,37.6,36.9,48.9,45.8,48.8,43.7,30.4,38.5,40.7,32.1,32.9,30,31.8,29.8,36.4,37.6,35.4,38.2,32.8,33.1,39.5,41.2,38.8,36.1,34.8,44.9,35.3,36.5,38.1,31,53.6,36.6,49.8,45.4,45.5,37.5,41.2,51.9,47.5,35.7,49.4,28.1,29,26.4,44.2,40.8,31.5,35.6,38.6,42.3,36.6,32.7,32.7,44.6,40.9,57.2,39.4,37.8,41.4,41.9,40.1,41.3,38.3,38.2,38.9,39,34.2,29.1,33.3,33.8,42.6,42.4,35.9,42.8,43.7,38.4,81.7,58.9,32.8,34.4,34.3,34.8,41.4,38.3,34.8,35,41.2,39.5,49,42.7,36.5,40.1,38.2,40.4,38.6,34.5,46.4,45.3,36.1,32.8,29.6,38.9,35.3,35.5,40.3,47.1,59.7,42.2,30.7,30.8,33.2,41,36.5,32,33.4,29.7,31,52.9,27,30.3,34.2,30.6,35.4,34.9,36.2,37,37,31.4,31.5,33.2,32.9,29.2,32.4,33.9,50.5,58.1,32.7,37.4,28.7,30.6,44.2,34.8,33.9,34.5,34.4,50.5,75.6,72.8,54,55,44.3,40.7,47.5,45.3,38.8,45.3,52.9,59.9,41.5,43.4,45,53.9,51.2,48.4,31.8,23.9,23.3,23.7,47.9,28.5,25.3,25.7,25.8,26.5,23.6,23.5,38.8,21.5,19.9,19.4,21.1,22.3,22.5,20.2,16.9,17.4,16.7,19.4,18.5,19.6,32.6,22.3,19.6,20.7,45.7,42.1,45.8,39,39.4,49.4,35.7,38.8,44.1,45.3,42.4,53.9,35.5,88.7,59.6,53.5,61.5,50.5,46.4,56.8,61.7,99.9,56.3,44,41.9,34.3,33.1,36.1,59.4,47.4,46.8,57,56.7,45.9,44.5,61,56.1,49.9,51.7,55.1,38.9,47.4,35.9,33.7,57.7,33,27.3,28,34.3,37.1,40.8,34.1,50.8,57.2,59.5,50.5,35,38.9,30.8,32.8,34.8,29.2,44.4,38.2,36.5,34.4,41.9,36.5,30.1,45.7,45.3,41.8,40.1,51.6,43.5,45,82.1,84.9,58.7,92.7,73.8,71.3,42.6,43.4,25.9,45.9,35.3,26.7,28.9,27.8,84,77.8,40.5,36,33.9,39.7];
+D.daily=D.dv.map((v,i)=>{const t=new Date(Date.UTC(2025,9,23+i));return [t.toISOString().slice(0,10),v]});
+const $=id=>document.getElementById(id);
+const fmt=n=>n.toLocaleString('en-US');
+const money=n=>'$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+$('k-open').textContent=money(146.44+278.47+305.45);
+$('k-kwh').textContent=fmt(D.tot)+' kWh';
+$('k-kwh-s').textContent='About '+(D.tot/D.days).toFixed(0)+' kWh a day over '+D.days+' days';
+$('k-cost').textContent='$'+fmt(Math.round(D.cost));
+$('k-pk').textContent=D.peakD+'%';
+$('k-pk49').textContent=D.peak49+'%';
+$('k-mx').textContent=D.max[1]+' / '+D.min[1];
+$('k-mx-s').textContent='kWh on '+D.max[0]+' / '+D.min[0];
+const NS='http://www.w3.org/2000/svg';
+function svg(w,h){const s=document.createElementNS(NS,'svg');s.setAttribute('viewBox',`0 0 ${w} ${h}`);s.setAttribute('width','100%');return s}
+function el(s,t,a,txt){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!==undefined)e.textContent=txt;s.appendChild(e);return e}
+function axis(s,L,T,W,H,max,step,fmtv,side){for(let v=0;v<=max;v+=step){const y=T+H-v/max*H;el(s,'line',{x1:L,x2:L+W,y1:y,y2:y,stroke:'#eef0f4'});el(s,'text',{x:side?L+W+4:L-4,y:y+4,'text-anchor':side?'start':'end'},fmtv(v))}}
+// monthly
+(function(){const w=560,h=260,L=44,T=10,W=470,H=200,s=svg(w,h);const mk=1800,mc=600;axis(s,L,T,W,H,mk,300,v=>fmt(v));
+for(let v=0;v<=mc;v+=100){el(s,'text',{x:L+W+4,y:T+H-v/mc*H+4},'$'+v)}
+const n=D.months.length,bw=W/n;D.months.forEach((m,i)=>{const x=L+i*bw;const hk=m[1]/mk*H,hc=m[2]/mc*H;
+const r=el(s,'rect',{x:x+bw*.12,y:T+H-hk,width:bw*.38,height:hk,fill:'#2f6fde',opacity:m[3]<28?.45:1});el(r,'title',{},`${m[0]}: ${fmt(m[1])} kWh (${m[3]} days)`);
+const r2=el(s,'rect',{x:x+bw*.5,y:T+H-hc,width:bw*.38,height:hc,fill:'#e8833a',opacity:m[3]<28?.45:1});el(r2,'title',{},`${m[0]}: ${money(m[2])}`);
+const mo=new Date(m[0]+'-15').toLocaleString('en-US',{month:'short'});el(s,'text',{x:x+bw/2,y:T+H+14,'text-anchor':'middle'},mo);
+if(m[0].endsWith('-01')||i==0)el(s,'text',{x:x+bw/2,y:T+H+28,'text-anchor':'middle'},m[0].slice(0,4))});
+$('c-month').appendChild(s)})();
+// hourly
+(function(){const w=560,h=250,L=36,T=10,W=500,H=200,s=svg(w,h),mx=3.5;const bw=W/24;
+el(s,'rect',{x:L+17*bw,y:T,width:3*bw,height:H,fill:'#f3d6d4',opacity:.6});axis(s,L,T,W,H,mx,.5,v=>v.toFixed(1));
+[['hw','#2f6fde'],['hs','#e8833a']].forEach(([k,c])=>{const pts=D[k].map((v,i)=>`${L+i*bw+bw/2},${T+H-v/mx*H}`).join(' ');el(s,'polyline',{points:pts,fill:'none',stroke:c,'stroke-width':2.5});
+D[k].forEach((v,i)=>{const p=el(s,'circle',{cx:L+i*bw+bw/2,cy:T+H-v/mx*H,r:3,fill:c});el(p,'title',{},`${i}:00 — ${v} kWh`)})});
+for(let i=0;i<24;i+=3){const lab=i==0?'12a':i<12?i+'a':i==12?'12p':(i-12)+'p';el(s,'text',{x:L+i*bw+bw/2,y:T+H+15,'text-anchor':'middle'},lab)}
+$('c-hour').appendChild(s)})();
+// daily
+(function(){const w=1140,h=200,L=36,T=10,W=1090,H=160,s=svg(w,h),mx=100;axis(s,L,T,W,H,mx,25,v=>v);const n=D.daily.length,bw=W/n;
+D.daily.forEach((d,i)=>{const hh=d[1]/mx*H;const r=el(s,'rect',{x:L+i*bw,y:T+H-hh,width:Math.max(bw-.4,1),height:hh,fill:d[1]>60?'#c8423b':'#2f6fde'});el(r,'title',{},`${d[0]}: ${d[1]} kWh`);
+if(d[0].endsWith('-01'))el(s,'text',{x:L+i*bw,y:T+H+15},d[0].slice(0,7))});
+const avg=D.tot/D.days;el(s,'line',{x1:L,x2:L+W,y1:T+H-avg/mx*H,y2:T+H-avg/mx*H,stroke:'#1d2330','stroke-dasharray':'4 3'});el(s,'text',{x:L+W-4,y:T+H-avg/mx*H-4,'text-anchor':'end'},'avg '+avg.toFixed(0)+' kWh');
+$('c-daily').appendChild(s)})();
+// water
+(function(){const v=[['Earlier',93.84],['Earlier',103.13],['Earlier',150.00],['Due 2026-11-16',146.44]];const w=500,h=200,L=40,T=10,W=440,H=150,s=svg(w,h),mx=175;axis(s,L,T,W,H,mx,25,x=>'$'+x);const bw=W/v.length;
+v.forEach((d,i)=>{const hh=d[1]/mx*H;el(s,'rect',{x:L+i*bw+bw*.2,y:T+H-hh,width:bw*.6,height:hh,fill:i==3?'#c99a1a':'#7fa3e6'});el(s,'text',{x:L+i*bw+bw/2,y:T+H-hh-4,'text-anchor':'middle'},money(d[1]));el(s,'text',{x:L+i*bw+bw/2,y:T+H+15,'text-anchor':'middle'},d[0])});
+$('c-water').appendChild(s)})();
+// ETF table: contracts end 2028-03-31
+(function(){const t=$('etf');[['2026-12 (notice by 2026-11-30)',15],['2027-01',14],['2027-03',12],['2027-05',10],['2027-09',6]].forEach(([d,m])=>{const r=t.insertRow();r.innerHTML=`<td>${d}</td><td class="n">${m}</td><td class="n">$${35*m}</td><td class="n">$${70*m}</td>`;if(70*m>750)r.cells[3].innerHTML+=' <span class="tag bad">&gt;$750</span>'})})();
+</script>
+</body>
+</html>
