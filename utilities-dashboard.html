@@ -42,7 +42,7 @@ footer{max-width:1200px;margin:0 auto;padding:10px 20px 40px;color:var(--mute);f
 <body>
 <header>
   <h1>Utilities Dashboard</h1>
-  <p>Household · Prepared by Dexter (utilities assistant) · Data as of Tue 2026-11-03, 3:50 AM Pacific</p>
+  <p>Household · Prepared by Dexter (utilities assistant) · Data as of Fri 2026-11-06, 3:50 AM Pacific</p>
 </header>
 <main>
 
@@ -62,7 +62,7 @@ footer{max-width:1200px;margin:0 auto;padding:10px 20px 40px;color:var(--mute);f
 <!-- KPIs -->
 <section>
 <div class="grid g4">
-  <div class="card kpi"><div class="l">Open bills (all autopay)</div><div class="v" id="k-open"></div><div class="s">Cal Water + 2 Comcast accounts</div></div>
+  <div class="card kpi"><div class="l">Open bills (all autopay)</div><div class="v" id="k-open"></div><div class="s">Cal Water, 2 Comcast, propane budget, GreenWaste</div></div>
   <div class="card kpi"><div class="l">Electricity, last 12 months</div><div class="v" id="k-kwh"></div><div class="s" id="k-kwh-s"></div></div>
   <div class="card kpi"><div class="l">Electric cost (PG&amp;E estimate in export)</div><div class="v" id="k-cost"></div><div class="s">2025-10-23 to 2026-10-22. Not a bill total.</div></div>
   <div class="card kpi"><div class="l">Internet, monthly (latest statements)</div><div class="v">$583.92</div><div class="s">Comcast Office $278.47 + Site 2 $305.45</div></div>
@@ -80,7 +80,7 @@ footer{max-width:1200px;margin:0 auto;padding:10px 20px 40px;color:var(--mute);f
   <tr><td>Comcast Business</td><td>Site 2</td><td>2026-10-14</td><td class="n">$305.45</td><td>2026-11-06</td><td><span class="tag ok">Yes</span></td><td class="mute">No prior bills on file yet</td></tr>
   <tr><td>Superior Plus Energy (propane, level budget plan)</td><td>—</td><td>2026-11-01</td><td class="n">$295.00</td><td>2026-11-20</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Normal</span> Budget payment unchanged from Oct ($295); no delivery this period</td></tr>
   <tr><td>Patriot Mobile (cell)</td><td>—</td><td>2026-10-24</td><td class="n">$229.44</td><td>2026-10-29</td><td><span class="tag ok">Yes</span></td><td class="mute">First bill on file (autopay charged)</td></tr>
-  <tr><td>GreenWaste Recovery (trash)</td><td>—</td><td colspan="2" class="mute">Billed quarterly; no bill logged yet</td><td>—</td><td><span class="tag ok">Yes</span></td><td class="mute">Will compare by quarter</td></tr>
+  <tr><td>GreenWaste Recovery (trash, quarterly)</td><td>—</td><td>2026-11-01</td><td class="n">$457.16</td><td>Autopay ~2026-11-10</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Lower</span> ~35% below prior quarter ($697.92, 2026-08-01)</td></tr>
   <tr><td>PG&amp;E (delivery + gas) / Peninsula Clean Energy</td><td>Home</td><td colspan="2" class="mute">No bill emails logged yet</td><td>—</td><td class="mute">Unknown</td><td class="mute">—</td></tr>
 </table>
 <p class="mute">Source: Utility Bills sheet (private), updated by the Tue &amp; Fri 3:45 AM bill check.</p>
@@ -144,7 +144,7 @@ footer{max-width:1200px;margin:0 auto;padding:10px 20px 40px;color:var(--mute);f
 <div class="grid g2">
   <div class="card"><h2>Cal Water · recent amounts</h2><div id="c-water"></div><p class="mute">Earlier payments from bill-pay / Cal Water emails. $150.00 is the autopay cap, not the full bill (last month was ~$156). Usage (CCF) isn't in the emails.</p></div>
   <div class="card">
-    <h2>Trash · GreenWaste Recovery</h2><p>Autopay, billed quarterly. Each bill will be compared with the previous quarter and the same quarter last year. No bill logged yet.</p>
+    <h2>Trash · GreenWaste Recovery</h2><p>Autopay, billed quarterly; autopay drafts 5–7 business days after the invoice date.</p><table><tr><th>Invoice</th><th class="n">Total due</th></tr><tr><td>2026-11-01</td><td class="n">$457.16</td></tr><tr><td>2026-10-01</td><td class="n">−$162.70 (credit)</td></tr><tr><td>2026-09-01</td><td class="n">$154.89</td></tr><tr><td>2026-08-01</td><td class="n">$697.92</td></tr><tr><td>2026-05-01</td><td class="n">$677.37</td></tr></table><p class="mute">Nov bill is ~35% below the Aug quarter; no flag. Same quarter last year isn't in Gmail.</p>
     <h2 style="margin-top:16px">Gas · PG&amp;E</h2><p class="mute">No gas usage or bills on file yet. A PG&amp;E Green Button gas export or bill would fill this in.</p>
   </div>
   <div class="card">
@@ -154,7 +154,7 @@ footer{max-width:1200px;margin:0 auto;padding:10px 20px 40px;color:var(--mute);f
       <tr><th>Statement</th><th class="n">Budget payment</th><th class="n">Gallons delivered</th><th class="n">Price/gal</th><th class="n">Account balance</th></tr>
       <tr><td>2026-11-01</td><td class="n">$295.00</td><td class="n">0</td><td class="n">—</td><td class="n">$3,427.29 credit</td></tr>
     </table>
-    <p class="mute">No delivery between the Oct and Nov statements, so no price per gallon yet. Deliveries are irregular and heavier in winter. I flag only a budget change, a true-up/catch-up balance, or a price jump over 20%.</p>
+    <p class="mute">Superior Plus raised its Fuel Recovery Fee by about $6 per delivery, effective 2026-11-01 (notice 2026-11-04); it shows as a separate line on delivery bills. The propane price itself is not changed by this notice. No delivery between the Oct and Nov statements, so no price per gallon yet. Deliveries are irregular and heavier in winter. I flag only a budget change, a true-up/catch-up balance, or a price jump over 20%.</p>
   </div>
   <div class="card">
     <h2>Mobile · Patriot Mobile</h2>
@@ -179,7 +179,7 @@ D.daily=D.dv.map((v,i)=>{const t=new Date(Date.UTC(2025,9,23+i));return [t.toISO
 const $=id=>document.getElementById(id);
 const fmt=n=>n.toLocaleString('en-US');
 const money=n=>'$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-$('k-open').textContent=money(146.44+278.47+305.45);
+$('k-open').textContent=money(146.44+278.47+305.45+295.00+457.16);
 $('k-kwh').textContent=fmt(D.tot)+' kWh';
 $('k-kwh-s').textContent='About '+(D.tot/D.days).toFixed(0)+' kWh a day over '+D.days+' days';
 $('k-cost').textContent='$'+fmt(Math.round(D.cost));
