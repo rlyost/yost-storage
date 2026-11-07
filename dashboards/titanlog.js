@@ -74,7 +74,7 @@
     const ticks = options.unit === 'sessions' && maxY < 4 ? maxY : 4;
     for (let i = 0; i <= ticks; i++) {
       const value = maxY * i / ticks, yy = y(value);
-      grid += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yy + '" y2="' + yy + '" stroke="#e8ede4"/><text x="' + (L - 8) + '" y="' + (yy + 3) + '" text-anchor="end">' + esc(maxY > 9999 ? compact(value) : fmt(value, maxY < 5 ? 1 : 0)) + '</text>';
+      grid += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yy + '" y2="' + yy + '" stroke="var(--chart-grid)"/><text x="' + (L - 8) + '" y="' + (yy + 3) + '" text-anchor="end">' + esc(maxY > 9999 ? compact(value) : fmt(value, maxY < 5 ? 1 : 0)) + '</text>';
     }
     const positions = [];
     [...points.keys()].reverse().forEach(index => {
@@ -86,10 +86,10 @@
       }
     });
     let marks;
-    if (options.bars) marks = points.map((point, index) => '<rect class="data-point" data-point="' + index + '" x="' + (x(index) - barWidth / 2) + '" y="' + (point.value ? y(point.value) : H - B - 1) + '" width="' + barWidth + '" height="' + Math.max(1, H - B - y(point.value)) + '" rx="2" fill="' + (point.value ? '#6b9273' : '#e2e9dc') + '" tabindex="0" role="img" aria-label="' + esc(options.label(point)) + '"/>').join('');
+    if (options.bars) marks = points.map((point, index) => '<rect class="data-point" data-point="' + index + '" x="' + (x(index) - barWidth / 2) + '" y="' + (point.value ? y(point.value) : H - B - 1) + '" width="' + barWidth + '" height="' + Math.max(1, H - B - y(point.value)) + '" rx="2" fill="' + (point.value ? 'var(--plot)' : 'var(--soft)') + '" tabindex="0" role="img" aria-label="' + esc(options.label(point)) + '"/>').join('');
     else {
       const path = points.map((point, index) => (index ? 'L' : 'M') + x(index) + ',' + y(point.value)).join(' ');
-      marks = '<path d="' + path + '" stroke="#478267" stroke-width="2" fill="none"/>' + points.map((point, index) => '<circle class="data-point" data-point="' + index + '" cx="' + x(index) + '" cy="' + y(point.value) + '" r="3.7" fill="#478267" stroke="#fff" stroke-width="1.3" tabindex="0" role="img" aria-label="' + esc(options.label(point)) + '"/>').join('');
+      marks = '<path d="' + path + '" stroke="var(--plot)" stroke-width="2" fill="none"/>' + points.map((point, index) => '<circle class="data-point" data-point="' + index + '" cx="' + x(index) + '" cy="' + y(point.value) + '" r="3.7" fill="var(--plot)" stroke="var(--surface)" stroke-width="1.3" tabindex="0" role="img" aria-label="' + esc(options.label(point)) + '"/>').join('');
     }
     container.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="group" aria-label="' + esc(options.title) + '"><title>' + esc(options.title) + '</title><desc>Focus a data point for its date and value.</desc>' + grid + marks + '</svg><div class="data-tooltip" role="tooltip" hidden></div>';
     bindTooltip(container, points, point => '<strong>' + esc(options.label(point)) + '</strong>' + (point.name ? '<br>' + esc(point.name) : ''));

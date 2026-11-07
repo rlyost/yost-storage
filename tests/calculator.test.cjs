@@ -12,6 +12,7 @@ function calculator(hash = "#calculator") {
       addEventListener(name, fn) { events[name] = fn; },
       emit(name, event = {}) { events[name]?.(event); },
       setAttribute(name, value) { this.attributes[name] = value; },
+      contains(target) { return target.inPanel !== false; },
       focus() { focused = this; }, show() { this.open = true; },
       close() { this.open = false; },
       querySelector() { return elements['calc-close']; } };
@@ -24,9 +25,9 @@ function calculator(hash = "#calculator") {
     click(id) { elements[id].emit('click'); },
     button(dataset) { elements['calc-keys'].emit('click', {
       target: { closest: () => ({ dataset }) } }); },
-    key(key, tagName = 'BUTTON') {
+    key(key, tagName = 'DIV', options = {}) {
       let prevented = false;
-      document.emit('keydown', { key, target: { tagName }, preventDefault() { prevented = true; } });
+      document.emit('keydown', { key, ...options, target: { tagName, inPanel: options.inPanel, isContentEditable: options.isContentEditable }, preventDefault() { prevented = true; } });
       return prevented;
     },
     display: () => elements['calc-display'].textContent
@@ -75,4 +76,17 @@ test('delegated buttons support zero, chaining, operation replacement and digit 
   c.button({ digit: '3' }); c.button({ operation: '*' });
   c.button({ digit: '0' }); c.button({ action: 'equals' });
   assert.equal(c.display(), '0');
+});
+
+
+test('calculator preserves native Enter activation and shortcuts outside its panel', () => {
+  const c = calculator();
+  assert.equal(c.key('Enter', 'BUTTON'), false);
+  assert.equal(c.display(), '0');
+  for (const options of [{ inPanel: false }, { ctrlKey: true }, { metaKey: true }, { altKey: true }, { isContentEditable: true }]) {
+    assert.equal(c.key('7', 'DIV', options), false);
+  }
+  assert.equal(c.display(), '0');
+  assert.equal(c.key('Escape', 'A', { inPanel: false }), true);
+  assert.equal(c.elements.calculator.open, false);
 });

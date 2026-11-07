@@ -1,6 +1,7 @@
 (function () {
   // View switching: one delegated listener avoids per-button closures.
   var tabs = document.querySelector('.tabs');
+  var activeView = 'curriculum';
   var views = ['curriculum', 'log'].map(function(name){
     return {
       name: name,
@@ -12,7 +13,11 @@
       var t = event.target.closest('.tab');
       if(!t) return;
       var v = t.dataset.view;
-      tabs.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active')});
+      activeView = v;
+      tabs.querySelectorAll('.tab').forEach(function(x){
+        x.classList.remove('active');
+        x.setAttribute('aria-pressed', x === t ? 'true' : 'false');
+      });
       t.classList.add('active');
       views.forEach(function(view){
         var hidden = view.name !== v;
@@ -20,11 +25,14 @@
         view.navigation.classList.toggle('hidden', hidden);
       });
       var sb = document.querySelector('nav.side'); if(sb) sb.scrollTop = 0;
-      window.scrollTo({top:0,behavior:'smooth'});
+      updateFeedback();
+      window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'});
   });
 
   // Search across both views
   var q = document.getElementById('q');
+  var feedback = document.getElementById('search-status');
+  var clear = document.getElementById('search-clear');
   // The manual is static: index once at initialization. Highlighting only changes
   // markup, not text. If editable/dynamic cards are added, rebuild this metadata
   // after content changes and before the next search.
@@ -32,12 +40,15 @@
     return {
       element: card,
       session: card.closest('.session'),
+      view: card.closest('.view').id.replace('view-', ''),
+      matches: true,
       searchText: card.textContent.toLocaleLowerCase(),
       marks: []
     };
   });
 
   function setHidden(card, hidden){
+    card.matches = !hidden;
     card.element.classList.toggle('hidden', hidden);
     if(card.session) card.session.classList.toggle('hidden', hidden);
   }
@@ -57,10 +68,27 @@
   var searchFrame = 0;
   var completedTerm = '';
   var searching = false;
-  q.addEventListener('input', function(){
+  function scheduleSearch(){
     cancelAnimationFrame(searchFrame);
     searchFrame = requestAnimationFrame(search);
+  }
+  q.addEventListener('input', scheduleSearch);
+  clear.addEventListener('click', function(){
+    q.value = '';
+    scheduleSearch();
+    q.focus();
   });
+
+  function updateFeedback(){
+    var term = q.value.trim();
+    clear.hidden = !term;
+    if (!term) { feedback.textContent = ''; return; }
+    if (term.length < 2) { feedback.textContent = 'Type at least 2 characters to search.'; return; }
+    var count = cards.filter(function(card){ return card.view === activeView && card.matches; }).length;
+    var name = activeView === 'log' ? 'Session Log' : 'Curriculum';
+    feedback.textContent = count ? count + ' matching ' + (count === 1 ? 'card' : 'cards') + ' in ' + name + '.' :
+      'No matches for “' + term + '” in ' + name + '. Try another term or clear the search.';
+  }
 
   function search(){
     var term = q.value.trim();
@@ -90,6 +118,7 @@
       else {
         searching = false;
         completedTerm = term;
+        updateFeedback();
       }
     }
 

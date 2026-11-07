@@ -157,8 +157,8 @@
   }
 
   function render() {
-    tabs.timer.setAttribute("aria-selected", st.mode === "timer");
-    tabs.alarm.setAttribute("aria-selected", st.mode === "alarm");
+    tabs.timer.setAttribute("aria-pressed", st.mode === "timer");
+    tabs.alarm.setAttribute("aria-pressed", st.mode === "alarm");
     tabs.timer.disabled = tabs.alarm.disabled = st.state === "running" || st.state === "ringing";
     fields.timer.hidden = st.mode !== "timer";
     fields.alarm.hidden = st.mode !== "alarm";

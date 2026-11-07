@@ -89,7 +89,9 @@
     $('result-rows').querySelectorAll('[data-history]').forEach(button => button.addEventListener('click', () => openHistory(button.dataset.history)));
     $('result-rows').querySelectorAll('[data-metric]').forEach(button => button.addEventListener('click', () => buttonMetric(button.dataset.metric)));
   }
+  let chartTargetObserver;
   function renderChart() {
+    if (chartTargetObserver) chartTargetObserver.disconnect();
     const test = metric();
     const samples = model.chartSamples(data.samples, state.sample, state.period);
     const points = samples.filter(sample => test.results[sample.id]).map(sample => ({ sample, result: test.results[sample.id] }));
@@ -116,13 +118,13 @@
     if (test.limits) {
       const lower = test.limits.min ?? (['>', '≥'].includes(test.limits.op) ? test.limits.bound : min);
       const upper = test.limits.max ?? (['<', '≤'].includes(test.limits.op) ? test.limits.bound : max);
-      band = '<rect x="' + L + '" y="' + yLimit(upper) + '" width="' + (W - L - R) + '" height="' + Math.max(0, yLimit(lower) - yLimit(upper)) + '" fill="#eef4e9"/>';
-      bounds.forEach(bound => { if (bound >= min && bound <= max) band += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(bound) + '" y2="' + y(bound) + '" stroke="#bfd1b4" stroke-dasharray="4 4"/>'; });
+      band = '<rect x="' + L + '" y="' + yLimit(upper) + '" width="' + (W - L - R) + '" height="' + Math.max(0, yLimit(lower) - yLimit(upper)) + '" fill="var(--chart-band)"/>';
+      bounds.forEach(bound => { if (bound >= min && bound <= max) band += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(bound) + '" y2="' + y(bound) + '" stroke="var(--chart-grid)" stroke-dasharray="4 4"/>'; });
     }
     let grid = '';
     for (let i = 0; i <= 4; i++) {
       const v = min + (max - min) * i / 4, yy = y(v);
-      grid += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yy + '" y2="' + yy + '" stroke="#e8ede4"/><text x="' + (L - 9) + '" y="' + (yy + 3) + '" text-anchor="end">' + fmt(Number(v.toPrecision(3))) + '</text>';
+      grid += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yy + '" y2="' + yy + '" stroke="var(--chart-grid)"/><text x="' + (L - 9) + '" y="' + (yy + 3) + '" text-anchor="end">' + fmt(Number(v.toPrecision(3))) + '</text>';
     }
     const ticks = samples.filter((sample, i) => i === 0 || i === samples.length - 1 || i % Math.max(1, Math.ceil(samples.length / 4)) === 0);
     // Avoid overlapping end labels when the final two collections are close together.
@@ -135,9 +137,21 @@
     const dots = points.map((p, index) => {
       const selected = p.sample.id === state.sample.id;
       const out = ['high', 'low'].includes(model.status(test, p.result));
-      return (selected ? '<circle cx="' + x(p.sample) + '" cy="' + y(p.result.value) + '" r="10" fill="#ecdfcc" opacity=".65"/>' : '') + '<circle class="chart-dot" data-point="' + index + '" cx="' + x(p.sample) + '" cy="' + y(p.result.value) + '" r="' + (selected ? 4.5 : 3.5) + '" fill="' + (p.result.qualifier ? '#fff' : out ? '#b27a4f' : '#387858') + '" stroke="' + (out ? '#b27a4f' : '#387858') + '" stroke-width="1.7" tabindex="0" role="img" aria-label="' + escape(sampleTitle(p.sample) + ': ' + p.result.display + ' ' + test.units + ', ' + statusText[model.status(test, p.result)]) + '"/>';
+      return (selected ? '<circle cx="' + x(p.sample) + '" cy="' + y(p.result.value) + '" r="10" fill="#ecdfcc" opacity=".65"/>' : '') + '<circle class="chart-hit" aria-hidden="true" data-point="' + index + '" cx="' + x(p.sample) + '" cy="' + y(p.result.value) + '" r="22"/><circle class="chart-dot" data-point="' + index + '" cx="' + x(p.sample) + '" cy="' + y(p.result.value) + '" r="' + (selected ? 4.5 : 3.5) + '" fill="' + (p.result.qualifier ? 'var(--surface)' : out ? 'var(--plot-outside)' : 'var(--plot)') + '" stroke="' + (out ? 'var(--plot-outside)' : 'var(--plot)') + '" stroke-width="1.7" tabindex="0" role="img" aria-label="' + escape(sampleTitle(p.sample) + ': ' + p.result.display + ' ' + test.units + ', ' + statusText[model.status(test, p.result)]) + '"/>';
     }).join('');
-    $('chart').innerHTML = '<svg class="chart-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" role="group" aria-label="' + escape(test.name + ' history; focus a point for its value') + '"><title>' + escape(test.name) + '</title><desc>Shading indicates the workbook reference range. Horizontal spacing represents elapsed time. Full history is available as a table.</desc>' + band + grid + '<path d="' + path + '" stroke="#387858" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>' + dots + '</svg><div class="chart-tooltip" role="tooltip" id="chart-tooltip" hidden></div>';
+    $('chart').innerHTML = '<svg class="chart-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" role="group" aria-label="' + escape(test.name + ' history; focus a point for its value') + '"><title>' + escape(test.name) + '</title><desc>Shading indicates the workbook reference range. Horizontal spacing represents elapsed time. Full history is available as a table.</desc>' + band + grid + '<path d="' + path + '" stroke="var(--plot)" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>' + dots + '</svg><div class="chart-tooltip" role="tooltip" id="chart-tooltip" hidden></div>';
+    const plot = $('chart').querySelector('svg');
+    function sizeTargets() {
+      const bounds = plot.getBoundingClientRect();
+      plot.querySelectorAll('.chart-hit').forEach(hit => {
+        hit.setAttribute('r', Math.max(22 * W / bounds.width, 22 * H / bounds.height));
+      });
+    }
+    sizeTargets();
+    if (window.ResizeObserver) {
+      chartTargetObserver = new ResizeObserver(sizeTargets);
+      chartTargetObserver.observe(plot);
+    }
     const tooltip = $('chart-tooltip');
     $('chart').querySelectorAll('[data-point]').forEach(circle => {
       function show() {
@@ -149,6 +163,7 @@
         tooltip.style.top = Math.max(0, box.y - parent.y - tooltip.offsetHeight - 9) + 'px';
       }
       circle.addEventListener('mouseenter', show); circle.addEventListener('focus', show);
+      circle.addEventListener('pointerdown', show);
       circle.addEventListener('mouseleave', () => { tooltip.hidden = true; });
       circle.addEventListener('blur', () => { tooltip.hidden = true; });
       circle.addEventListener('keydown', event => { if (event.key === 'Escape') tooltip.hidden = true; });

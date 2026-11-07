@@ -7,7 +7,7 @@ CSS, and JavaScript; the landing page additionally loads local responsive image 
 ## Pages
 
 - `index.html` — **The Pack.** Landing page: a logo that swaps itself at sunrise and
-  sunset, a large digital clock, a pop-up calculator, a timer/alarm, and the **RLTW!**
+  sunset, grouped navigation, a large digital clock, a pop-up calculator, a timer/alarm, and the **RLTW!**
   signoff.
 - `dashboards/index.html` — Lab results dashboard, with TitanLog training history at
   `dashboards/titanlog.html`. Both are publicly hosted and include noindex metadata.
@@ -21,16 +21,19 @@ CSS, and JavaScript; the landing page additionally loads local responsive image 
 
 ## Landing page
 
-Navigation links open in a new tab. Set Alarm and Calc open popups on the current page.
+Local navigation stays in the current tab; external apps open in a new tab.
+Links are grouped into Dashboards, Apps & projects, Guides, and Tools. Set Alarm
+and Calculator open panels on the current page.
 
 ### Daylight logo swap
 
-The logo and page palette follow the sun rather than a fixed clock time:
+The logo follows the sun rather than a fixed clock time. Interface colors follow
+the system light/dark preference independently of the artwork:
 
-| | Logo | Background |
-|---|---|---|
-| Day | `HandlerPath_Gators-512.webp` / `HandlerPath_Gators-1024.webp` | light (`#f3f3f3`) |
-| Night | `gitlabrador-512.webp` / `gitlabrador-784.webp` | black, with a white ring around the mark |
+| | Logo |
+|---|---|
+| Day | `HandlerPath_Gators-512.webp` / `HandlerPath_Gators-1024.webp` |
+| Night | `gitlabrador-512.webp` / `gitlabrador-784.webp`, with a white ring around the mark |
 
 The sun's altitude is computed in-page from the NOAA solar-position formulas using the
 viewer's clock and time zone — no API call, no geolocation prompt, no network round
@@ -90,7 +93,11 @@ hidden.
 Opened from **Calc**, the final item in the landing-page menu. The calculator is a
 non-modal dialog kept outside the document's main layout: while closed it is not
 rendered and cannot move or resize the logo, navigation, footer, or other content. It
-appears to the left of the logo on desktop and as a centered overlay on narrow screens.
+appears to the left on wide desktop windows and as a centered overlay at widths
+of 1400px or less. Its height is bounded and scrolls in short windows.
+
+Enter activates the focused button; arithmetic shortcuts apply within the calculator,
+and Escape dismisses it.
 
 The calculator supports addition, subtraction, multiplication, division, percentages,
 sign changes, decimals, clearing, and keyboard input. **Calc** toggles it, the close
@@ -131,17 +138,15 @@ The landing-page menu links to:
 
 All pages carry a viewport meta tag and are laid out fluidly.
 
-- **Landing page** — below 720px the right-hand nav rail becomes a centred wrapped row
-  and the footer returns to normal flow, since the rail would otherwise sit on top of
-  the logo. The clock is `clamp(2.25rem, 11vw, 60pt)`, so it reaches its full 60pt on
-  desktop without forcing a horizontal scrollbar on a phone. A
-  `(min-width: 721px) and (max-height: 640px)` rule caps the logo for landscape phones,
-  where the viewport is wide enough for the desktop layout but far too short for a
-  full-size mark. The alarm card tightens below 420px.
-  The calculator moves from the logo's left side to a centered overlay below 720px.
+- **Landing page** — a two-column grid gives the mark/clock and grouped navigation
+  their own space. The navigation scrolls within a bounded region on desktop. At
+  900px or less, or heights of 640px or less, the page uses normal flow and the groups
+  wrap into columns. Navigation and standalone controls have at least 44px hit heights.
+  The calculator centers below 1400px and stays within the viewport.
 - **PAWS manual** — breakpoints at 860px (sidebar collapses, topbar wraps) and 560px.
-  Tables sit in `.tablewrap` scroll containers so the wide five-column table scrolls
-  instead of crushing its columns. Off-screen cards use `content-visibility: auto` to
+  The main grid track can shrink; tables sit in `.tablewrap` scroll containers so
+  wide tables do not widen the page. View buttons expose their selected state.
+  Search reports matches in the current view and provides a Clear Search action. Off-screen cards use `content-visibility: auto` to
   defer rendering work. A print stylesheet strips the chrome.
 - **Zsh guide** — breakpoint at 640px. The sample prompt is unbreakable monospace, so it
   scrolls in place rather than widening the page.
@@ -272,3 +277,20 @@ focus, calculator input, alarm reload/ringing, and manual search/tab behavior.
 Choose **Run print tests** to check recipe and shopping-list print previews on both recipe pages
 at mobile width, including browsers that ignore, reject, or lack programmatic printing.
 The Node suite includes calculator behavior and pure alarm-state tests.
+
+## Accessible appearance and charts
+
+The homepage, manual, lab/training dashboards, and utilities dashboard use system
+light/dark appearance. Supporting text and status colors have accessible contrast;
+CSS role colors preserve each page's visual character. Typography scales with browser
+text settings, layouts reflow at larger sizes, and keyboard focus is visible.
+The manual respects reduced motion and reduced transparency; dashboard modal backdrops
+also have a reduced-transparency fallback.
+
+Utility charts include named SVGs, descriptions, and expandable tables with all source
+values. Winter and summer series use solid/dashed lines as well as color. Wide utility
+tables scroll within their cards. Lab chart points retain keyboard labels and have
+larger invisible pointer targets that scale with the rendered plot.
+
+See [the design audit](docs/apple-design-audit.md) for the original findings and
+[the fixes and validation](docs/apple-design-fixes.md) for the implementation results.

@@ -21,25 +21,27 @@ test('manual keeps state private and preserves filtering, clearing and tab navig
   function element(text = '') {
     const classes = new Set();
     const listeners = {};
-    return { textContent: text, dataset: {}, value: '',
+    return { textContent: text, dataset: {}, value: '', attributes: {},
+      setAttribute(name, value) { this.attributes[name] = value; }, focus() {},
       classList: { add: x => classes.add(x), remove: x => classes.delete(x),
         toggle(x, on) { if (on) classes.add(x); else classes.delete(x); },
         contains: x => classes.has(x) },
       addEventListener: (name, fn) => { listeners[name] = fn; },
       emit: (name, event) => listeners[name](event),
-      closest() { return this.session ?? null; }
+      closest(selector) { return selector === '.view' ? { id: this.viewId || 'view-curriculum' } : this.session ?? null; }
     };
   }
   const cards = [element('Alpha dog'), element('Beta cat'),
     ...Array.from({ length: 30 }, () => element('Alpha dog'))];
   cards[1].session = element();
+  cards[1].viewId = 'view-log';
   const buttons = ['curriculum', 'log'].map(name => {
     const button = element(); button.dataset.view = name;
     button.closest = () => button; return button;
   });
   const tabs = element(); tabs.querySelectorAll = () => buttons;
   const ids = Object.fromEntries(['q', 'view-curriculum', 'view-log',
-    'nav-curriculum', 'nav-log'].map(id => [id, element()]));
+    'nav-curriculum', 'nav-log', 'search-status', 'search-clear'].map(id => [id, element()]));
   const side = { scrollTop: 100 };
   let frame = null;
   let scroll = null;
@@ -55,7 +57,7 @@ test('manual keeps state private and preserves filtering, clearing and tab navig
     },
     performance,
     NodeFilter: { SHOW_TEXT: 4 },
-    window: { scrollTo(value) { scroll = value; } },
+    window: { scrollTo(value) { scroll = value; }, matchMedia() { return { matches: true }; } },
     cancelAnimationFrame() { frame = null; },
     requestAnimationFrame(fn) { frame = fn; return 1; }
   });
@@ -75,6 +77,11 @@ test('manual keeps state private and preserves filtering, clearing and tab navig
   assert.equal(ids['view-log'].classList.contains('hidden'), false);
   assert.equal(buttons[1].classList.contains('active'), true);
   assert.equal(side.scrollTop, 0); assert.equal(scroll.top, 0);
+  assert.equal(scroll.behavior, 'instant');
+  assert.equal(buttons[1].attributes['aria-pressed'], 'true');
+  assert.equal(buttons[0].attributes['aria-pressed'], 'false');
+  assert.match(ids['search-status'].textContent, /No matches.*Session Log/);
+  assert.equal(ids['search-clear'].hidden, false);
   search('x');
   assert.ok(cards.every(card => !card.classList.contains('hidden')));
   assert.equal(cards[1].session.classList.contains('hidden'), false);
@@ -82,11 +89,14 @@ test('manual keeps state private and preserves filtering, clearing and tab navig
   search('['); search('.*'); // Literal regexp characters remain safe.
   assert.ok(cards.every(card => card.classList.contains('hidden')));
   search(''); assert.ok(cards.every(card => !card.classList.contains('hidden')));
+  assert.equal(ids['search-status'].textContent, '');
+  assert.equal(ids['search-clear'].hidden, true);
   // Interrupt a partially completed batch, then ensure the newest query wins.
   ids.q.value = 'ALPHA'; ids.q.emit('input');
   const first = frame; frame = null; first();
   assert.ok(frame, 'large searches must yield between batches');
   search('Beta');
+  assert.equal(ids['search-status'].textContent, '1 matching card in Session Log.');
   assert.equal(cards[1].classList.contains('hidden'), false);
   assert.equal(cards[0].classList.contains('hidden'), true);
   search('');

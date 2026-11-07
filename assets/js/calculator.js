@@ -112,7 +112,11 @@
   });
 
   document.addEventListener("keydown", function (event) {
-    if (!panel.open || /INPUT|TEXTAREA|SELECT/.test(event.target.tagName)) return;
+    if (!panel.open || /INPUT|TEXTAREA|SELECT/.test(event.target.tagName) ||
+        event.target.isContentEditable || event.ctrlKey || event.metaKey || event.altKey) return;
+    // Native buttons own Enter. Shortcuts otherwise belong to the calculator only.
+    if (event.key === "Enter" && event.target.tagName === "BUTTON") return;
+    if (event.key !== "Escape" && !panel.contains(event.target)) return;
     if (/^[0-9]$/.test(event.key)) digit(event.key);
     else if (event.key === "." || event.key === ",") decimal();
     else if (/^[+\-*/]$/.test(event.key)) chooseOperation(event.key);

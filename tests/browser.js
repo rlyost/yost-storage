@@ -127,7 +127,7 @@
       var $ = function (id) { return doc.getElementById(id); };
       check(doc.location.href === initialURL, 'Calculator menu action stays on the current page');
       check($('calculator').open && doc.activeElement === $('calc-close'), 'Calculator dialog opens with close-button focus');
-      ['1', '.', '5', '+', '2', '.', '5', 'Enter'].forEach(function (value) { key(doc, value); });
+      ['1', '.', '5', '+', '2', '.', '5', '='].forEach(function (value) { key(doc, value); });
       check($('calc-display').textContent === '4', 'Calculator keyboard arithmetic');
       key(doc, 'Escape');
       check(!$('calculator').open && doc.activeElement === $('calc-link'), 'Calculator Escape returns focus');
@@ -189,6 +189,14 @@
       check(doc.querySelectorAll('mark[data-search]').length > 0, 'Manual creates search highlights');
       doc.querySelector('[data-view="log"]').click();
       check(!doc.getElementById('view-log').classList.contains('hidden'), 'Manual tab switches during search');
+      check(doc.querySelector('[data-view="log"]').getAttribute('aria-pressed') === 'true' &&
+        doc.querySelector('[data-view="curriculum"]').getAttribute('aria-pressed') === 'false', 'Manual exposes the selected view');
+      await search(doc, 'zzzz-no-matching-command');
+      check(doc.getElementById('search-status').textContent.includes('No matches') && !doc.getElementById('search-clear').hidden,
+        'Manual empty search explains recovery');
+      doc.getElementById('search-clear').click();
+      await waitFor(function () { return doc.getElementById('search-status').textContent === ''; });
+      check(doc.activeElement === doc.getElementById('q') && doc.getElementById('q').value === '', 'Clear Search restores input and focus');
       await search(doc, 'training');
       check(cards.every(function (card, i) { return card.textContent === original[i]; }), 'Replacing highlights preserves text');
       await search(doc, '');
@@ -196,6 +204,13 @@
         return !card.classList.contains('hidden');
       }), 'Clearing search removes marks and restores cards');
       check(cards.every(function (card, i) { return card.textContent === original[i]; }), 'Clearing preserves all original text');
+
+      doc = await load('../utilities-dashboard.html');
+      check(doc.querySelectorAll('figure svg[role="img"][aria-labelledby][aria-describedby]').length === 4,
+        'Utilities charts have accessible names and descriptions');
+      check(Array.from(doc.querySelectorAll('figure .chart-data tbody')).map(function (body) { return body.rows.length; }).join(',') === '13,24,365,4',
+        'Utilities chart tables preserve every monthly, hourly, daily and water value');
+      check(doc.querySelector('#c-hour polyline[stroke-dasharray="7 4"]'), 'Summer chart series has a non-color distinction');
 
       await recipePrintChecks();
       lines.push('COMPLETE: ' + lines.length + ' checks passed');

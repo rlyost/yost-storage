@@ -34,6 +34,32 @@
     <script src="assets/js/daylight-selection.js"></script>
     <title>The Pack</title>
     <style>
+      :root {
+        color-scheme: light dark;
+        --page: #f3f3f3;
+        --surface: #fff;
+        --ink: #171717;
+        --secondary: #595959;
+        --line: #999;
+        --key: #f5f5f5;
+        --operator: #e8e8e8;
+        --focus: #2456ac;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --page: #101010;
+          --surface: #1c1c1c;
+          --ink: #f2f2f2;
+          --secondary: #bdbdbd;
+          --line: #888;
+          --key: #292929;
+          --operator: #3a3a3a;
+          --focus: #9bc2ff;
+        }
+      }
+      :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+      button { min-height: 44px; }
+      button:active { filter: brightness(.88); }
       * {
         box-sizing: border-box;
       }
@@ -48,7 +74,12 @@
         position: relative;
         min-height: 100svh;
         padding: 2rem;
-        background: #f3f3f3;
+        background: var(--page);
+        color: var(--ink);
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 17rem;
+        grid-template-rows: minmax(0, 1fr) auto;
+        gap: 1.5rem 2rem;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       }
 
@@ -56,13 +87,15 @@
         display: grid;
         place-items: center;
         gap: clamp(1rem, 3vh, 2rem);
-        min-height: calc(100svh - 4rem);
-        padding-bottom: clamp(8rem, 24vh, 12rem);
+        grid-column: 1;
+        grid-row: 1;
+        min-width: 0;
+        padding-block: 1rem;
       }
 
       .logo-frame {
         position: relative;
-        width: min(70vw, 32rem);
+        width: min(100%, 32rem);
       }
 
       .logo {
@@ -80,11 +113,13 @@
         right: calc(50% + min(35vw, 16rem) + 1.5rem);
         left: auto;
         width: min(18rem, calc(100vw - 2rem));
-        padding: 1rem;
-        border: 1px solid #d8d8d8;
+        max-height: calc(100svh - 2rem);
+        overflow-y: auto;
+        padding: clamp(12px, 3vw, 1rem);
+        border: 1px solid var(--line);
         border-radius: 0.75rem;
-        background: #fff;
-        color: #111;
+        background: var(--surface);
+        color: var(--ink);
         box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.18);
         margin: 0;
         transform: translateY(-50%);
@@ -109,13 +144,15 @@
       }
 
       .calc-close {
-        padding: 0 0.2rem;
+        width: 44px;
+        min-width: 44px;
+        padding: 0;
         border: 0;
         background: none;
         color: inherit;
         font-size: 1.35rem;
         line-height: 1;
-        opacity: 0.55;
+        color: var(--secondary);
         cursor: pointer;
       }
 
@@ -128,9 +165,9 @@
         margin-bottom: 0.75rem;
         padding: 0.8rem;
         overflow: hidden;
-        border: 1px solid #d8d8d8;
+        border: 1px solid var(--line);
         border-radius: 0.5rem;
-        background: #f5f5f5;
+        background: var(--key);
         font: 600 1.75rem/1.4 ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
         font-variant-numeric: tabular-nums;
         text-align: right;
@@ -141,23 +178,26 @@
       .calc-keys {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 0.45rem;
+        gap: min(0.45rem, 1.5vw);
       }
 
       .calc-keys button {
+        min-width: 44px;
         min-height: 2.8rem;
-        border: 1px solid #d8d8d8;
+        border: 1px solid var(--line);
         border-radius: 0.45rem;
-        background: #f5f5f5;
+        background: var(--key);
         color: inherit;
-        font: 650 1rem/1 inherit;
+        font: inherit;
+        font-size: 1rem;
+        font-weight: 650;
         cursor: pointer;
       }
 
-      .calc-keys button:hover { border-color: #111; }
+      .calc-keys button:hover { border-color: var(--ink); }
       .calc-keys button:active { transform: translateY(1px); }
-      .calc-keys .operator { background: #e8e8e8; }
-      .calc-keys .equals { background: #111; color: #fff; }
+      .calc-keys .operator { background: var(--operator); }
+      .calc-keys .equals { background: var(--ink); color: var(--surface); }
       .calc-keys .span-two { grid-column: span 2; }
 
       /* Night: the mark is a black disc, so ring it to lift it off the page.
@@ -176,67 +216,54 @@
         transform: translate(-50%, -50%);
       }
 
-      .site-footer {
-        position: absolute;
-        top: 0;
-        right: 1.5rem;
-        bottom: 1rem;
-        text-align: right;
-      }
-
+      .site-footer { display: contents; }
       .footer-nav {
-        position: absolute;
-        top: 50%;
-        right: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 0.75rem;
-        transform: translateY(-50%);
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        align-self: start;
+        display: grid;
+        gap: 1.25rem;
+        max-height: calc(100svh - 4rem);
+        overflow-y: auto;
+        padding: .25rem .5rem;
+        scrollbar-gutter: stable;
       }
-
-      .footer-nav a,
-      .footer-nav .nav-action {
-        color: #555;
-        font-size: 0.75rem;
+      .nav-group { min-width: 0; }
+      .nav-group h2 {
+        margin: 0 0 .375rem;
+        color: var(--secondary);
+        font-size: .8125rem;
         font-weight: 600;
-        text-decoration: none;
+        letter-spacing: .08em;
+        text-transform: uppercase;
       }
-
-      /* Set Alarm acts on this page rather than navigating, so it is a button
-         wearing the nav links' clothes. */
-      .footer-nav .nav-action {
-        padding: 0;
+      .nav-group a, .nav-group .nav-action {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        min-height: 44px;
+        padding: .5rem .625rem;
         border: 0;
+        border-radius: .375rem;
         background: none;
-        font-family: inherit;
-        line-height: inherit;
+        color: var(--ink);
+        font: 600 .875rem/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        text-align: left;
+        text-decoration: none;
+        overflow-wrap: anywhere;
         cursor: pointer;
       }
-
-      .footer-nav a:hover,
-      .footer-nav .nav-action:hover {
-        color: #000;
-        text-decoration: underline;
-        text-underline-offset: 0.2rem;
-      }
-
-      /* One centred stack at the foot of the page. Grouping these lets the
-         clock resize without four hand-tuned offsets drifting out of step. */
+      .nav-group a:hover, .nav-group .nav-action:hover { background: var(--operator); }
       .footer-stack {
-        position: fixed;
-        z-index: 1;
-        bottom: 1rem;
-        left: 50%;
+        grid-column: 1;
+        grid-row: 2;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 0.5rem;
-        max-width: 100vw;
-        padding: 0 1rem;
-        color: #111;
+        gap: .75rem;
+        min-width: 0;
+        padding-bottom: .5rem;
         text-align: center;
-        transform: translateX(-50%);
       }
 
       /* Sits above the logo so an armed alarm is the first thing read on the
@@ -248,33 +275,33 @@
         font-size: clamp(1.75rem, 7vw, 3rem);
         font-weight: 600;
         letter-spacing: 0.1em;
-        color: #111;
+        color: var(--ink);
         text-align: center;
-        opacity: 0.7;
+        color: var(--secondary);
       }
 
       .clock {
         font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
         /* Caps at the 60pt the desktop design wants, but scales down rather
            than pushing a horizontal scrollbar on a phone. */
-        font-size: clamp(2.25rem, 11vw, 60pt);
+        font-size: clamp(1.5rem, 11vw, 5rem);
         font-variant-numeric: tabular-nums;
         line-height: 1;
         opacity: 0.75;
       }
 
       .footer-signoff {
-        font-size: 0.625rem;
+        font-size: 0.8125rem;
         font-weight: 600;
         letter-spacing: 0.14em;
-        opacity: 0.45;
+        color: var(--secondary);
       }
 
       .memorial {
-        font-size: 0.625rem;
+        font-size: 0.8125rem;
         font-weight: 600;
         letter-spacing: 0.08em;
-        opacity: 0.45;
+        color: var(--secondary);
       }
 
       /* ---- Alarm panel ---- */
@@ -284,10 +311,10 @@
         max-height: calc(100svh - 2rem);
         overflow-y: auto;
         padding: 2.25rem;
-        border: 1px solid #d8d8d8;
+        border: 1px solid var(--line);
         border-radius: 0.75rem;
-        background: #fff;
-        color: #111;
+        background: var(--surface);
+        color: var(--ink);
         font-family: inherit;
       }
 
@@ -311,13 +338,15 @@
       }
 
       .alarm-close {
-        padding: 0 0.25rem;
+        width: 44px;
+        min-width: 44px;
+        padding: 0;
         border: 0;
         background: none;
         color: inherit;
         font-size: 1.75rem;
         line-height: 1;
-        opacity: 0.5;
+        color: var(--secondary);
         cursor: pointer;
       }
 
@@ -358,13 +387,13 @@
       .alarm-entry .alarm-select { flex: 1; min-width: 0; text-align: left; }
       .alarm-select[aria-pressed="true"] { border-color: currentColor; box-shadow: inset 0 0 0 1px currentColor; }
       .alarm-select strong, .alarm-select small { display: block; }
-      .alarm-select small { margin-top: 0.25rem; opacity: 0.7; }
-      .alarm-help { font-size: 0.8125rem; line-height: 1.5; opacity: 0.7; }
+      .alarm-select small { margin-top: 0.25rem; color: var(--secondary); }
+      .alarm-help { font-size: 0.875rem; line-height: 1.5; color: var(--secondary); }
 
       .alarm-modes {
         display: flex;
         margin-bottom: 1.75rem;
-        border: 1px solid #d8d8d8;
+        border: 1px solid var(--line);
         border-radius: 0.5rem;
         overflow: hidden;
       }
@@ -383,9 +412,9 @@
         cursor: pointer;
       }
 
-      .alarm-modes button[aria-selected="true"] {
-        background: #111;
-        color: #fff;
+      .alarm-modes button[aria-pressed="true"] {
+        background: var(--ink);
+        color: var(--surface);
       }
 
       .alarm-fields[hidden] {
@@ -393,12 +422,14 @@
       }
 
       .alarm-row {
-        display: flex;
-        align-items: flex-end;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 4.5rem), 1fr));
+        align-items: end;
         gap: 0.5rem;
       }
 
       .alarm-row label {
+        min-width: 0;
         display: flex;
         flex: 1;
         flex-direction: column;
@@ -407,15 +438,15 @@
         font-weight: 600;
         letter-spacing: 0.1em;
         text-transform: uppercase;
-        opacity: 0.6;
+        color: var(--secondary);
       }
 
       .alarm-dialog input {
         width: 100%;
         padding: 0.7rem;
-        border: 1px solid #d8d8d8;
+        border: 1px solid var(--line);
         border-radius: 0.5rem;
-        background: #fff;
+        background: var(--surface);
         color: inherit;
         font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
         font-size: 1.375rem;
@@ -431,7 +462,7 @@
 
       .alarm-presets button {
         padding: 0.45rem 0.85rem;
-        border: 1px solid #d8d8d8;
+        border: 1px solid var(--line);
         border-radius: 999px;
         background: none;
         color: inherit;
@@ -442,7 +473,7 @@
       }
 
       .alarm-presets button:hover {
-        border-color: #111;
+        border-color: var(--ink);
       }
 
       .alarm-readout {
@@ -461,7 +492,7 @@
         font-weight: 600;
         letter-spacing: 0.12em;
         text-transform: uppercase;
-        opacity: 0.55;
+        color: var(--secondary);
       }
 
       .alarm-actions {
@@ -472,7 +503,7 @@
 
       .alarm-actions button {
         padding: 0.9rem;
-        border: 1px solid #111;
+        border: 1px solid var(--ink);
         border-radius: 0.5rem;
         background: none;
         color: inherit;
@@ -485,8 +516,8 @@
       }
 
       .alarm-actions button.primary {
-        background: #111;
-        color: #fff;
+        background: var(--ink);
+        color: var(--surface);
       }
 
       .alarm-actions button:disabled {
@@ -503,7 +534,7 @@
         font-weight: 600;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        opacity: 0.6;
+        color: var(--secondary);
       }
 
       .alarm-sound input {
@@ -515,6 +546,7 @@
       /* ---- Ringing ---- */
 
       .alarm-ring {
+        color: #111;
         position: fixed;
         z-index: 99;
         inset: 0;
@@ -532,7 +564,7 @@
       }
 
       @keyframes alarm-flash {
-        0%, 49.99% { background: #fff; }
+        0%, 49.99% { background: var(--surface); }
         50%, 100% { background: #ffd400; }
       }
 
@@ -551,8 +583,8 @@
         padding: 0.85rem 2.5rem;
         border: 2px solid #111;
         border-radius: 0.375rem;
-        background: #111;
-        color: #fff;
+        background: var(--ink);
+        color: var(--surface);
         font-family: inherit;
         font-size: 0.875rem;
         font-weight: 700;
@@ -572,126 +604,28 @@
         }
       }
 
-      /* Night palette, swapped with the logo at sunset and back at sunrise. */
-      [data-daylight="night"] body {
-        background: #000;
+      /* The artwork follows daylight; interface colors follow system appearance. */
+      @media (max-width: 1400px) {
+        .calculator { left: 50%; right: auto; transform: translate(-50%, -50%); }
       }
-
-      [data-daylight="night"] .footer-nav a,
-      [data-daylight="night"] .footer-nav a:hover,
-      [data-daylight="night"] .footer-nav .nav-action,
-      [data-daylight="night"] .alarm-status,
-      [data-daylight="night"] .footer-stack {
-        color: #fff;
-      }
-
-      [data-daylight="night"] .alarm-dialog {
-        border-color: #333;
-        background: #111;
-        color: #fff;
-      }
-
-      [data-daylight="night"] .calculator {
-        border-color: #333;
-        background: #111;
-        color: #fff;
-      }
-
-      [data-daylight="night"] .calc-display,
-      [data-daylight="night"] .calc-keys button {
-        border-color: #3b3b3b;
-        background: #202020;
-      }
-
-      [data-daylight="night"] .calc-keys .operator { background: #303030; }
-      [data-daylight="night"] .calc-keys .equals { background: #fff; color: #111; }
-      [data-daylight="night"] .calc-keys button:hover { border-color: #fff; }
-
-      [data-daylight="night"] .alarm-dialog input,
-      [data-daylight="night"] .alarm-modes,
-      [data-daylight="night"] .alarm-presets button {
-        border-color: #333;
-      }
-
-      [data-daylight="night"] .alarm-dialog input {
-        background: #000;
-      }
-
-      [data-daylight="night"] .alarm-modes button[aria-selected="true"] {
-        background: #fff;
-        color: #111;
-      }
-
-      [data-daylight="night"] .alarm-presets button:hover {
-        border-color: #fff;
-      }
-
-      [data-daylight="night"] .alarm-actions button {
-        border-color: #fff;
-      }
-
-      [data-daylight="night"] .alarm-actions button.primary {
-        background: #fff;
-        color: #111;
-      }
-
-      /* Landscape phones: the viewport is wide enough for the desktop layout
-         but far too short for a full-size logo. */
-      @media (min-width: 721px) and (max-height: 640px) {
-        .logo-frame { width: min(70vw, 32rem, 28svh); }
-      }
-
-      /* Phones: the right-hand rail would sit on top of the logo, so the nav
-         becomes a centred wrapped row and everything returns to normal flow. */
-      @media (max-width: 720px) {
-        body {
-          padding: 1.5rem 1.25rem;
-        }
-
-        main {
-          min-height: auto;
-          padding: 0.5rem 0 1.75rem;
-        }
-
-        .logo-frame {
-          width: min(72vw, 20rem);
-        }
-
-        .site-footer {
-          position: static;
-          right: auto;
-          text-align: center;
-        }
-
+      @media (max-width: 900px), (max-height: 640px) {
+        body { display: block; padding: 1.5rem 1.25rem; }
+        main { min-height: auto; padding: .5rem 0 1.75rem; }
+        .logo-frame { width: min(72vw, 20rem); }
         .footer-nav {
-          position: static;
-          flex-direction: row;
-          flex-wrap: wrap;
-          align-items: center;
-          justify-content: center;
-          gap: 0.6rem 1.1rem;
-          transform: none;
+          grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+          max-height: none;
+          overflow: visible;
+          padding: .25rem;
+          gap: 1.5rem;
         }
-
-        .footer-nav a,
-        .footer-nav .nav-action {
-          font-size: 0.8125rem;
-        }
-
-        .footer-stack {
-          position: static;
-          max-width: none;
-          margin-top: 2rem;
-          padding: 0;
-          transform: none;
-        }
-
-        .calculator {
-          top: 50%;
-          right: auto;
-          left: 50%;
-          transform: translate(-50%, -50%);
-        }
+        .footer-stack { margin-top: 2rem; }
+      }
+      @media (max-height: 640px) and (min-width: 721px) {
+        .logo-frame { width: min(32vw, 40svh); }
+      }
+      @media (prefers-contrast: more) {
+        :root { --line: currentColor; --secondary: var(--ink); }
       }
 
       /* Narrow phones: keep the alarm card off the screen edges. */
@@ -735,26 +669,39 @@
       <script src="assets/js/daylight.js"></script>
     </main>
     <footer class="site-footer">
-      <nav class="footer-nav" aria-label="Footer navigation">
-        <a target="_blank" rel="noopener noreferrer" href="index.html" aria-current="page">Home</a>
-        <a target="_blank" rel="noopener noreferrer" href="dashboards/index.html">Dashboard</a>
-        <a target="_blank" rel="noopener noreferrer" href="https://www.yost.group/index.html">Yost Group</a>
-        <a target="_blank" rel="noopener noreferrer" href="https://www.yost.group/apps/apps.html">Apps</a>
-        <a target="_blank" rel="noopener noreferrer" href="https://www.titanlog.app/index.html">TitanLog</a>
-        <a target="_blank" rel="noopener noreferrer" href="https://www.yostnotes.com/index.html">YostNotes</a>
-        <a target="_blank" rel="noopener noreferrer" href="https://app.yostnotes.com/">YostNotes App</a>
-        <a target="_blank" rel="noopener noreferrer" href="https://www.yost.group/apps/gateway_app.html">The Gateway</a>
-        <a target="_blank" rel="noopener noreferrer" href="https://app.citadel-map.com">Citadel Money</a>
-        <a target="_blank" rel="noopener noreferrer" href="https://runballot.com/">Ballot</a>
-        <a target="_blank" rel="noopener noreferrer" href="https://app.rakazo.com/app/cmvlnokuptm1ik3n73y5fsxmg">Team Space</a>
-        <a target="_blank" rel="noopener noreferrer" href="https://github.com/rlyost">GitHub</a>
-        <a target="_blank" rel="noopener noreferrer" href="PAWS_Training_Manual.html">PAWS Training Manual</a>
-        <a target="_blank" rel="noopener noreferrer" href="High_Protein_Crockpot.html">High Protein Crockpot</a>
-        <a target="_blank" rel="noopener noreferrer" href="zsh_terminal_colorization_guide.html">Zsh Color Guide</a>
-        <a target="_blank" rel="noopener noreferrer" href="claude-engineering-prompts.html">Claude Engineering Prompts</a>
-        <a target="_blank" rel="noopener noreferrer" href="multi_platform_deployment_guide.html">Multi-Platform Deployment Guide</a>
-        <button type="button" class="nav-action" id="alarm-link" aria-haspopup="dialog">Set Alarm</button>
-        <button type="button" class="nav-action" id="calc-link" aria-expanded="false" aria-controls="calculator">Calc</button>
+      <nav class="footer-nav" aria-label="Site navigation">
+        <section class="nav-group" aria-labelledby="nav-dashboards">
+          <h2 id="nav-dashboards">Dashboards</h2>
+          <a href="dashboards/index.html">Lab results</a>
+          <a href="dashboards/titanlog.html">Training history</a>
+          <a href="utilities-dashboard.html">Utilities</a>
+        </section>
+        <section class="nav-group" aria-labelledby="nav-tools">
+          <h2 id="nav-tools">Tools</h2>
+          <button type="button" class="nav-action" id="alarm-link" aria-haspopup="dialog">Set Alarm</button>
+          <button type="button" class="nav-action" id="calc-link" aria-expanded="false" aria-controls="calculator">Calculator</button>
+        </section>
+        <section class="nav-group" aria-labelledby="nav-apps">
+          <h2 id="nav-apps">Apps &amp; projects</h2>
+          <a target="_blank" rel="noopener noreferrer" href="https://www.yost.group/index.html">Yost Group</a>
+          <a target="_blank" rel="noopener noreferrer" href="https://www.yost.group/apps/apps.html">Apps</a>
+          <a target="_blank" rel="noopener noreferrer" href="https://www.titanlog.app/index.html">TitanLog</a>
+          <a target="_blank" rel="noopener noreferrer" href="https://www.yostnotes.com/index.html">YostNotes</a>
+          <a target="_blank" rel="noopener noreferrer" href="https://app.yostnotes.com/">YostNotes App</a>
+          <a target="_blank" rel="noopener noreferrer" href="https://www.yost.group/apps/gateway_app.html">The Gateway</a>
+          <a target="_blank" rel="noopener noreferrer" href="https://app.citadel-map.com">Citadel Money</a>
+          <a target="_blank" rel="noopener noreferrer" href="https://runballot.com/">Ballot</a>
+          <a target="_blank" rel="noopener noreferrer" href="https://app.rakazo.com/app/cmvlnokuptm1ik3n73y5fsxmg">Team Space</a>
+          <a target="_blank" rel="noopener noreferrer" href="https://github.com/rlyost">GitHub</a>
+        </section>
+        <section class="nav-group" aria-labelledby="nav-guides">
+          <h2 id="nav-guides">Guides</h2>
+          <a href="PAWS_Training_Manual.html">PAWS Training Manual</a>
+          <a href="High_Protein_Crockpot.html">High Protein Crockpot</a>
+          <a href="zsh_terminal_colorization_guide.html">Zsh Color Guide</a>
+          <a href="claude-engineering-prompts.html">Claude Engineering Prompts</a>
+          <a href="multi_platform_deployment_guide.html">Multi-Platform Deployment Guide</a>
+        </section>
       </nav>
       <div class="footer-stack">
         <div class="clock" id="clock" role="timer" aria-live="off"></div>
@@ -809,9 +756,9 @@
       <ul class="alarm-list" id="alarm-list" aria-label="Saved alarms and timers"></ul>
       <p class="alarm-help">Select an entry to edit it. Each runs independently. Keep this page open for alarms to ring.</p>
 
-      <div class="alarm-modes" role="tablist" aria-label="Timer or alarm">
-        <button type="button" role="tab" id="mode-timer" data-mode="timer" aria-selected="true">Timer</button>
-        <button type="button" role="tab" id="mode-alarm" data-mode="alarm" aria-selected="false">Alarm</button>
+      <div class="alarm-modes" role="group" aria-label="Timer or alarm">
+        <button type="button" id="mode-timer" data-mode="timer" aria-pressed="true" aria-controls="fields-timer">Timer</button>
+        <button type="button" id="mode-alarm" data-mode="alarm" aria-pressed="false" aria-controls="fields-alarm">Alarm</button>
       </div>
 
       <div class="alarm-fields" id="fields-timer">
@@ -836,7 +783,7 @@
         </div>
       </div>
 
-      <div class="alarm-readout" aria-live="polite">
+      <div class="alarm-readout">
         <span id="alarm-big">&mdash;</span><small id="alarm-sub" role="status">Not set</small>
       </div>
 

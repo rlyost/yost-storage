@@ -5,38 +5,61 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Utilities Dashboard</title>
 <style>
-:root{--bg:#f5f6f8;--card:#fff;--ink:#1d2330;--mute:#6b7385;--line:#e3e6ec;--blue:#2f6fde;--orange:#e8833a;--red:#c8423b;--green:#2e8b57;--amber:#c99a1a}
+:root{color-scheme:light dark;--bg:#f5f6f8;--card:#fff;--ink:#1d2330;--mute:#535d70;--line:#9aa2af;--blue:#2456ac;--orange:#9b4b12;--red:#a3312c;--green:#236b43;--amber:#9a6b00;--header:#1d2330;--header-text:#fff;--header-mute:#c8d0df;--ok-bg:#e3f4ea;--warn-bg:#fdf1dc;--bad-bg:#fbe4e2;--info-bg:#e5edfb;--focus:#2456ac;--plot-blue:#2456ac;--plot-orange:#9b4b12;--plot-red:#a3312c;--plot-amber:#9a6b00;--plot-grid:#c1c7d1;--peak:#f3d6d4}
 *{box-sizing:border-box}
-body{margin:0;font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink)}
-header{background:#1d2330;color:#fff;padding:22px 28px}
-header h1{margin:0;font-size:24px}
-header p{margin:4px 0 0;color:#b8c0d0;font-size:13px}
+body{margin:0;font:1rem/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:var(--header);color:var(--header-text);padding:22px 28px}
+header h1{margin:0;font-size:1.5rem}
+header p{margin:4px 0 0;color:var(--header-mute);font-size:0.875rem}
 main{max-width:1200px;margin:0 auto;padding:20px}
 .grid{display:grid;gap:16px}
-.g4{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-.g2{grid-template-columns:repeat(auto-fit,minmax(460px,1fr))}
-.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
-.card h2{margin:0 0 10px;font-size:16px}
-.card h3{margin:14px 0 6px;font-size:14px;color:var(--mute);text-transform:uppercase;letter-spacing:.04em}
-.kpi .v{font-size:26px;font-weight:700}
-.kpi .l{color:var(--mute);font-size:13px}
-.kpi .s{font-size:12px;color:var(--mute);margin-top:4px}
-table{width:100%;border-collapse:collapse;font-size:14px}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr))}
+.card{min-width:0;overflow-wrap:anywhere;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.card h2{margin:0 0 10px;font-size:1.0rem}
+.card h3{margin:14px 0 6px;font-size:0.875rem;color:var(--mute);text-transform:uppercase;letter-spacing:.04em}
+.kpi .v{font-size:1.625rem;font-weight:700}
+.kpi .l{color:var(--mute);font-size:0.875rem}
+.kpi .s{font-size:0.875rem;color:var(--mute);margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:0.875rem}
 th,td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:top}
-th{color:var(--mute);font-weight:600;font-size:12px;text-transform:uppercase}
+th{color:var(--mute);font-weight:600;font-size:0.875rem;text-transform:uppercase}
 td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
-.tag{display:inline-block;padding:1px 8px;border-radius:10px;font-size:12px;font-weight:600}
-.ok{background:#e3f4ea;color:var(--green)}.warn{background:#fdf1dc;color:#9a6b00}.bad{background:#fbe4e2;color:var(--red)}.info{background:#e5edfb;color:var(--blue)}
+.tag{display:inline-block;padding:1px 8px;border-radius:10px;font-size:0.875rem;font-weight:600}
+.ok{background:var(--ok-bg);color:var(--green)}.warn{background:var(--warn-bg);color:var(--amber)}.bad{background:var(--bad-bg);color:var(--red)}.info{background:var(--info-bg);color:var(--blue)}
 .alert{border-left:4px solid var(--amber)}
-.mute{color:var(--mute);font-size:13px}
-svg text{font-size:11px;fill:#6b7385}
+.mute{color:var(--mute);font-size:0.875rem}
+svg text{font-size:0.875rem;fill:var(--mute)}
 a{color:var(--blue)}
 ul{margin:6px 0;padding-left:20px}
 section{margin-top:22px}
-section>h2{font-size:18px;margin:0 0 10px}
-.legend span{display:inline-flex;align-items:center;margin-right:14px;font-size:12px;color:var(--mute)}
+section>h2{font-size:1.125rem;margin:0 0 10px}
+.legend span{display:inline-flex;align-items:center;margin-right:14px;font-size:0.875rem;color:var(--mute)}
 .legend i{width:12px;height:12px;border-radius:2px;margin-right:5px;display:inline-block}
-footer{max-width:1200px;margin:0 auto;padding:10px 20px 40px;color:var(--mute);font-size:12px}
+footer{max-width:1200px;margin:0 auto;padding:10px 20px 40px;color:var(--mute);font-size:0.875rem}
+
+.table-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}
+.table-scroll:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+figure{margin:0;min-width:0}
+.chart-summary{font-size:.875rem;color:var(--mute);line-height:1.6}
+.chart-data{margin-top:12px}
+.chart-data summary{min-height:44px;display:list-item;align-content:center;cursor:pointer;color:var(--blue);font-weight:600;padding:10px 4px}
+.chart-data .table-scroll{max-height:24rem}
+.chart-data table{min-width:26rem}
+.chart-data th{position:sticky;top:0;background:var(--card)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.legend .summer-legend i{background:none;height:0;border-top:3px dashed var(--plot-orange)}
+svg{display:block;max-width:100%}
+@media(max-width:560px){main{padding:16px}header{padding:20px 16px}.card{padding:16px}table{min-width:32rem}.card.alert table{min-width:27rem}}
+@media(prefers-color-scheme:dark){
+ :root{--bg:#161c25;--card:#222b38;--ink:#eef2f8;--mute:#c0cbdd;--line:#7f8da4;--blue:#accbff;--orange:#f5bd91;--red:#ffbcb6;--green:#afe1bf;--amber:#efce88;--ok-bg:#243e30;--warn-bg:#403721;--bad-bg:#482a2c;--info-bg:#273b5b;--focus:#c0d7ff;--plot-blue:#accbff;--plot-orange:#f5bd91;--plot-red:#ffbcb6;--plot-amber:#efce88;--plot-grid:#66758b;--peak:#674445}
+}
+@media(prefers-contrast:more){:root{--mute:var(--ink);--line:currentColor}}
+@media print{
+ :root{color-scheme:light;--bg:#fff;--card:#fff;--ink:#1d2330;--mute:#535d70;--line:#9aa2af;--blue:#2456ac;--orange:#9b4b12;--red:#a3312c;--green:#236b43;--amber:#9a6b00;--ok-bg:#e3f4ea;--warn-bg:#fdf1dc;--bad-bg:#fbe4e2;--info-bg:#e5edfb;--plot-blue:#2456ac;--plot-orange:#9b4b12;--plot-red:#a3312c;--plot-amber:#9a6b00;--plot-grid:#c1c7d1;--peak:#f3d6d4}
+ .grid{display:block}.card{margin-block:12px;break-inside:avoid}.table-scroll{overflow:visible}table{min-width:0!important;font-size:10pt}.chart-data:not([open]){display:none}
+}
 </style>
 </head>
 <body>
@@ -96,7 +119,7 @@ footer{max-width:1200px;margin:0 auto;padding:10px 20px 40px;color:var(--mute);f
 </div>
 <div class="grid g2" style="margin-top:16px">
   <div class="card"><h2>Monthly use (kWh) and PG&amp;E cost estimate</h2><div class="legend"><span><i style="background:var(--blue)"></i>kWh</span><span><i style="background:var(--orange)"></i>Cost estimate ($)</span><span class="mute">Oct 2025 and Oct 2026 are partial months</span></div><div id="c-month"></div></div>
-  <div class="card"><h2>Average use by hour of day (kWh)</h2><div class="legend"><span><i style="background:var(--blue)"></i>Winter (Oct–May)</span><span><i style="background:var(--orange)"></i>Summer (Jun–Sep)</span><span><i style="background:#f3d6d4"></i>E-TOU-D peak 5–8 PM</span></div><div id="c-hour"></div></div>
+  <div class="card"><h2>Average use by hour of day (kWh)</h2><div class="legend"><span><i style="background:var(--blue)"></i>Winter (Oct–May)</span><span class="summer-legend"><i></i>Summer (Jun–Sep)</span><span><i style="background:#f3d6d4"></i>E-TOU-D peak 5–8 PM</span></div><div id="c-hour"></div></div>
 </div>
 <div class="card" style="margin-top:16px"><h2>Daily use, 2025-10-23 to 2026-10-22 (kWh)</h2><div id="c-daily"></div></div>
 <div class="card" style="margin-top:16px">
@@ -170,35 +193,72 @@ $('k-mx-s').textContent='kWh on '+D.max[0]+' / '+D.min[0];
 const NS='http://www.w3.org/2000/svg';
 function svg(w,h){const s=document.createElementNS(NS,'svg');s.setAttribute('viewBox',`0 0 ${w} ${h}`);s.setAttribute('width','100%');return s}
 function el(s,t,a,txt){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!==undefined)e.textContent=txt;s.appendChild(e);return e}
-function axis(s,L,T,W,H,max,step,fmtv,side){for(let v=0;v<=max;v+=step){const y=T+H-v/max*H;el(s,'line',{x1:L,x2:L+W,y1:y,y2:y,stroke:'#eef0f4'});el(s,'text',{x:side?L+W+4:L-4,y:y+4,'text-anchor':side?'start':'end'},fmtv(v))}}
+function axis(s,L,T,W,H,max,step,fmtv,side){for(let v=0;v<=max;v+=step){const y=T+H-v/max*H;el(s,'line',{x1:L,x2:L+W,y1:y,y2:y,stroke:'var(--plot-grid)'});el(s,'text',{x:side?L+W+4:L-4,y:y+4,'text-anchor':side?'start':'end'},fmtv(v))}}
 // monthly
 (function(){const w=560,h=260,L=44,T=10,W=470,H=200,s=svg(w,h);const mk=1800,mc=600;axis(s,L,T,W,H,mk,300,v=>fmt(v));
 for(let v=0;v<=mc;v+=100){el(s,'text',{x:L+W+4,y:T+H-v/mc*H+4},'$'+v)}
 const n=D.months.length,bw=W/n;D.months.forEach((m,i)=>{const x=L+i*bw;const hk=m[1]/mk*H,hc=m[2]/mc*H;
-const r=el(s,'rect',{x:x+bw*.12,y:T+H-hk,width:bw*.38,height:hk,fill:'#2f6fde',opacity:m[3]<28?.45:1});el(r,'title',{},`${m[0]}: ${fmt(m[1])} kWh (${m[3]} days)`);
-const r2=el(s,'rect',{x:x+bw*.5,y:T+H-hc,width:bw*.38,height:hc,fill:'#e8833a',opacity:m[3]<28?.45:1});el(r2,'title',{},`${m[0]}: ${money(m[2])}`);
+const r=el(s,'rect',{x:x+bw*.12,y:T+H-hk,width:bw*.38,height:hk,fill:'var(--plot-blue)',opacity:m[3]<28?.45:1});el(r,'title',{},`${m[0]}: ${fmt(m[1])} kWh (${m[3]} days)`);
+const r2=el(s,'rect',{x:x+bw*.5,y:T+H-hc,width:bw*.38,height:hc,fill:'var(--plot-orange)',opacity:m[3]<28?.45:1});el(r2,'title',{},`${m[0]}: ${money(m[2])}`);
 const mo=new Date(m[0]+'-15').toLocaleString('en-US',{month:'short'});el(s,'text',{x:x+bw/2,y:T+H+14,'text-anchor':'middle'},mo);
 if(m[0].endsWith('-01')||i==0)el(s,'text',{x:x+bw/2,y:T+H+28,'text-anchor':'middle'},m[0].slice(0,4))});
 $('c-month').appendChild(s)})();
 // hourly
 (function(){const w=560,h=250,L=36,T=10,W=500,H=200,s=svg(w,h),mx=3.5;const bw=W/24;
-el(s,'rect',{x:L+17*bw,y:T,width:3*bw,height:H,fill:'#f3d6d4',opacity:.6});axis(s,L,T,W,H,mx,.5,v=>v.toFixed(1));
-[['hw','#2f6fde'],['hs','#e8833a']].forEach(([k,c])=>{const pts=D[k].map((v,i)=>`${L+i*bw+bw/2},${T+H-v/mx*H}`).join(' ');el(s,'polyline',{points:pts,fill:'none',stroke:c,'stroke-width':2.5});
+el(s,'rect',{x:L+17*bw,y:T,width:3*bw,height:H,fill:'var(--peak)',opacity:.6});axis(s,L,T,W,H,mx,.5,v=>v.toFixed(1));
+[['hw','var(--plot-blue)'],['hs','var(--plot-orange)']].forEach(([k,c])=>{const pts=D[k].map((v,i)=>`${L+i*bw+bw/2},${T+H-v/mx*H}`).join(' ');el(s,'polyline',{points:pts,fill:'none',stroke:c,'stroke-width':2.5,'stroke-dasharray':k==='hs'?'7 4':'none'});
 D[k].forEach((v,i)=>{const p=el(s,'circle',{cx:L+i*bw+bw/2,cy:T+H-v/mx*H,r:3,fill:c});el(p,'title',{},`${i}:00 — ${v} kWh`)})});
 for(let i=0;i<24;i+=3){const lab=i==0?'12a':i<12?i+'a':i==12?'12p':(i-12)+'p';el(s,'text',{x:L+i*bw+bw/2,y:T+H+15,'text-anchor':'middle'},lab)}
 $('c-hour').appendChild(s)})();
 // daily
 (function(){const w=1140,h=200,L=36,T=10,W=1090,H=160,s=svg(w,h),mx=100;axis(s,L,T,W,H,mx,25,v=>v);const n=D.daily.length,bw=W/n;
-D.daily.forEach((d,i)=>{const hh=d[1]/mx*H;const r=el(s,'rect',{x:L+i*bw,y:T+H-hh,width:Math.max(bw-.4,1),height:hh,fill:d[1]>60?'#c8423b':'#2f6fde'});el(r,'title',{},`${d[0]}: ${d[1]} kWh`);
+D.daily.forEach((d,i)=>{const hh=d[1]/mx*H;const r=el(s,'rect',{x:L+i*bw,y:T+H-hh,width:Math.max(bw-.4,1),height:hh,fill:d[1]>60?'var(--plot-red)':'var(--plot-blue)'});el(r,'title',{},`${d[0]}: ${d[1]} kWh`);
 if(d[0].endsWith('-01'))el(s,'text',{x:L+i*bw,y:T+H+15},d[0].slice(0,7))});
-const avg=D.tot/D.days;el(s,'line',{x1:L,x2:L+W,y1:T+H-avg/mx*H,y2:T+H-avg/mx*H,stroke:'#1d2330','stroke-dasharray':'4 3'});el(s,'text',{x:L+W-4,y:T+H-avg/mx*H-4,'text-anchor':'end'},'avg '+avg.toFixed(0)+' kWh');
+const avg=D.tot/D.days;el(s,'line',{x1:L,x2:L+W,y1:T+H-avg/mx*H,y2:T+H-avg/mx*H,stroke:'var(--ink)','stroke-dasharray':'4 3'});el(s,'text',{x:L+W-4,y:T+H-avg/mx*H-4,'text-anchor':'end'},'avg '+avg.toFixed(0)+' kWh');
 $('c-daily').appendChild(s)})();
 // water
 (function(){const v=[['Earlier',93.84],['Earlier',103.13],['Earlier',150.00],['Due 2026-11-16',146.44]];const w=500,h=200,L=40,T=10,W=440,H=150,s=svg(w,h),mx=175;axis(s,L,T,W,H,mx,25,x=>'$'+x);const bw=W/v.length;
-v.forEach((d,i)=>{const hh=d[1]/mx*H;el(s,'rect',{x:L+i*bw+bw*.2,y:T+H-hh,width:bw*.6,height:hh,fill:i==3?'#c99a1a':'#7fa3e6'});el(s,'text',{x:L+i*bw+bw/2,y:T+H-hh-4,'text-anchor':'middle'},money(d[1]));el(s,'text',{x:L+i*bw+bw/2,y:T+H+15,'text-anchor':'middle'},d[0])});
+v.forEach((d,i)=>{const hh=d[1]/mx*H;el(s,'rect',{x:L+i*bw+bw*.2,y:T+H-hh,width:bw*.6,height:hh,fill:i==3?'var(--plot-amber)':'var(--plot-blue)'});el(s,'text',{x:L+i*bw+bw/2,y:T+H-hh-4,'text-anchor':'middle'},money(d[1]));el(s,'text',{x:L+i*bw+bw/2,y:T+H+15,'text-anchor':'middle'},d[0])});
 $('c-water').appendChild(s)})();
 // ETF table: contracts end 2028-03-31
 (function(){const t=$('etf');[['2026-12 (notice by 2026-11-30)',15],['2027-01',14],['2027-03',12],['2027-05',10],['2027-09',6]].forEach(([d,m])=>{const r=t.insertRow();r.innerHTML=`<td>${d}</td><td class="n">${m}</td><td class="n">$${35*m}</td><td class="n">$${70*m}</td>`;if(70*m>750)r.cells[3].innerHTML+=' <span class="tag bad">&gt;$750</span>'})})();
+
+// The same source arrays power the visual charts and their accessible tables.
+function publishChart(id,title,description,headers,rows){
+  const container=$(id),chart=container.querySelector('svg');
+  const figure=document.createElement('figure');
+  const caption=document.createElement('figcaption');
+  caption.id=id+'-caption';caption.className='sr-only';caption.textContent=title;
+  const summary=document.createElement('p');summary.id=id+'-summary';summary.className='chart-summary';summary.textContent=description;
+  chart.setAttribute('role','img');chart.setAttribute('aria-labelledby',caption.id);chart.setAttribute('aria-describedby',summary.id);
+  const details=document.createElement('details');details.className='chart-data';
+  const toggle=document.createElement('summary');toggle.textContent='View data table';details.append(toggle);
+  const table=document.createElement('table'),tableCaption=document.createElement('caption');
+  tableCaption.className='sr-only';tableCaption.textContent=title;table.append(tableCaption);
+  const head=table.createTHead().insertRow();headers.forEach(label=>{const th=document.createElement('th');th.scope='col';th.textContent=label;head.append(th)});
+  const body=table.createTBody();rows.forEach(values=>{const row=body.insertRow();values.forEach((value,i)=>{const cell=document.createElement(i===0?'th':'td');if(i===0)cell.scope='row';cell.textContent=String(value);row.append(cell)})});
+  details.append(table);figure.append(caption,chart,summary,details);container.append(figure);
+}
+const monthName=value=>new Date(value+'-01T12:00:00').toLocaleDateString('en-US',{month:'long',year:'numeric'});
+publishChart('c-month','Monthly electricity use and PG&E cost estimate',
+ 'Compare recorded use in kilowatt-hours with the PG&E cost estimate. October 2025 and October 2026 are partial months. The table includes the number of recorded days.',
+ ['Month','Use (kWh)','PG&E cost estimate','Recorded days'],D.months.map(m=>[monthName(m[0]),fmt(m[1]),money(m[2]),m[3]]));
+publishChart('c-hour','Average electricity use by hour',
+ 'The solid line shows winter (October–May); the dashed line shows summer (June–September). The shaded region marks the weekday 5–8 PM peak window. Values are average kilowatt-hours for each hour.',
+ ['Hour (24-hour time)','Winter (kWh)','Summer (kWh)'],D.hw.map((value,hour)=>[String(hour).padStart(2,'0')+':00',value,D.hs[hour]]));
+publishChart('c-daily','Daily electricity use',
+ 'Recorded daily kilowatt-hours from October 23, 2025 through October 22, 2026. The dashed line shows the daily average. The full daily series is available in the table.',
+ ['Date','Use (kWh)'],D.daily.map(d=>[d[0],d[1]]));
+publishChart('c-water','Recent water amounts',
+ 'Three earlier payments and the bill due November 16, 2026. Earlier dates are unspecified. The $150 payment is the autopay cap, not a full bill total.',
+ ['Payment or bill','Amount'],[['Earlier payment 1',money(93.84)],['Earlier payment 2',money(103.13)],['Earlier payment 3',money(150)],['Bill due November 16, 2026',money(146.44)]]);
+// Constrain tables to their cards rather than widening the whole page.
+document.querySelectorAll('table').forEach(table=>{
+ const scroller=document.createElement('div');scroller.className='table-scroll';
+ scroller.tabIndex=0;scroller.setAttribute('role','region');
+ const heading=table.querySelector('caption')?.textContent||table.closest('.card')?.querySelector('h2')?.textContent||'Utility details';
+ scroller.setAttribute('aria-label',heading+' table');table.before(scroller);scroller.append(table);
+});
 </script>
 </body>
 </html>
