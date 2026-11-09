@@ -21,7 +21,7 @@ CSS, and JavaScript; the landing page additionally loads local responsive image 
 
 ## Landing page
 
-Local navigation stays in the current tab; external apps open in a new tab.
+All navigation links open in a new tab.
 Links are grouped into Dashboards, Apps & projects, Guides, and Tools. Set Alarm
 and Calculator open panels on the current page.
 
