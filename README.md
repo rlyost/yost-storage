@@ -123,6 +123,7 @@ The landing-page menu links to:
 - [TitanLog](https://www.yost.group/apps/titanlog/titanlog.html)
 - [YostNotes](https://www.yost.group/apps/yostnotes_app.html)
 - [YostNotes App](https://app.yostnotes.com/)
+- [Yostprompter](https://yostprompter.com)
 - [The Gateway](https://www.yost.group/apps/gateway_app.html)
 - [Citadel Money](https://app.citadel-map.com)
 - [Ballot](https://runballot.com/)
