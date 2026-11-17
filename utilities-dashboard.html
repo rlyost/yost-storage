@@ -42,7 +42,7 @@ footer{max-width:1200px;margin:0 auto;padding:10px 20px 40px;color:var(--mute);f
 <body>
 <header>
   <h1>Utilities Dashboard</h1>
-  <p>Household · Prepared by Dexter (utilities assistant) · Data as of Tue 2026-11-10, 3:50 AM Pacific</p>
+  <p>Household · Prepared by Dexter (utilities assistant) · Data as of Tue 2026-11-17, 3:50 AM Pacific</p>
 </header>
 <main>
 
@@ -52,8 +52,8 @@ footer{max-width:1200px;margin:0 auto;padding:10px 20px 40px;color:var(--mute);f
   <table>
     <tr><th>Item</th><th>Status</th><th>Next step</th></tr>
     <tr><td><b>Cal Water bill $146.44</b>, due Mon 2026-11-16</td>
-        <td><span class="tag ok">Explained</span> Includes ~$6 carried over from last month's ~$156 bill</td>
-        <td>Autopay is capped at $150, so any bill over $150 is only partly paid. This month's own charges are ~$140. No action needed.</td></tr>
+        <td><span class="tag ok">Paid</span> Paid in full on 2026-11-16 (Cal Water confirmation)</td>
+        <td>Resolved. Autopay is capped at $150; bills over $150 will still be flagged.</td></tr>
     <tr><td><b>Due dates</b></td><td><span class="tag ok">Covered</span></td><td>All open bills are on autopay. Nothing to pay by hand.</td></tr>
     <tr><td><b>Electric rate plan</b></td><td><span class="tag ok">Cheapest</span></td><td>E-TOU-D is still the cheapest plan you qualify for. Re-check after a rate change, new season (summer 2027-06-01), or new data.</td></tr>
   </table>
@@ -62,7 +62,7 @@ footer{max-width:1200px;margin:0 auto;padding:10px 20px 40px;color:var(--mute);f
 <!-- KPIs -->
 <section>
 <div class="grid g4">
-  <div class="card kpi"><div class="l">Open bills (all autopay)</div><div class="v" id="k-open"></div><div class="s">Cal Water, 2 Comcast, propane budget, GreenWaste</div></div>
+  <div class="card kpi"><div class="l">Open bills (all autopay)</div><div class="v" id="k-open"></div><div class="s">2 Comcast, propane budget, GreenWaste</div></div>
   <div class="card kpi"><div class="l">Electricity, last 12 months</div><div class="v" id="k-kwh"></div><div class="s" id="k-kwh-s"></div></div>
   <div class="card kpi"><div class="l">Electric cost (PG&amp;E estimate in export)</div><div class="v" id="k-cost"></div><div class="s">2025-10-23 to 2026-10-22. Not a bill total.</div></div>
   <div class="card kpi"><div class="l">Internet, monthly (latest statements)</div><div class="v">$583.92</div><div class="s">Comcast Office $278.47 + Site 2 $305.45</div></div>
@@ -75,9 +75,9 @@ footer{max-width:1200px;margin:0 auto;padding:10px 20px 40px;color:var(--mute);f
 <div class="card">
 <table>
   <tr><th>Provider</th><th>Account</th><th>Statement</th><th class="n">Amount</th><th>Due</th><th>Autopay</th><th>Compared with</th></tr>
-  <tr><td>California Water Service</td><td>Home</td><td>2026-10-28</td><td class="n">$146.44</td><td>2026-11-16</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Explained</span> ~$6 carry-over from $150 autopay cap</td></tr>
+  <tr><td>California Water Service</td><td>Home</td><td>2026-10-28</td><td class="n">$146.44</td><td>2026-11-16 (paid in full 2026-11-16)</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Explained</span> ~$6 carry-over from $150 autopay cap</td></tr>
   <tr><td>Comcast Business</td><td>Office</td><td>2026-10-27</td><td class="n">$278.47</td><td>2026-11-19</td><td><span class="tag ok">Yes</span></td><td class="mute">No prior bills on file yet</td></tr>
-  <tr><td>Comcast Business</td><td>Site 2</td><td>2026-10-14</td><td class="n">$305.45</td><td>2026-11-06</td><td><span class="tag ok">Yes</span></td><td class="mute">No prior bills on file yet</td></tr>
+  <tr><td>Comcast Business</td><td>Site 2</td><td>2026-11-14</td><td class="n">$305.45</td><td>2026-12-06</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Normal</span> Same as prior statement ($305.45, 2026-10-14)</td></tr>
   <tr><td>Superior Plus Energy (propane, level budget plan)</td><td>—</td><td>2026-11-01</td><td class="n">$295.00</td><td>2026-11-20</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Normal</span> Budget payment unchanged from Oct ($295); no delivery this period</td></tr>
   <tr><td>Patriot Mobile (cell)</td><td>—</td><td>2026-10-24</td><td class="n">$229.44</td><td>2026-10-29</td><td><span class="tag ok">Yes</span></td><td class="mute">First bill on file (autopay charged)</td></tr>
   <tr><td>GreenWaste Recovery (trash, quarterly)</td><td>—</td><td>2026-11-01</td><td class="n">$457.16</td><td>Autopay ~2026-11-10</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Lower</span> ~35% below prior quarter ($697.92, 2026-08-01)</td></tr>
@@ -179,7 +179,7 @@ D.daily=D.dv.map((v,i)=>{const t=new Date(Date.UTC(2025,9,23+i));return [t.toISO
 const $=id=>document.getElementById(id);
 const fmt=n=>n.toLocaleString('en-US');
 const money=n=>'$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-$('k-open').textContent=money(146.44+278.47+305.45+295.00+457.16);
+$('k-open').textContent=money(278.47+305.45+295.00+457.16);
 $('k-kwh').textContent=fmt(D.tot)+' kWh';
 $('k-kwh-s').textContent='About '+(D.tot/D.days).toFixed(0)+' kWh a day over '+D.days+' days';
 $('k-cost').textContent='$'+fmt(Math.round(D.cost));
@@ -214,7 +214,7 @@ if(d[0].endsWith('-01'))el(s,'text',{x:L+i*bw,y:T+H+15},d[0].slice(0,7))});
 const avg=D.tot/D.days;el(s,'line',{x1:L,x2:L+W,y1:T+H-avg/mx*H,y2:T+H-avg/mx*H,stroke:'#1d2330','stroke-dasharray':'4 3'});el(s,'text',{x:L+W-4,y:T+H-avg/mx*H-4,'text-anchor':'end'},'avg '+avg.toFixed(0)+' kWh');
 $('c-daily').appendChild(s)})();
 // water
-(function(){const v=[['Earlier',93.84],['Earlier',103.13],['Earlier',150.00],['Due 2026-11-16',146.44]];const w=500,h=200,L=40,T=10,W=440,H=150,s=svg(w,h),mx=175;axis(s,L,T,W,H,mx,25,x=>'$'+x);const bw=W/v.length;
+(function(){const v=[['Earlier',93.84],['Earlier',103.13],['Earlier',150.00],['Paid 2026-11-16',146.44]];const w=500,h=200,L=40,T=10,W=440,H=150,s=svg(w,h),mx=175;axis(s,L,T,W,H,mx,25,x=>'$'+x);const bw=W/v.length;
 v.forEach((d,i)=>{const hh=d[1]/mx*H;el(s,'rect',{x:L+i*bw+bw*.2,y:T+H-hh,width:bw*.6,height:hh,fill:i==3?'#c99a1a':'#7fa3e6'});el(s,'text',{x:L+i*bw+bw/2,y:T+H-hh-4,'text-anchor':'middle'},money(d[1]));el(s,'text',{x:L+i*bw+bw/2,y:T+H+15,'text-anchor':'middle'},d[0])});
 $('c-water').appendChild(s)})();
 // ETF table: contracts end 2028-03-31
