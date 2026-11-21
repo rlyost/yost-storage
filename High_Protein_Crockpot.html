@@ -64,6 +64,8 @@ article.recipe ul li::before{content:"";position:absolute;left:4px;top:11px;widt
 .hero .eyebrow{margin:0 0 10px;font-size:11.5px;text-transform:uppercase;letter-spacing:.18em;color:var(--accent);font-weight:650}
 .hero h1{margin:0;font-size:clamp(28px,4.4vw,46px);line-height:1.1;letter-spacing:-.025em;max-width:16ch}
 .hero .lede{margin:14px 0 0;color:var(--muted);font-size:15px;max-width:52ch}
+.hero .tipnote{margin:12px 0 0;color:var(--muted);font-size:13px;max-width:62ch}
+.hero .tipnote a{color:var(--accent)}
 @media (max-width:860px){.hero-inner{padding:32px 20px 28px}.wrap{grid-template-columns:1fr;gap:16px}nav{position:static;max-height:300px;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--panel)}}
 @media print{
   header.top,nav,  .wrap{display:block;padding:0}
@@ -96,6 +98,7 @@ article.recipe ul li::before{content:"";position:absolute;left:4px;top:11px;widt
     <a class="backlink" href="#top" aria-label="Home — top of page">HOME</a>
     <span class="count" id="count">104 recipes</span>
     <a class="backlink" href="yummy_shred.html">Yummy Shred &rarr;</a>
+    <a class="backlink" href="TIP_URL" target="_blank" rel="noopener noreferrer">Leave a tip</a>
   </span>
 </header>
 <section class="hero">
@@ -103,6 +106,7 @@ article.recipe ul li::before{content:"";position:absolute;left:4px;top:11px;widt
     <p class="eyebrow">Slow cooker &amp; easy dishes</p>
     <h1>Rick’s Favorite High Protein Dishes (Mostly Crockpot)</h1>
     <p class="lede">104 recipes, grouped by what they are. Macros per serving where available, and a one-click shopping list.</p>
+    <p class="tipnote">These recipes are free. If they help your week, you can <a href="TIP_URL" target="_blank" rel="noopener noreferrer">leave a tip</a>. A tip is voluntary, is not a charitable donation, and changes nothing about the recipes. Payment is handled on Stripe&rsquo;s secure page, and Stripe emails your receipt.</p>
   </div>
 </section>
 <div class="wrap">
