@@ -42,7 +42,7 @@ footer{max-width:1200px;margin:0 auto;padding:10px 20px 40px;color:var(--mute);f
 <body>
 <header>
   <h1>Utilities Dashboard</h1>
-  <p>Household · Prepared by Dexter (utilities assistant) · Data as of Fri 2026-11-20, 3:50 AM Pacific</p>
+  <p>Household · Prepared by Dexter (utilities assistant) · Data as of Fri 2026-11-27, 2:50 AM Pacific</p>
 </header>
 <main>
 
@@ -79,9 +79,9 @@ footer{max-width:1200px;margin:0 auto;padding:10px 20px 40px;color:var(--mute);f
   <tr><td>Comcast Business</td><td>Office</td><td>2026-10-27</td><td class="n">$278.47</td><td>2026-11-19</td><td><span class="tag ok">Yes</span></td><td class="mute">No prior bills on file yet</td></tr>
   <tr><td>Comcast Business</td><td>Site 2</td><td>2026-11-14</td><td class="n">$305.45</td><td>2026-12-06</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Normal</span> Same as prior statement ($305.45, 2026-10-14)</td></tr>
   <tr><td>Superior Plus Energy (propane, level budget plan)</td><td>—</td><td>2026-11-01</td><td class="n">$295.00</td><td>2026-11-20</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Normal</span> Budget payment unchanged from Oct ($295); no delivery this period</td></tr>
-  <tr><td>Patriot Mobile (cell)</td><td>—</td><td>2026-10-24</td><td class="n">$229.44</td><td>2026-10-29</td><td><span class="tag ok">Yes</span></td><td class="mute">First bill on file (autopay charged)</td></tr>
+  <tr><td>Patriot Mobile (cell)</td><td>—</td><td>2026-11-24</td><td class="n">$229.44</td><td>2026-11-29</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Normal</span> Same as prior statement ($229.44, 2026-10-24)</td></tr>
   <tr><td>GreenWaste Recovery (trash, quarterly)</td><td>—</td><td>2026-11-01</td><td class="n">$457.16</td><td>Autopay ~2026-11-10</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Lower</span> ~35% below prior quarter ($697.92, 2026-08-01)</td></tr>
-  <tr><td>PG&amp;E (delivery + gas) / Peninsula Clean Energy</td><td>Home</td><td>2026-11-18</td><td class="n">$400.21</td><td>2026-12-07 (autopay scheduled 2026-12-07)</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Lower</span> ~12% below prior bill ($454.61, 2026-10-17)</td></tr>
+  <tr><td>PG&amp;E (electric delivery) / Peninsula Clean Energy</td><td>Home</td><td>2026-11-18</td><td class="n">$400.21</td><td>2026-12-07 (autopay scheduled 2026-12-07)</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Lower</span> ~12% below prior bill ($454.61, 2026-10-17)</td></tr>
 </table>
 <p class="mute">Source: Utility Bills sheet (private), updated by the Tue &amp; Fri 3:45 AM bill check.</p>
 </div>
@@ -138,14 +138,14 @@ footer{max-width:1200px;margin:0 auto;padding:10px 20px 40px;color:var(--mute);f
 </div>
 </section>
 
-<!-- WATER / TRASH / GAS -->
+<!-- WATER / TRASH / PROPANE -->
 <section>
-<h2>Water, trash, gas, propane and mobile</h2>
+<h2>Water, trash, propane and mobile</h2>
 <div class="grid g2">
   <div class="card"><h2>Cal Water · recent amounts</h2><div id="c-water"></div><p class="mute">Earlier payments from bill-pay / Cal Water emails. $150.00 is the autopay cap, not the full bill (last month was ~$156). Usage (CCF) isn't in the emails.</p></div>
   <div class="card">
     <h2>Trash · GreenWaste Recovery</h2><p>Autopay, billed quarterly; autopay drafts 5–7 business days after the invoice date.</p><table><tr><th>Invoice</th><th class="n">Total due</th></tr><tr><td>2026-11-01</td><td class="n">$457.16</td></tr><tr><td>2026-10-01</td><td class="n">−$162.70 (credit)</td></tr><tr><td>2026-09-01</td><td class="n">$154.89</td></tr><tr><td>2026-08-01</td><td class="n">$697.92</td></tr><tr><td>2026-05-01</td><td class="n">$677.37</td></tr></table><p class="mute">Nov bill is ~35% below the Aug quarter; no flag. Same quarter last year isn't in Gmail.</p>
-    <h2 style="margin-top:16px">Gas · PG&amp;E</h2><p class="mute">No gas usage or bills on file yet. A PG&amp;E Green Button gas export or bill would fill this in.</p>
+    <h2 style="margin-top:16px">Gas</h2><p class="mute">No PG&amp;E gas service. Home gas is propane from Superior Plus (see Propane).</p>
   </div>
   <div class="card">
     <h2>Propane · Superior Plus Energy</h2>
@@ -161,9 +161,10 @@ footer{max-width:1200px;margin:0 auto;padding:10px 20px 40px;color:var(--mute);f
     <p>Autopay is active.</p>
     <table>
       <tr><th>Statement</th><th class="n">Amount</th><th>Due</th><th>Autopay</th></tr>
+      <tr><td>2026-11-24</td><td class="n">$229.44</td><td>2026-11-29</td><td><span class="tag ok">Yes</span></td></tr>
       <tr><td>2026-10-24</td><td class="n">$229.44</td><td>2026-10-29</td><td><span class="tag ok">Yes</span></td></tr>
     </table>
-    <p class="mute">First bill on file. Later bills will be compared with the last 3 months and the same month last year.</p>
+    <p class="mute">Nov bill matches Oct. Later bills are compared with the last 3 months and the same month last year.</p>
   </div>
 </div>
 </section>
